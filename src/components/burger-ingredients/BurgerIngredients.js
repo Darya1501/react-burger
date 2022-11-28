@@ -1,32 +1,12 @@
 import React from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { data } from '../../utils/data';
 import styles from './BurgerIngredients.module.css'
 import { IngredientsCategory } from './IngredientsCategory';
-
-const getData = () => {
-  const menu = {
-    bun: [],
-    sauce: [],
-    main: []
-  }
-
-  data.forEach(item => {
-    if (item.type === "bun") {
-      menu.bun.push(item)
-    } else if (item.type === "sauce") {
-      menu.sauce.push(item)
-    } else {
-      menu.main.push(item)
-    }
-  })
-
-  return menu
-}
+import { getData } from '../../utils/get-data'
 
 export const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState('bun');
-  const { bun, sauce, main } = getData();
+  const { buns, sauces, mains } = getData();
 
   const bunRef = React.useRef(null)
   const sauceRef = React.useRef(null)
@@ -53,9 +33,9 @@ export const BurgerIngredients = () => {
       </div>
 
       <div className={styles.categories}>
-        <IngredientsCategory refLink={bunRef} category="Булки" ingredients={bun} />
-        <IngredientsCategory refLink={sauceRef} category="Соусы" ingredients={sauce} />
-        <IngredientsCategory refLink={mainRef} category="Начинки" ingredients={main} />
+        <IngredientsCategory refLink={bunRef} category="Булки" ingredients={buns} />
+        <IngredientsCategory refLink={sauceRef} category="Соусы" ingredients={sauces} />
+        <IngredientsCategory refLink={mainRef} category="Начинки" ingredients={mains} />
       </div>
     </div>
   )

@@ -4,7 +4,7 @@
 
 .categories{
   max-height: calc(100vh - 334px);
-  min-height: 200px;
+  min-height: 240px;
   overflow-y: scroll;
   scrollbar-color: var(--text-inactive-color) var(--background-element);
   scrollbar-width: thin;
