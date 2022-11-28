@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './BurgerIngredients.module.css'
 import { Ingredient } from './Ingredient'
+import PropTypes from 'prop-types';
 
 export const IngredientsCategory = ({ refLink, category, ingredients }) => {
   return(
@@ -17,3 +18,16 @@ export const IngredientsCategory = ({ refLink, category, ingredients }) => {
     </div>
   )
 }
+
+const items = PropTypes.shape({
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+});
+
+IngredientsCategory.propTypes = {
+  refLink: PropTypes.object.isRequired,
+  category: PropTypes.string.isRequired,
+  ingredients: PropTypes.arrayOf(items).isRequired
+}; 

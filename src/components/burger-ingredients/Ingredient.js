@@ -1,8 +1,9 @@
 import React from 'react'
 import { Counter, CurrencyIcon  } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerIngredients.module.css'
+import PropTypes from 'prop-types';
 
-export const Ingredient = ({item}) => {
+export const Ingredient = ({ item }) => {
   return (
     <div className={styles.ingredient}>
       <Counter count={1} size="default" extraClass="m-1" />
@@ -15,3 +16,12 @@ export const Ingredient = ({item}) => {
     </div>
   )
 }
+
+Ingredient.propTypes = {
+  item: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+  }).isRequired
+}; 

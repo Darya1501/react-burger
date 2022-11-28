@@ -25,7 +25,7 @@ export const BurgerConstructor = () => {
 
       <div className={styles.choises}>
         { components.map( component => (
-          <div className={styles.choise}>
+          <div key={component._id} className={styles.choise}>
             <DragIcon className='mr-2' />
             <ConstructorElement
               text={component.name}
