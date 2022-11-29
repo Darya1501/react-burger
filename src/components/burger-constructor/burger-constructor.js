@@ -1,7 +1,7 @@
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import React, { useState } from 'react'
 import { getData } from '../../utils/get-data'
-import styles from './BurgerConstructor.module.css'
+import styles from './burger-constructor.module.css'
 
 export const BurgerConstructor = () => {
   const { buns, sauces, mains } = getData();
@@ -23,9 +23,9 @@ export const BurgerConstructor = () => {
         extraClass='mb-4 ml-8 mr-4'
       />
 
-      <div className={styles.choises}>
+      <div className={styles.choices}>
         { components.map( component => (
-          <div key={component._id} className={styles.choise}>
+          <div key={component._id} className={styles.choice}>
             <DragIcon className='mr-2' />
             <ConstructorElement
               text={component.name}

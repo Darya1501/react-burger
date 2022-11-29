@@ -2,6 +2,10 @@
   max-width: 600px;
 }
 
+.tabs {
+  display: flex;
+}
+
 .categories{
   max-height: calc(100vh - 334px);
   min-height: 240px;

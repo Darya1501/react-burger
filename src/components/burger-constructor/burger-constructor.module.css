@@ -2,7 +2,7 @@
   padding: 100px 0 0 16px;
 }
 
-.choises {
+.choices {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -14,19 +14,19 @@
   scrollbar-width: thin;
 }
 
-.choises::-webkit-scrollbar {
+.choices::-webkit-scrollbar {
   width: 10px;
 }
 
-.choises::-webkit-scrollbar-track {
+.choices::-webkit-scrollbar-track {
   background-color: var(--background-element);
 }
 
-.choises::-webkit-scrollbar-thumb {
+.choices::-webkit-scrollbar-thumb {
   background-color: var(--text-inactive-color);
 }
 
-.choise {
+.choice {
   display: flex;
   align-items: center;
 }

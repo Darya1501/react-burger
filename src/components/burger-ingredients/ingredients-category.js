@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from './BurgerIngredients.module.css'
-import { Ingredient } from './Ingredient'
+import styles from './burger-ingredients.module.css'
+import { Ingredient } from './ingredient'
 import PropTypes from 'prop-types';
 
 export const IngredientsCategory = ({ refLink, category, ingredients }) => {
