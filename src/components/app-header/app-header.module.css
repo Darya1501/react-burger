@@ -1,0 +1,27 @@
+.header {
+  background-color: var(--background);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1280px;
+  margin: auto;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-inactive-color)
+}
+
+.active {
+  color: var(--text-primary-color)
+}

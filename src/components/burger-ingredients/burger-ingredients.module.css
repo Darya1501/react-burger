@@ -1,0 +1,49 @@
+.container {
+  max-width: 600px;
+}
+
+.tabs {
+  display: flex;
+}
+
+.categories{
+  max-height: calc(100vh - 334px);
+  min-height: 240px;
+  overflow-y: scroll;
+  scrollbar-color: var(--text-inactive-color) var(--background-element);
+  scrollbar-width: thin;
+}
+
+.categories::-webkit-scrollbar {
+  width: 10px;
+}
+
+.categories::-webkit-scrollbar-track {
+  background-color: var(--background-element);
+}
+
+.categories::-webkit-scrollbar-thumb {
+  background-color: var(--text-inactive-color);
+}
+
+.category {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.ingredient {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  max-width: 272px;
+  text-align: center;
+  position: relative;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px
+}
