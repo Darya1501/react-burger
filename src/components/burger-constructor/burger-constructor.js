@@ -1,10 +1,9 @@
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import React, { useState } from 'react'
-import { getData } from '../../utils/get-data'
 import styles from './burger-constructor.module.css'
 
-export const BurgerConstructor = () => {
-  const { buns, sauces, mains } = getData();
+export const BurgerConstructor = ({ menu }) => {
+  const { buns, sauces, mains } = menu;
   const [ components ] = useState([
     sauces[2],
     mains[0],

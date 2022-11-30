@@ -2,9 +2,8 @@ import React from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
 import { IngredientsCategory } from './ingredients-category';
-import { getData } from '../../utils/get-data'
 
-export const BurgerIngredients = () => {
+export const BurgerIngredients = ({ menu }) => {
   const Tabs = {
     BUN: 'bun',
     SAUSE: 'sauce',
@@ -12,7 +11,7 @@ export const BurgerIngredients = () => {
   }
 
   const [current, setCurrent] = React.useState(Tabs.BUN);
-  const { buns, sauces, mains } = getData();
+  const { buns, sauces, mains } = menu;
 
   const bunRef = React.useRef(null)
   const sauceRef = React.useRef(null)
