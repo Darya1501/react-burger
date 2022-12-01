@@ -2,6 +2,7 @@ import React from 'react'
 import { Modal } from './modal'
 import doneImage from '../../images/graphics.svg'
 import styles from './modal.module.css'
+import PropTypes from 'prop-types';
 
 export const OrderDetails = props => {
   return (
@@ -16,3 +17,20 @@ export const OrderDetails = props => {
     </Modal>
   )
 }
+
+OrderDetails.propTypes = {
+  ingredient: PropTypes.shape({
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    type: PropTypes.string,
+    proteins: PropTypes.number,
+    fat: PropTypes.number,
+    carbohydrates: PropTypes.number,
+    calories: PropTypes.number,
+    price: PropTypes.number,
+    image: PropTypes.string,
+    image_large: PropTypes.string,
+  }),
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+}; 

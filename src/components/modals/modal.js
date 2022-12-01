@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom';
 import { ModalOverlay } from './modal-overlay'
 import styles from './modal.module.css'
+import PropTypes from 'prop-types';
 
 export const Modal = ({ isOpen, header, children, onClose }) => {
   useEffect(() => {
@@ -32,3 +33,8 @@ export const Modal = ({ isOpen, header, children, onClose }) => {
 }
 
 
+Modal.propTypes = {
+  isOpen: PropTypes.bool,
+  header: PropTypes.string,
+  onClose: PropTypes.func,
+}; 

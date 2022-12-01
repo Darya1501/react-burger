@@ -2,6 +2,7 @@ import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktiku
 import React, { useState } from 'react'
 import { OrderDetails } from '../modals/order-details';
 import styles from './burger-constructor.module.css'
+import PropTypes from 'prop-types';
 
 export const BurgerConstructor = ({ menu }) => {
   const { buns, sauces, mains } = menu;
@@ -61,3 +62,11 @@ export const BurgerConstructor = ({ menu }) => {
     </div>
   )
 }
+
+BurgerConstructor.propTypes = {
+  menu: PropTypes.shape({
+    buns: PropTypes.array,
+    sauces: PropTypes.array,
+    mains: PropTypes.array
+  })
+}; 
