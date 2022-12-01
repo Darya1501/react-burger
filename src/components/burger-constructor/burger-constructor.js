@@ -1,5 +1,6 @@
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import React, { useState } from 'react'
+import { OrderDetails } from '../modals/order-details';
 import styles from './burger-constructor.module.css'
 
 export const BurgerConstructor = ({ menu }) => {
@@ -10,6 +11,8 @@ export const BurgerConstructor = ({ menu }) => {
     mains[1],
     mains[2],
   ]);
+
+  const [ details, setDetails ] = useState(false);
   
   return (
     <div className={styles.container}>
@@ -50,11 +53,11 @@ export const BurgerConstructor = ({ menu }) => {
           610
           <CurrencyIcon />
         </p>
-        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2">
-          Нажми на меня
+        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2" onClick={() => setDetails(true)}>
+          Оформить заказ
         </Button>
       </div>
-      
+      <OrderDetails isOpen={details} onClose={() => setDetails(false)} />
     </div>
   )
 }
