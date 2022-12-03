@@ -2,11 +2,11 @@ import React from 'react'
 import { Modal } from './modal'
 import styles from './modal.module.css'
 import PropTypes from 'prop-types';
+import { ingredientTypes } from '../prop-types';
 
-export const IngredientDetails = props => {
-  const { ingredient } = props;
+export const IngredientDetails = ({ onClose, ingredient }) => {
   return (
-    <Modal {...props} header='Детали ингредиента'>
+    <Modal onClose={onClose} header='Детали ингредиента'>
       <div className={styles.ingredient}>
         <img src={ingredient.image_large} alt={ingredient.name} />
         <p className="text text_type_main-medium mb-8 mt-4">{ingredient.name}</p>
@@ -34,18 +34,6 @@ export const IngredientDetails = props => {
 }
 
 IngredientDetails.propTypes = {
-  ingredient: PropTypes.shape({
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    type: PropTypes.string,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    calories: PropTypes.number,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    image_large: PropTypes.string,
-  }),
-  isOpen: PropTypes.bool,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
+  ingredient: ingredientTypes,
 }; 

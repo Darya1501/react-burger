@@ -4,9 +4,9 @@ import doneImage from '../../images/graphics.svg'
 import styles from './modal.module.css'
 import PropTypes from 'prop-types';
 
-export const OrderDetails = props => {
+export const OrderDetails = ({ onClose }) => {
   return (
-    <Modal {...props}>
+    <Modal onClose={onClose}>
       <div className={styles.order}>
         <p className="text text_type_digits-large mb-8">034536</p>
         <p className="text text_type_main-medium mb-15">идентификатор заказа</p>
@@ -19,18 +19,5 @@ export const OrderDetails = props => {
 }
 
 OrderDetails.propTypes = {
-  ingredient: PropTypes.shape({
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    type: PropTypes.string,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    calories: PropTypes.number,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    image_large: PropTypes.string,
-  }),
-  isOpen: PropTypes.bool,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
 }; 

@@ -2,10 +2,9 @@ import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktiku
 import React, { useState } from 'react'
 import { OrderDetails } from '../modals/order-details';
 import styles from './burger-constructor.module.css'
-import PropTypes from 'prop-types';
+import { ingredientTypes, menuCategoryTypes } from '../prop-types';
 
-export const BurgerConstructor = ({ menu }) => {
-  const { buns, sauces, mains } = menu;
+export const BurgerConstructor = ({ bun, sauces, mains  }) => {
   const [ components ] = useState([
     sauces[2],
     mains[0],
@@ -13,7 +12,7 @@ export const BurgerConstructor = ({ menu }) => {
     mains[2],
   ]);
 
-  const [ details, setDetails ] = useState(false);
+  const [ isDetailsOpen, setIsDetailsOpen ] = useState(false);
   
   return (
     <div className={styles.container}>
@@ -22,7 +21,7 @@ export const BurgerConstructor = ({ menu }) => {
         isLocked={true}
         text="Краторная булка N-200i (верх)"
         price={200}
-        thumbnail={buns[0].image}
+        thumbnail={bun.image}
         extraClass='mb-4 ml-8 mr-4'
       />
 
@@ -45,7 +44,7 @@ export const BurgerConstructor = ({ menu }) => {
         isLocked={true}
         text="Краторная булка N-200i (верх)"
         price={200}
-        thumbnail={buns[0].image}
+        thumbnail={bun.image}
         extraClass='mt-4 ml-8 mr-4'
       />  
 
@@ -54,19 +53,17 @@ export const BurgerConstructor = ({ menu }) => {
           610
           <CurrencyIcon />
         </p>
-        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2" onClick={() => setDetails(true)}>
+        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2" onClick={() => setIsDetailsOpen(true)}>
           Оформить заказ
         </Button>
       </div>
-      <OrderDetails isOpen={details} onClose={() => setDetails(false)} />
+      {isDetailsOpen && <OrderDetails onClose={() => setIsDetailsOpen(false)} />}
     </div>
   )
 }
 
 BurgerConstructor.propTypes = {
-  menu: PropTypes.shape({
-    buns: PropTypes.array,
-    sauces: PropTypes.array,
-    mains: PropTypes.array
-  })
+  bun: ingredientTypes,
+  sauces: menuCategoryTypes,
+  mains: menuCategoryTypes
 }; 

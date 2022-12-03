@@ -4,20 +4,24 @@ import { AppHeader } from './app-header/app-header';
 import { BurgerIngredients } from './burger-ingredients/burger-ingredients';
 import { BurgerConstructor } from './burger-constructor/burger-constructor';
 import { getSortedData } from '../utils/get-sorted-data'
-
-const URL = 'https://norma.nomoreparties.space/api/ingredients';
+import { getIngredients } from '../utils/burger-api';
 
 function App() {
   const [state, setState] = useState({
-    menu: {},
+    menu: {
+      buns: [],
+      sauces: [],
+      mains: []
+    },
     isLoaded: false
   })
 
   useEffect(() => {
-    fetch(URL)
-      .then(res => res.json())
-      .then(data => setState({menu: getSortedData(data.data), isLoaded: true }))
-      .catch(error => console.error(error))
+    async function fetchData() {
+      const ingredients = await getIngredients();
+      ingredients && setState( {menu: getSortedData(ingredients), isLoaded: true } )
+    }
+    fetchData()
   }, [])
 
   return (
@@ -26,7 +30,7 @@ function App() {
       { state.isLoaded ?
         (<div className='app-container'>
           <BurgerIngredients menu={state.menu} />
-          <BurgerConstructor menu={state.menu} />
+          <BurgerConstructor bun={state.menu.buns[0]} sauces={state.menu.sauces} mains={state.menu.mains} />
         </div>) : null
       }
     </>
