@@ -5,6 +5,7 @@ import { BurgerIngredients } from './burger-ingredients/burger-ingredients';
 import { BurgerConstructor } from './burger-constructor/burger-constructor';
 import { getSortedData } from '../utils/get-sorted-data'
 import { getIngredients } from '../utils/burger-api';
+import { IngredientsContext } from '../context/burger-context';
 
 function App() {
   const [state, setState] = useState({
@@ -19,7 +20,7 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       const ingredients = await getIngredients();
-      ingredients && setState( {menu: getSortedData(ingredients), isLoaded: true } )
+      ingredients && setState( { menu: getSortedData(ingredients), isLoaded: true } )
     }
     fetchData()
   }, [])
@@ -29,8 +30,11 @@ function App() {
       <AppHeader />
       { state.isLoaded ?
         (<div className='app-container'>
-          <BurgerIngredients menu={state.menu} />
-          <BurgerConstructor bun={state.menu.buns[0]} sauces={state.menu.sauces} mains={state.menu.mains} />
+          <IngredientsContext.Provider value={{ bun: state.menu.buns[0], components: [state.menu.sauces[2],
+            state.menu.mains[0], state.menu.mains[1], state.menu.mains[2]] }}>
+            <BurgerIngredients menu={state.menu} />
+            <BurgerConstructor />
+          </IngredientsContext.Provider>
         </div>) : null
       }
     </>
