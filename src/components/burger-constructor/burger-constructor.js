@@ -2,18 +2,28 @@ import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktiku
 import React, { useState, useContext, useEffect } from 'react'
 import { OrderDetails } from '../modals/order-details';
 import styles from './burger-constructor.module.css'
-import { IngredientsContext } from '../../context/burger-context';
+import { IngredientsContext, OrderContext } from '../../context/burger-context';
+import { postOrder } from '../../utils/burger-api';
 
 export const BurgerConstructor = () => {
   const { bun, components } = useContext(IngredientsContext);
   const [ isDetailsOpen, setIsDetailsOpen ] = useState(false);
   const [ totalPrice, setTotalPrice ] = useState(0);
+  const { setOrderData } = useContext(OrderContext)
 
   useEffect(() => {
     let total = bun.price * 2;
     components.map(component => total += component.price)
     setTotalPrice(total)
   }, [bun, components])
+
+  const createOrder = async () => {
+    const ingredients = [bun._id];
+    components.map(component => ingredients.push(component._id))
+    const orderID = await postOrder(ingredients);
+    setOrderData({ id: orderID })
+    setIsDetailsOpen(true)
+  }
   
   return (
     <div className={styles.container}>
@@ -54,7 +64,7 @@ export const BurgerConstructor = () => {
           {totalPrice}
           <CurrencyIcon />
         </p>
-        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2" onClick={() => setIsDetailsOpen(true)}>
+        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2" onClick={createOrder}>
           Оформить заказ
         </Button>
       </div>
@@ -62,9 +72,3 @@ export const BurgerConstructor = () => {
     </div>
   )
 }
-
-// BurgerConstructor.propTypes = {
-//   bun: ingredientTypes,
-//   sauces: menuCategoryTypes,
-//   mains: menuCategoryTypes
-// }; 
