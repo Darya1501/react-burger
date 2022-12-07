@@ -1,16 +1,18 @@
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import React, { useState } from 'react'
-import { getData } from '../../utils/get-data'
+import { OrderDetails } from '../modals/order-details';
 import styles from './burger-constructor.module.css'
+import { ingredientTypes, menuCategoryTypes } from '../prop-types';
 
-export const BurgerConstructor = () => {
-  const { buns, sauces, mains } = getData();
+export const BurgerConstructor = ({ bun, sauces, mains  }) => {
   const [ components ] = useState([
     sauces[2],
     mains[0],
     mains[1],
     mains[2],
   ]);
+
+  const [ isDetailsOpen, setIsDetailsOpen ] = useState(false);
   
   return (
     <div className={styles.container}>
@@ -19,7 +21,7 @@ export const BurgerConstructor = () => {
         isLocked={true}
         text="Краторная булка N-200i (верх)"
         price={200}
-        thumbnail={buns[0].image}
+        thumbnail={bun.image}
         extraClass='mb-4 ml-8 mr-4'
       />
 
@@ -42,7 +44,7 @@ export const BurgerConstructor = () => {
         isLocked={true}
         text="Краторная булка N-200i (верх)"
         price={200}
-        thumbnail={buns[0].image}
+        thumbnail={bun.image}
         extraClass='mt-4 ml-8 mr-4'
       />  
 
@@ -51,11 +53,17 @@ export const BurgerConstructor = () => {
           610
           <CurrencyIcon />
         </p>
-        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2">
-          Нажми на меня
+        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2" onClick={() => setIsDetailsOpen(true)}>
+          Оформить заказ
         </Button>
       </div>
-      
+      {isDetailsOpen && <OrderDetails onClose={() => setIsDetailsOpen(false)} />}
     </div>
   )
 }
+
+BurgerConstructor.propTypes = {
+  bun: ingredientTypes,
+  sauces: menuCategoryTypes,
+  mains: menuCategoryTypes
+}; 

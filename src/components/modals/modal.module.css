@@ -1,0 +1,48 @@
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal {
+  background-color: var(--background);
+  border-radius: 40px;
+  padding: 60px 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 720px;
+}
+
+.content {
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.close {
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  background-color: transparent;
+  border: none
+}
+
+.order {
+  padding: 60px 0;
+  text-align: center;
+}
+
+.ingredient {
+  text-align: center;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}

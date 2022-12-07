@@ -7,6 +7,10 @@ a {
   text-decoration: none;
 }
 
+button {
+  cursor: pointer;
+}
+
 .app-container {
   max-width: 1240px;
   margin: auto;

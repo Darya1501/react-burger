@@ -30,6 +30,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
+  justify-content: space-between;
 }
 
 .ingredient {
@@ -37,9 +38,10 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  max-width: 272px;
+  width: 267px;
   text-align: center;
   position: relative;
+  cursor: pointer;
 }
 
 .price {
