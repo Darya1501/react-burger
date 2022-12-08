@@ -2,7 +2,7 @@ import React from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
 import { IngredientsCategory } from './ingredients-category';
-import { menuTypes } from '../prop-types';
+import { menuTypes } from '../../utils/prop-types';
 
 export const BurgerIngredients = ({ menu }) => {
   const Tabs = {

@@ -1,5 +1,5 @@
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useMemo } from 'react'
 import { OrderDetails } from '../modals/order-details';
 import styles from './burger-constructor.module.css'
 import { IngredientsContext, OrderContext } from '../../context/burger-context';
@@ -11,10 +11,8 @@ export const BurgerConstructor = () => {
   const [ totalPrice, setTotalPrice ] = useState(0);
   const { setOrderData } = useContext(OrderContext)
 
-  useEffect(() => {
-    let total = bun.price * 2;
-    components.map(component => total += component.price)
-    setTotalPrice(total)
+  useMemo(() => {
+    setTotalPrice(components.reduce((accumulator, component) => accumulator + component.price, bun.price * 2))
   }, [bun, components])
 
   const createOrder = async () => {
@@ -30,7 +28,7 @@ export const BurgerConstructor = () => {
       <ConstructorElement
         type="top"
         isLocked={true}
-        text={bun.name}
+        text={`${bun.name} (верх)`}
         price={bun.price}
         thumbnail={bun.image}
         extraClass='mb-4 ml-8 mr-4'
@@ -53,7 +51,7 @@ export const BurgerConstructor = () => {
       <ConstructorElement
         type="bottom"
         isLocked={true}
-        text={bun.name}
+        text={`${bun.name} (низ)`}
         price={bun.price}
         thumbnail={bun.image}
         extraClass='mt-4 ml-8 mr-4'

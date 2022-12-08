@@ -19,10 +19,19 @@ function App() {
 
   const [ orderData, setOrderData ] = useState({ id: 0 })
 
+  const [selectedItems, setSelectedItems] = useState({
+    bun: {},
+    components: [{}, {}, {}]
+  })
+
   useEffect(() => {
     async function fetchData() {
       const ingredients = await getIngredients();
       ingredients && setState( { menu: getSortedData(ingredients), isLoaded: true } )
+      ingredients && setSelectedItems({ 
+        bun: ingredients[1],
+        components: [ingredients[3], ingredients[4], ingredients[5]]
+      })
     }
     fetchData()
   }, [])
@@ -32,8 +41,10 @@ function App() {
       <AppHeader />
       { state.isLoaded ?
         (<div className='app-container'>
-          <IngredientsContext.Provider value={{ bun: state.menu.buns[0], components: [state.menu.sauces[2],
-            state.menu.mains[0], state.menu.mains[1], state.menu.mains[2]] }}>
+          <IngredientsContext.Provider value={{ 
+            bun: selectedItems.bun, 
+            components: selectedItems.components
+          }}>
             <BurgerIngredients menu={state.menu} />
             <OrderContext.Provider value={{orderData, setOrderData}}>
               <BurgerConstructor />

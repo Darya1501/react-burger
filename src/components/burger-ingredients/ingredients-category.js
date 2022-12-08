@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './burger-ingredients.module.css'
 import { Ingredient } from './ingredient'
 import PropTypes from 'prop-types';
-import { menuCategoryTypes } from '../prop-types';
+import { menuCategoryTypes } from '../../utils/prop-types';
 
 export const IngredientsCategory = ({ refLink, category, ingredients }) => {
   return(
