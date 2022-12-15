@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Counter, CurrencyIcon  } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
 import { IngredientDetails } from '../modals/ingredient-details';
-import { ingredientTypes } from '../prop-types';
+import { ingredientTypes } from '../../utils/prop-types';
 
 
 export const Ingredient = ({ item }) => {

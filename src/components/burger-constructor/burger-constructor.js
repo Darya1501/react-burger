@@ -1,26 +1,35 @@
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import React, { useState } from 'react'
+import React, { useState, useContext, useMemo } from 'react'
 import { OrderDetails } from '../modals/order-details';
 import styles from './burger-constructor.module.css'
-import { ingredientTypes, menuCategoryTypes } from '../prop-types';
+import { IngredientsContext, OrderContext } from '../../context/burger-context';
+import { postOrder } from '../../utils/burger-api';
 
-export const BurgerConstructor = ({ bun, sauces, mains  }) => {
-  const [ components ] = useState([
-    sauces[2],
-    mains[0],
-    mains[1],
-    mains[2],
-  ]);
-
+export const BurgerConstructor = () => {
+  const { bun, components } = useContext(IngredientsContext);
   const [ isDetailsOpen, setIsDetailsOpen ] = useState(false);
+  const [ totalPrice, setTotalPrice ] = useState(0);
+  const { setOrderData } = useContext(OrderContext)
+
+  useMemo(() => {
+    setTotalPrice(components.reduce((accumulator, component) => accumulator + component.price, bun.price * 2))
+  }, [bun, components])
+
+  const createOrder = async () => {
+    const ingredients = [bun._id];
+    components.map(component => ingredients.push(component._id))
+    const orderID = await postOrder(ingredients);
+    setOrderData({ id: orderID })
+    setIsDetailsOpen(true)
+  }
   
   return (
     <div className={styles.container}>
       <ConstructorElement
         type="top"
         isLocked={true}
-        text="Краторная булка N-200i (верх)"
-        price={200}
+        text={`${bun.name} (верх)`}
+        price={bun.price}
         thumbnail={bun.image}
         extraClass='mb-4 ml-8 mr-4'
       />
@@ -42,18 +51,18 @@ export const BurgerConstructor = ({ bun, sauces, mains  }) => {
       <ConstructorElement
         type="bottom"
         isLocked={true}
-        text="Краторная булка N-200i (верх)"
-        price={200}
+        text={`${bun.name} (низ)`}
+        price={bun.price}
         thumbnail={bun.image}
         extraClass='mt-4 ml-8 mr-4'
-      />  
+      />
 
       <div className={styles.bottom}>
         <p className={`${styles.price} text text_type_digits-medium`}>
-          610
+          {totalPrice}
           <CurrencyIcon />
         </p>
-        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2" onClick={() => setIsDetailsOpen(true)}>
+        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2" onClick={createOrder}>
           Оформить заказ
         </Button>
       </div>
@@ -61,9 +70,3 @@ export const BurgerConstructor = ({ bun, sauces, mains  }) => {
     </div>
   )
 }
-
-BurgerConstructor.propTypes = {
-  bun: ingredientTypes,
-  sauces: menuCategoryTypes,
-  mains: menuCategoryTypes
-}; 
