@@ -8,10 +8,11 @@
   gap: 10px;
   justify-content: flex-start;
   max-height: calc(100vh - 576px);
-  min-height: 260px;
+  min-height: 87px;
   overflow-y: scroll;
   scrollbar-color: var(--text-inactive-color) var(--background-element);
   scrollbar-width: thin;
+  text-align: center;
 }
 
 .choices::-webkit-scrollbar {

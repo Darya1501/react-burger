@@ -2,22 +2,24 @@ import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktiku
 import React, { useState, useContext, useMemo } from 'react'
 import { OrderDetails } from '../modals/order-details';
 import styles from './burger-constructor.module.css'
-import { IngredientsContext, OrderContext } from '../../context/burger-context';
+import { OrderContext } from '../../context/burger-context';
 import { postOrder } from '../../utils/burger-api';
+import { useSelector } from 'react-redux';
 
 export const BurgerConstructor = () => {
-  const { bun, components } = useContext(IngredientsContext);
+  const { ingredientsRequest, ingredientsFailed, constructorBun, constructorIngredients } = useSelector(state => state.ingredients);
+
   const [ isDetailsOpen, setIsDetailsOpen ] = useState(false);
   const [ totalPrice, setTotalPrice ] = useState(0);
   const { setOrderData } = useContext(OrderContext)
 
   useMemo(() => {
-    setTotalPrice(components.reduce((accumulator, component) => accumulator + component.price, bun.price * 2))
-  }, [bun, components])
+    setTotalPrice(constructorIngredients.reduce((accumulator, component) => accumulator + component.price, constructorBun.price * 2))
+  }, [constructorBun, constructorIngredients])
 
   const createOrder = async () => {
-    const ingredients = [bun._id];
-    components.map(component => ingredients.push(component._id))
+    const ingredients = [constructorBun._id];
+    constructorIngredients.map(component => ingredients.push(component._id))
     const orderID = await postOrder(ingredients);
     setOrderData({ id: orderID })
     setIsDetailsOpen(true)
@@ -25,37 +27,50 @@ export const BurgerConstructor = () => {
   
   return (
     <div className={styles.container}>
-      <ConstructorElement
-        type="top"
-        isLocked={true}
-        text={`${bun.name} (верх)`}
-        price={bun.price}
-        thumbnail={bun.image}
-        extraClass='mb-4 ml-8 mr-4'
-      />
-
-      <div className={styles.choices}>
-        { components.map( component => (
-          <div key={component._id} className={styles.choice}>
-            <DragIcon className='mr-2' />
+      {
+        !ingredientsRequest && !ingredientsFailed && 
+        (
+          <>
             <ConstructorElement
-              text={component.name}
-              price={component.price}
-              thumbnail={component.image}
-              extraClass='ml-2'
+              type="top"
+              isLocked={true}
+              text={`${constructorBun.name} (верх)`}
+              price={constructorBun.price}
+              thumbnail={constructorBun.image}
+              extraClass='mb-4 ml-8 mr-4'
             />
-          </div>
-        )) }
-      </div>
 
-      <ConstructorElement
-        type="bottom"
-        isLocked={true}
-        text={`${bun.name} (низ)`}
-        price={bun.price}
-        thumbnail={bun.image}
-        extraClass='mt-4 ml-8 mr-4'
-      />
+            <div className={styles.choices}>
+              { constructorIngredients.length ? 
+                ( constructorIngredients.map( ingredient => (
+                  <div key={ingredient._id} className={styles.choice}>
+                    <DragIcon className='mr-2' />
+                    <ConstructorElement
+                      text={ingredient.name}
+                      price={ingredient.price}
+                      thumbnail={ingredient.image}
+                      extraClass='ml-2'
+                    />
+                  </div>
+                )) ) : (
+                  <p className="text text_type_main-default">
+                    Перетащите ингредиенты сюда
+                  </p>
+                )
+              }
+            </div>
+
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${constructorBun.name} (низ)`}
+              price={constructorBun.price}
+              thumbnail={constructorBun.image}
+              extraClass='mt-4 ml-8 mr-4'
+            />
+          </>
+        )
+      }
 
       <div className={styles.bottom}>
         <p className={`${styles.price} text text_type_digits-medium`}>
