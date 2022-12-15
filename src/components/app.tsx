@@ -45,7 +45,7 @@ function App() {
             bun: selectedItems.bun, 
             components: selectedItems.components
           }}>
-            <BurgerIngredients menu={state.menu} />
+            <BurgerIngredients />
             <OrderContext.Provider value={{orderData, setOrderData}}>
               <BurgerConstructor />
             </OrderContext.Provider>

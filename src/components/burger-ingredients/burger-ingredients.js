@@ -1,18 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
 import { IngredientsCategory } from './ingredients-category';
-import { menuTypes } from '../../utils/prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIngredientsRequest } from '../../services/actions';
+import { getSortedData } from '../../utils/get-sorted-data';
 
-export const BurgerIngredients = ({ menu }) => {
+export const BurgerIngredients = () => {
   const Tabs = {
     BUN: 'bun',
     SAUSE: 'sauce',
     MAIN: 'main'
   }
 
+  const dispatch = useDispatch();
+  const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(state => state.ingredients);
+
+  useEffect(
+    () => {
+      dispatch(getIngredientsRequest());
+    },
+    [dispatch]
+  );
+
   const [current, setCurrent] = React.useState(Tabs.BUN);
-  const { buns, sauces, mains } = menu;
 
   const bunRef = React.useRef(null)
   const sauceRef = React.useRef(null)
@@ -38,15 +49,19 @@ export const BurgerIngredients = ({ menu }) => {
         </Tab>
       </div>
 
-      <div className={styles.categories}>
-        <IngredientsCategory refLink={bunRef} category="Булки" ingredients={buns} />
-        <IngredientsCategory refLink={sauceRef} category="Соусы" ingredients={sauces} />
-        <IngredientsCategory refLink={mainRef} category="Начинки" ingredients={mains} />
-      </div>
+      {
+        ingredientsRequest ? (
+          <p className="text text_type_main-medium">Загрузка...</p>
+        ) : ingredientsFailed ? (
+          <p className="text text_type_main-medium">Что-то пошло не так</p>
+        ) : (
+        <div className={styles.categories}>
+          <IngredientsCategory refLink={bunRef} category="Булки" ingredients={getSortedData(ingredients).buns} />
+          <IngredientsCategory refLink={sauceRef} category="Соусы" ingredients={getSortedData(ingredients).sauces} />
+          <IngredientsCategory refLink={mainRef} category="Начинки" ingredients={getSortedData(ingredients).mains} />
+        </div>
+        )
+      }
     </div>
   )
 }
-
-BurgerIngredients.propTypes = {
-  menu: menuTypes
-}; 
