@@ -1,28 +1,25 @@
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import React, { useState, useContext, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { OrderDetails } from '../modals/order-details';
 import styles from './burger-constructor.module.css'
-import { OrderContext } from '../../context/burger-context';
-import { postOrder } from '../../utils/burger-api';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrderNumber, TOGGLE_ORDER_DATA } from '../../services/actions';
 
 export const BurgerConstructor = () => {
   const { ingredientsRequest, ingredientsFailed, constructorBun, constructorIngredients } = useSelector(state => state.ingredients);
+  const { isOrderModalVisible } = useSelector(state => state.order);
+  const dispatch = useDispatch();
 
-  const [ isDetailsOpen, setIsDetailsOpen ] = useState(false);
   const [ totalPrice, setTotalPrice ] = useState(0);
-  const { setOrderData } = useContext(OrderContext)
 
   useMemo(() => {
     setTotalPrice(constructorIngredients.reduce((accumulator, component) => accumulator + component.price, constructorBun.price * 2))
   }, [constructorBun, constructorIngredients])
 
-  const createOrder = async () => {
+  const createOrder = () => {
     const ingredients = [constructorBun._id];
-    constructorIngredients.map(component => ingredients.push(component._id))
-    const orderID = await postOrder(ingredients);
-    setOrderData({ id: orderID })
-    setIsDetailsOpen(true)
+    constructorIngredients.map(component => ingredients.push(component._id));
+    dispatch(getOrderNumber(ingredients))
   }
   
   return (
@@ -81,7 +78,7 @@ export const BurgerConstructor = () => {
           Оформить заказ
         </Button>
       </div>
-      {isDetailsOpen && <OrderDetails onClose={() => setIsDetailsOpen(false)} />}
+      {isOrderModalVisible && <OrderDetails onClose={() => dispatch({ type: TOGGLE_ORDER_DATA })} />}
     </div>
   )
 }

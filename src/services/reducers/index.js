@@ -1,4 +1,14 @@
-import { GET_INGREDIENTS_FAILED, GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS, HIDE_INGREDIENT_DATA, SHOW_INGREDIENT_DATA } from '../actions';
+import {
+  GET_INGREDIENTS_FAILED,
+  GET_INGREDIENTS_REQUEST,
+  GET_INGREDIENTS_SUCCESS,
+  HIDE_INGREDIENT_DATA,
+  POST_ORDER_FAILED,
+  POST_ORDER_REQUEST,
+  POST_ORDER_SUCCESS,
+  SHOW_INGREDIENT_DATA,
+  TOGGLE_ORDER_DATA
+} from '../actions';
 
 const initialIngredientState = {
   ingredients: [],
@@ -7,13 +17,18 @@ const initialIngredientState = {
 
   constructorBun: {},
   constructorIngredients: [],
-
-  order: {}
 }
 
 const initialModalState = {
   currentViewedIngredient: {},
   isIngredientModalVisible: false,
+}
+
+const initialOrderState = {
+  orderRequest: true,
+  orderFailed: false,
+  order: {},
+  isOrderModalVisible: false,
 }
 
 export const ingredientsReducer = (state = initialIngredientState, action) => {
@@ -31,6 +46,7 @@ export const ingredientsReducer = (state = initialIngredientState, action) => {
         ingredients: action.items,
         ingredientsRequest: false,
         constructorBun: action.items[0],
+        constructorIngredients: [action.items[5], action.items[4], action.items[3]],
       };
     }
     case GET_INGREDIENTS_FAILED: {
@@ -64,3 +80,33 @@ export const modalReducer = (state = initialModalState, action) => {
   }
 };
 
+export const orderReducer = (state = initialOrderState, action) => {
+  switch (action.type) {
+    case POST_ORDER_REQUEST: {
+      return {
+        ...state,
+        orderRequest: true
+      };
+    }
+    case POST_ORDER_SUCCESS: {
+      return {
+        ...state,
+        orderRequest: false,
+        orderFailed: false,
+        order: action.order
+      };
+    }
+    case POST_ORDER_FAILED: {
+      return { ...state, orderFailed: true, orderRequest: false };
+    }
+    case TOGGLE_ORDER_DATA: {
+      return {
+        ...state,
+        isOrderModalVisible: !state.isOrderModalVisible,
+      }
+    }
+    default: {
+      return state;
+    }
+  }
+}
