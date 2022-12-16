@@ -30,6 +30,7 @@
 .choice {
   display: flex;
   align-items: center;
+  cursor: grab
 }
 
 .bottom {

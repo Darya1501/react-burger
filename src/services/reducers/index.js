@@ -5,6 +5,7 @@ import {
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_SUCCESS,
   HIDE_INGREDIENT_DATA,
+  MOVE_CONSTRUCTOR_INGREDIENT,
   POST_ORDER_FAILED,
   POST_ORDER_REQUEST,
   POST_ORDER_SUCCESS,
@@ -76,6 +77,14 @@ export const ingredientsReducer = (state = initialIngredientState, action) => {
         ingredients: [
           ...state.ingredients.map(item => item._id === action._id ? {...item, __v: item.__v - 1} : item)
         ]
+      }
+    }
+    case MOVE_CONSTRUCTOR_INGREDIENT: {
+      const data = [...state.constructorIngredients];
+      data.splice(action.dragIndex, 0, data.splice(action.hoverIndex, 1)[0]);
+      return {
+        ...state,
+        constructorIngredients: data
       }
     }
     case CHANGE_CONSTRUCTOR_BUN: {
