@@ -46,7 +46,6 @@ export const ingredientsReducer = (state = initialIngredientState, action) => {
         ingredients: action.items,
         ingredientsRequest: false,
         constructorBun: action.items[0],
-        constructorIngredients: [action.items[5], action.items[4], action.items[3]],
       };
     }
     case GET_INGREDIENTS_FAILED: {

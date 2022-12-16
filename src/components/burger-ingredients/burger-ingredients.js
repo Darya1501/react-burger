@@ -28,6 +28,22 @@ export const BurgerIngredients = () => {
   const bunRef = React.useRef(null)
   const sauceRef = React.useRef(null)
   const mainRef = React.useRef(null)
+  const containerRef = React.useRef(null)
+
+  const handleScroll = () => {
+    const containerPosition = containerRef.current.offsetTop;
+    const bunPosition = bunRef.current.getBoundingClientRect().top;
+    const saucePosition = sauceRef.current.getBoundingClientRect().top;
+    const mainPosition = mainRef.current.getBoundingClientRect().top;
+
+    if (containerPosition > bunPosition && containerPosition < saucePosition) {
+      setCurrent(Tabs.BUN)
+    } else if (containerPosition > saucePosition && containerPosition < mainPosition) {
+      setCurrent(Tabs.SAUSE)
+    } else {
+      setCurrent(Tabs.MAIN)
+    }
+  }
 
   const switchTab = (ref, tab) => {
     ref.current.scrollIntoView({ behavior: 'smooth' });
@@ -55,7 +71,7 @@ export const BurgerIngredients = () => {
         ) : ingredientsFailed ? (
           <p className="text text_type_main-medium">Что-то пошло не так</p>
         ) : (
-        <div className={styles.categories}>
+        <div className={styles.categories} ref={containerRef} onScroll={handleScroll}>
           <IngredientsCategory refLink={bunRef} category="Булки" ingredients={getSortedData(ingredients).buns} />
           <IngredientsCategory refLink={sauceRef} category="Соусы" ingredients={getSortedData(ingredients).sauces} />
           <IngredientsCategory refLink={mainRef} category="Начинки" ingredients={getSortedData(ingredients).mains} />

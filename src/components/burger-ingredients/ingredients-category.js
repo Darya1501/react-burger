@@ -6,8 +6,8 @@ import { menuCategoryTypes } from '../../utils/prop-types';
 
 export const IngredientsCategory = ({ refLink, category, ingredients }) => {
   return(
-    <div>
-      <p ref={refLink} className="text text_type_main-medium">
+    <div ref={refLink} >
+      <p className="text text_type_main-medium">
         {category}
       </p>
 
