@@ -1,4 +1,6 @@
 import {
+  ADD_CONSTRUCTOR_INGREDIENT,
+  CHANGE_CONSTRUCTOR_BUN,
   GET_INGREDIENTS_FAILED,
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_SUCCESS,
@@ -6,6 +8,7 @@ import {
   POST_ORDER_FAILED,
   POST_ORDER_REQUEST,
   POST_ORDER_SUCCESS,
+  REMOVE_CONSTRUCTOR_INGREDIENT,
   SHOW_INGREDIENT_DATA,
   TOGGLE_ORDER_DATA
 } from '../actions';
@@ -43,13 +46,46 @@ export const ingredientsReducer = (state = initialIngredientState, action) => {
       return { 
         ...state,
         ingredientsFailed: false,
-        ingredients: action.items,
+        ingredients: action.items.map((item, index) => index === 0 ? {...item, __v: 2} : item),
         ingredientsRequest: false,
         constructorBun: action.items[0],
       };
     }
     case GET_INGREDIENTS_FAILED: {
       return { ...state, ingredientsFailed: true, ingredientsRequest: false };
+    }
+    case ADD_CONSTRUCTOR_INGREDIENT: {
+      return {
+        ...state,
+        constructorIngredients: [
+          ...state.constructorIngredients,
+          {
+            ...action.ingredient,
+            constructorID: Date.now()
+          }
+        ],
+        ingredients: [
+          ...state.ingredients.map(item => item._id === action.ingredient._id ? {...item, __v: item.__v + 1} : item)
+        ]
+      }
+    }
+    case REMOVE_CONSTRUCTOR_INGREDIENT: {
+      return {
+        ...state,
+        constructorIngredients: state.constructorIngredients.filter(item => item.constructorID !== action.constructorID),
+        ingredients: [
+          ...state.ingredients.map(item => item._id === action._id ? {...item, __v: item.__v - 1} : item)
+        ]
+      }
+    }
+    case CHANGE_CONSTRUCTOR_BUN: {
+      return {
+        ...state,
+        constructorBun: action.bun,
+        ingredients: state.ingredients.map(item =>
+          item._id === action.bun._id ? 
+            ({...item, __v: 2}) : (item.type === 'bun' ? {...item, __v: 0} : item))
+      }
     }
     default: {
       return state;

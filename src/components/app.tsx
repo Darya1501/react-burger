@@ -6,6 +6,8 @@ import { BurgerConstructor } from './burger-constructor/burger-constructor';
 import { getSortedData } from '../utils/get-sorted-data'
 import { getIngredients } from '../utils/burger-api';
 import { IngredientsContext, OrderContext } from '../context/burger-context';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
   const [state, setState] = useState({
@@ -40,17 +42,21 @@ function App() {
     <>
       <AppHeader />
       { state.isLoaded ?
-        (<div className='app-container'>
-          <IngredientsContext.Provider value={{ 
-            bun: selectedItems.bun, 
-            components: selectedItems.components
-          }}>
-            <BurgerIngredients />
-            <OrderContext.Provider value={{orderData, setOrderData}}>
-              <BurgerConstructor />
-            </OrderContext.Provider>
-          </IngredientsContext.Provider>
-        </div>) : null
+        (
+          <DndProvider backend={HTML5Backend}>
+            <div className='app-container'>
+              <IngredientsContext.Provider value={{ 
+                bun: selectedItems.bun, 
+                components: selectedItems.components
+              }}>
+                <BurgerIngredients />
+                <OrderContext.Provider value={{orderData, setOrderData}}>
+                  <BurgerConstructor />
+                </OrderContext.Provider>
+              </IngredientsContext.Provider>
+            </div>
+          </DndProvider>
+        ) : null
       }
     </>
   );
