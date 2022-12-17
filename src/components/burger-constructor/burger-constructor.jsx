@@ -3,9 +3,11 @@ import React, { useState, useMemo } from 'react'
 import { OrderDetails } from '../modals/order-details';
 import styles from './burger-constructor.module.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { ADD_CONSTRUCTOR_INGREDIENT, CHANGE_CONSTRUCTOR_BUN, getOrderNumber, TOGGLE_ORDER_DATA } from '../../services/actions';
 import { useDrop } from 'react-dnd';
 import { ConstructorIngredient } from './constructor-ingredient';
+import { Modal } from '../modals/modal';
+import { getOrderNumber, TOGGLE_ORDER_DATA } from '../../services/actions/order';
+import { ADD_CONSTRUCTOR_INGREDIENT, CHANGE_CONSTRUCTOR_BUN } from '../../services/actions/ingredients';
 
 export const BurgerConstructor = () => {
   const { ingredientsRequest, ingredientsFailed, constructorBun, constructorIngredients } = useSelector(state => state.ingredients);
@@ -15,12 +17,15 @@ export const BurgerConstructor = () => {
   const [ totalPrice, setTotalPrice ] = useState(0);
 
   useMemo(() => {
+    if (!constructorBun || !constructorIngredients.length) return 0;
     setTotalPrice(constructorIngredients.reduce((accumulator, component) => accumulator + component.price, constructorBun.price * 2))
   }, [constructorBun, constructorIngredients])
 
   const createOrder = () => {
+    if (!constructorBun || !constructorIngredients.length) return;
     const ingredients = [constructorBun._id];
     constructorIngredients.map(component => ingredients.push(component._id));
+    ingredients.push(constructorBun._id);
     dispatch(getOrderNumber(ingredients))
   }
 
@@ -35,7 +40,8 @@ export const BurgerConstructor = () => {
       } else {
         dispatch({
           type: ADD_CONSTRUCTOR_INGREDIENT,
-          ingredient: item
+          ingredient: item,
+          constructorID: Date.now()
         })
       }
     }
@@ -80,16 +86,25 @@ export const BurgerConstructor = () => {
         )
       }
 
-      <div className={styles.bottom}>
-        <p className={`${styles.price} text text_type_digits-medium`}>
-          {totalPrice}
-          <CurrencyIcon />
-        </p>
-        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2" onClick={createOrder}>
-          Оформить заказ
-        </Button>
-      </div>
-      {isOrderModalVisible && <OrderDetails onClose={() => dispatch({ type: TOGGLE_ORDER_DATA })} />}
+      {constructorIngredients.length ?
+        (
+          <div className={styles.bottom}>
+            <p className={`${styles.price} text text_type_digits-medium`}>
+              {totalPrice}
+              <CurrencyIcon />
+            </p>
+            <Button htmlType="button" type="primary" size="medium" extraClass="ml-2" onClick={createOrder}>
+              Оформить заказ
+            </Button>
+          </div>
+        ) : null
+      }
+
+      {isOrderModalVisible && (
+        <Modal onClose={() => dispatch({ type: TOGGLE_ORDER_DATA })}>
+          <OrderDetails />
+        </Modal>
+      )}
     </div>
   )
 }

@@ -3,16 +3,11 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
 import { IngredientsCategory } from './ingredients-category';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredientsRequest } from '../../services/actions';
+import { getIngredientsRequest } from '../../services/actions/ingredients';
 import { getSortedData } from '../../utils/get-sorted-data';
+import { tabs } from '../../utils/constants';
 
 export const BurgerIngredients = () => {
-  const Tabs = {
-    BUN: 'bun',
-    SAUSE: 'sauce',
-    MAIN: 'main'
-  }
-
   const dispatch = useDispatch();
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(state => state.ingredients);
 
@@ -23,7 +18,7 @@ export const BurgerIngredients = () => {
     [dispatch]
   );
 
-  const [current, setCurrent] = React.useState(Tabs.BUN);
+  const [current, setCurrent] = React.useState(tabs.BUN);
 
   const bunRef = React.useRef(null)
   const sauceRef = React.useRef(null)
@@ -37,11 +32,11 @@ export const BurgerIngredients = () => {
     const mainPosition = mainRef.current.getBoundingClientRect().top;
 
     if (containerPosition > bunPosition && containerPosition < saucePosition) {
-      setCurrent(Tabs.BUN)
+      setCurrent(tabs.BUN)
     } else if (containerPosition > saucePosition && containerPosition < mainPosition) {
-      setCurrent(Tabs.SAUSE)
+      setCurrent(tabs.SAUSE)
     } else {
-      setCurrent(Tabs.MAIN)
+      setCurrent(tabs.MAIN)
     }
   }
 
@@ -54,13 +49,13 @@ export const BurgerIngredients = () => {
     <div className={`${styles.container} pt-10`}>
       <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
       <div className={`${styles.tabs} mb-10`}>
-        <Tab value={Tabs.BUN} active={current === Tabs.BUN} onClick={() => switchTab(bunRef, Tabs.BUN)}>
+        <Tab value={tabs.BUN} active={current === tabs.BUN} onClick={() => switchTab(bunRef, tabs.BUN)}>
           Булки
         </Tab>
-        <Tab value={Tabs.SAUSE} active={current === Tabs.SAUSE} onClick={() => switchTab(sauceRef, Tabs.SAUSE)}>
+        <Tab value={tabs.SAUSE} active={current === tabs.SAUSE} onClick={() => switchTab(sauceRef, tabs.SAUSE)}>
           Соусы
         </Tab>
-        <Tab value={Tabs.MAIN} active={current === Tabs.MAIN} onClick={() => switchTab(mainRef, Tabs.MAIN)}>
+        <Tab value={tabs.MAIN} active={current === tabs.MAIN} onClick={() => switchTab(mainRef, tabs.MAIN)}>
           Начинки
         </Tab>
       </div>
