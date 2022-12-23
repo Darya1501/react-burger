@@ -18,39 +18,39 @@ function App() {
   return (
     <>
       <AppHeader />
-      <Router>
-        <Switch>
-          <Route path='/' exact={true}>
-            <DndProvider backend={HTML5Backend}>
-              <div className='app-container'>
-                <BurgerIngredients />
-                <BurgerConstructor />
-              </div>
-            </DndProvider>
-          </Route>
-          <Route path='/login' exact={true}>
-            <Login />
-          </Route>
-          <Route path='/register' exact={true}>
-            <Register />
-          </Route>
-          <Route path='/forgot-password' exact={true}>
-            <FogotPassword />
-          </Route>
-          <Route path='/reset-password' exact={true}>
-            <ResetPassword />
-          </Route>
-          <Route path='/profile' exact={true}>
-            <Profile />
-          </Route>
-          <Route path='/ingredients/:id' exact={true}>
-            <Ingredient />
-          </Route>
-          <Route>
-            <NotFound404 />
-          </Route>
-        </Switch>
-      </Router>
+      <div className='app-container'>
+        <Router>
+          <Switch>
+            <Route path='/' exact={true}>
+              <DndProvider backend={HTML5Backend}>
+                  <BurgerIngredients />
+                  <BurgerConstructor />
+              </DndProvider>
+            </Route>
+            <Route path='/login' exact={true}>
+              <Login />
+            </Route>
+            <Route path='/register' exact={true}>
+              <Register />
+            </Route>
+            <Route path='/forgot-password' exact={true}>
+              <FogotPassword />
+            </Route>
+            <Route path='/reset-password' exact={true}>
+              <ResetPassword />
+            </Route>
+            <Route path='/profile' exact={true}>
+              <Profile />
+            </Route>
+            <Route path='/ingredients/:id' exact={true}>
+              <Ingredient />
+            </Route>
+            <Route>
+              <NotFound404 />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
     </>
   );
 }

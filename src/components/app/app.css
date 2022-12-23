@@ -15,5 +15,8 @@ button {
   max-width: 1240px;
   margin: auto;
   display: flex;
-  gap: 40px
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 96px);
 }
