@@ -1,15 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './components/app';
+import App from './components/app/app';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux'
+import { rootReducer } from './services/srore';
+import { configureStore } from '@reduxjs/toolkit';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const store = configureStore({ 
+  reducer: rootReducer,
+  devTools: process.env.NODE_ENV !== 'production'
+})
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 

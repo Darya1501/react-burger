@@ -7,8 +7,16 @@ const checkReponse = (res) => {
 export const getIngredients = async () => {
   const response = await fetch(`${API}/ingredients`)
     .then(checkReponse)
-    .then(data => data.success ? data.data : Promise.reject(`Success field is not equal`))
-    .catch(error => console.error(error))
+    .then(data => {
+      if (data.success) {
+        return data.data
+      } else {
+        Promise.reject("Success field is not equal true")
+      }
+    })
+    .catch(error => {
+      throw new Error("Success field is not equal true")
+    })
   return response
 }
 
@@ -21,8 +29,16 @@ export const postOrder = async (order) => {
     body: JSON.stringify({ingredients: order})
   })
   .then(checkReponse)
-  .then(data => data.success ? data.order.number : Promise.reject(`Success field is not equal`))
-  .catch(error => console.error(error))
+  .then(data => {
+    if (data.success) {
+      return data.order.number
+    } else {
+      Promise.reject("Success field is not equal true")
+    }
+  })
+  .catch(error => {
+    throw new Error("Success field is not equal true")
+  })
 
   return orderID
 }
