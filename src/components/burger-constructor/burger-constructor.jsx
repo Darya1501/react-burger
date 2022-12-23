@@ -7,10 +7,12 @@ import { useDrop } from 'react-dnd';
 import { ConstructorIngredient } from './constructor-ingredient';
 import { Modal } from '../modals/modal';
 import { getOrderNumber, TOGGLE_ORDER_DATA } from '../../services/actions/order';
-import { ADD_CONSTRUCTOR_INGREDIENT, CHANGE_CONSTRUCTOR_BUN } from '../../services/actions/ingredients';
+import { addConstructorIngredient, CHANGE_CONSTRUCTOR_BUN } from '../../services/actions/constructor';
+import { CHANGE_BUNS_COUNT, INCREMENT_IGREDIENT_COUNT } from '../../services/actions/ingredients';
 
 export const BurgerConstructor = () => {
-  const { ingredientsRequest, ingredientsFailed, constructorBun, constructorIngredients } = useSelector(state => state.ingredients);
+  const { ingredientsRequest, ingredientsFailed } = useSelector(state => state.ingredients);
+  const { constructorBun, constructorIngredients } = useSelector(state => state.constructors);
   const { isOrderModalVisible } = useSelector(state => state.order);
   const dispatch = useDispatch();
 
@@ -33,16 +35,11 @@ export const BurgerConstructor = () => {
     accept: ['bun', 'ingredients'],
     drop(item) {
       if (item.type === 'bun') {
-        dispatch({
-          type: CHANGE_CONSTRUCTOR_BUN,
-          bun: item
-        })
+        dispatch({ type: CHANGE_CONSTRUCTOR_BUN, bun: item })
+        dispatch({ type: CHANGE_BUNS_COUNT, bun: item })
       } else {
-        dispatch({
-          type: ADD_CONSTRUCTOR_INGREDIENT,
-          ingredient: item,
-          constructorID: Date.now()
-        })
+        dispatch(addConstructorIngredient(item))
+        dispatch({ type: INCREMENT_IGREDIENT_COUNT, ingredient: item })
       }
     }
   });

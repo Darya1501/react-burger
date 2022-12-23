@@ -11,11 +11,12 @@ export const getIngredients = async () => {
       if (data.success) {
         return data.data
       } else {
-        Promise.reject("Success field is not equal")
-        throw new Error("Success field is not equal")
+        Promise.reject("Success field is not equal true")
       }
     })
-    .catch(error => console.error(error))
+    .catch(error => {
+      throw new Error("Success field is not equal true")
+    })
   return response
 }
 
@@ -32,11 +33,12 @@ export const postOrder = async (order) => {
     if (data.success) {
       return data.order.number
     } else {
-      Promise.reject("Success field is not equal")
-      throw new Error("Success field is not equal")
+      Promise.reject("Success field is not equal true")
     }
   })
-  .catch(error => console.error(error))
+  .catch(error => {
+    throw new Error("Success field is not equal true")
+  })
 
   return orderID
 }

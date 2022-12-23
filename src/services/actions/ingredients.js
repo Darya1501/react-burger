@@ -1,15 +1,13 @@
 import { getIngredients } from "../../utils/burger-api";
+import { CHANGE_CONSTRUCTOR_BUN } from "./constructor";
 
 // Получение списка ингредиентов от API
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
 export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
-
-// Работа с конструктором бургера
-export const ADD_CONSTRUCTOR_INGREDIENT = 'ADD_CONSTRUCTOR_INGREDIENT';
-export const REMOVE_CONSTRUCTOR_INGREDIENT = 'REMOVE_CONSTRUCTOR_INGREDIENT';
-export const MOVE_CONSTRUCTOR_INGREDIENT = 'MOVE_CONSTRUCTOR_INGREDIENT';
-export const CHANGE_CONSTRUCTOR_BUN = 'CHANGE_CONSTRUCTOR_BUN';
+export const INCREMENT_IGREDIENT_COUNT = 'INCREMENT_IGREDIENT_COUNT';
+export const DECREMENT_IGREDIENT_COUNT = 'DECREMENT_IGREDIENT_COUNT';
+export const CHANGE_BUNS_COUNT = 'CHANGE_BUNS_COUNT';
 
 export function getIngredientsRequest() {
   return function(dispatch) {
@@ -18,10 +16,8 @@ export function getIngredientsRequest() {
     });
     getIngredients().then(res => {
       if (res) {
-        dispatch({
-          type: GET_INGREDIENTS_SUCCESS,
-          items: res
-        });
+        dispatch({ type: GET_INGREDIENTS_SUCCESS, items: res });
+        dispatch({ type: CHANGE_CONSTRUCTOR_BUN, bun: res[0] });
       } else {
         dispatch({
           type: GET_INGREDIENTS_FAILED

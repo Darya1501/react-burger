@@ -2,7 +2,8 @@ import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burg
 import React, { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import { MOVE_CONSTRUCTOR_INGREDIENT, REMOVE_CONSTRUCTOR_INGREDIENT } from '../../services/actions/ingredients';
+import { MOVE_CONSTRUCTOR_INGREDIENT, REMOVE_CONSTRUCTOR_INGREDIENT } from '../../services/actions/constructor';
+import { DECREMENT_IGREDIENT_COUNT } from '../../services/actions/ingredients';
 import styles from './burger-constructor.module.css'
 
 export const ConstructorIngredient = ({ ingredient, index }) => {
@@ -60,11 +61,9 @@ export const ConstructorIngredient = ({ ingredient, index }) => {
 
   drag(drop(ref))
 
-  const onDelete = (_id, constructorID) => {
-    dispatch({
-      type: REMOVE_CONSTRUCTOR_INGREDIENT,
-      _id, constructorID
-    })
+  const onDelete = (id, constructorID) => {
+    dispatch({ type: REMOVE_CONSTRUCTOR_INGREDIENT, constructorID })
+    dispatch({ type: DECREMENT_IGREDIENT_COUNT, id })
   }
 
   return (
