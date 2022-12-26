@@ -4,7 +4,7 @@
 
 .container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 1280px;
   margin: auto;
@@ -13,13 +13,22 @@
 .nav {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+}
+
+.logo {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .link {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-inactive-color)
+  color: var(--text-inactive-color);
+  flex-shrink: 0;
 }
 
 .active {
