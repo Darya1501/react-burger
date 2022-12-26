@@ -36,6 +36,40 @@ export const postOrder = async (order) => {
   return orderID
 }
 
+export const createNewUser = async (user) => {
+  const newUser = await fetch(`${API}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ ...user })
+  })
+  .then(checkReponse)
+  .then(checkSuccessField)
+  .then(data => ({ user: data.user, accessToken: data.accessToken, refreshToken: data.refreshToken }))
+  .catch(error => {
+    throw new Error(error.message)
+  })
+  return newUser
+}
+
+export const authorizeUser = async (user) => {
+  const newUser = await fetch(`${API}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ ...user })
+  })
+  .then(checkReponse)
+  .then(checkSuccessField)
+  .then(data => ({ user: data.user, accessToken: data.accessToken, refreshToken: data.refreshToken }))
+  .catch(error => {
+    throw new Error(error.message)
+  })
+  return newUser
+}
+
 export const sendResetPasswordEmail = async (email) => {
   const message = await fetch(`${API}/password-reset`, {
     method: 'POST',
@@ -60,6 +94,40 @@ export const resetUserPassword = async (password, token) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ password: password, token: token })
+  })
+  .then(checkReponse)
+  .then(checkSuccessField)
+  .then(data => data.message)
+  .catch(error => {
+    throw new Error(error.message)
+  })
+  return message
+}
+
+export const updateToken = async (refreshToken) => {
+  const newToken = await fetch(`${API}/auth/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ token: refreshToken })
+  })
+  .then(checkReponse)
+  .then(checkSuccessField)
+  .then(data => ({ accessToken: data.accessToken, refreshToken: data.refreshToken }))
+  .catch(error => {
+    throw new Error(error.message)
+  })
+  return newToken
+}
+
+export const logout = async (refreshToken) => {
+  const message = await fetch(`${API}/auth/logout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ token: refreshToken })
   })
   .then(checkReponse)
   .then(checkSuccessField)
