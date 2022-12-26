@@ -4,7 +4,6 @@ import { postOrder } from "../../utils/burger-api";
 export const POST_ORDER_REQUEST = 'POST_ORDER_REQUEST';
 export const POST_ORDER_SUCCESS = 'POST_ORDER_SUCCESS';
 export const POST_ORDER_FAILED = 'POST_ORDER_FAILED';
-export const GET_ORDER_NUMBER = 'GET_ORDER_NUMBER';
 export const TOGGLE_ORDER_DATA = 'TOGGLE_ORDER_DATA';
 
 export function getOrderNumber(components) {

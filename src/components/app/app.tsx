@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { Login } from '../../pages/login';
 import { Register } from '../../pages/register';
-import { FogotPassword } from '../../pages/fogot-password';
+import { ForgotPassword } from '../../pages/forgot-password';
 import { ResetPassword } from '../../pages/reset-password';
 import { Profile } from '../../pages/profile';
 import { Ingredient } from '../../pages/ingredient';
@@ -34,7 +34,7 @@ function App() {
               <Register />
             </Route>
             <Route path='/forgot-password' exact={true}>
-              <FogotPassword />
+              <ForgotPassword />
             </Route>
             <Route path='/reset-password' exact={true}>
               <ResetPassword />
