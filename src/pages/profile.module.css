@@ -5,11 +5,21 @@
 }
 
 .content {
-  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-right: auto;
 }
 
 .link {
   height: 64px;
+}
+
+.logout {
+  height: 64px;
+  cursor: pointer;
+}
+
+.cansel {
+  cursor: pointer;
 }

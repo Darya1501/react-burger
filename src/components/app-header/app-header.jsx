@@ -3,6 +3,7 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 
 import styles from './app-header.module.css';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export const AppHeader = () => {
   const linksClasses = `${styles.link} text text_type_main-default p-5`;
@@ -10,28 +11,34 @@ export const AppHeader = () => {
   const location = useLocation()
   const defineType = path => path === location.pathname ? 'primary' : 'secondary';
 
+  const { isUserAuth } = useSelector(store => store.user);
+
   return (
     <header className={`${styles.header} pt-4 pb-4`}>
       <div className={styles.container}>
-        <nav className={styles.nav}>
-          <NavLink to="/" className={`${linksClasses} mr-2`} activeClassName={styles.active} exact >
-            <BurgerIcon type={defineType('/')} />
-            Конструктор
-          </NavLink>
-          <NavLink to="/feed" className={linksClasses} activeClassName={styles.active}>
-            <ListIcon type={defineType('/feed')} />
-            Лента заказов
-          </NavLink>
-        </nav>
+        {isUserAuth && 
+          (<nav className={styles.nav}>
+            <NavLink to="/" className={`${linksClasses} mr-2`} activeClassName={styles.active} exact >
+              <BurgerIcon type={defineType('/')} />
+              Конструктор
+            </NavLink>
+            <NavLink to="/feed" className={linksClasses} activeClassName={styles.active}>
+              <ListIcon type={defineType('/feed')} />
+              Лента заказов
+            </NavLink>
+          </nav>)
+        }
 
         <div className={styles.logo}>
           <Logo />
         </div>
 
-        <NavLink to="/profile" className={linksClasses} activeClassName={styles.active}>
-          <ProfileIcon type={defineType('/profile')} />
-          Личный кабинет
-        </NavLink>
+        {isUserAuth && 
+          (<NavLink to="/profile" className={linksClasses} activeClassName={styles.active}>
+            <ProfileIcon type={defineType('/profile')} />
+            Личный кабинет
+          </NavLink>)
+        }
       </div>
     </header>
   )

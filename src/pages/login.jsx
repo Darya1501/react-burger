@@ -6,7 +6,7 @@ import { loginUser } from '../services/actions/user'
 import style from './forms.module.css'
 
 export const Login = () => {
-  const { user, errorMessage } = useSelector(store => store.user)
+  const { isUserAuth, errorMessage } = useSelector(store => store.user)
   const dispatch = useDispatch();
   const passwordRef = React.useRef(null);
 
@@ -24,7 +24,7 @@ export const Login = () => {
     passwordRef.current.type = passwordRef.current.type === 'password' ? 'text' : 'password';
   }
 
-  if (user) {
+  if (isUserAuth) {
     return (
       <Redirect
         to={{
@@ -43,8 +43,6 @@ export const Login = () => {
         name={'email'}
         value={form.email}
         onChange={onChange}
-        error={false}
-        errorText={'Ошибка'}
         size={'default'}
         extraClass="mb-6"
       />
@@ -57,12 +55,12 @@ export const Login = () => {
         ref={passwordRef}
         icon={'ShowIcon'}
         onIconClick={onIconClick}
-        error={false}
-        errorText={'Ошибка'}
         size={'default'}
         extraClass="mb-6"
       />
+
       { errorMessage && <p className="text text_type_main-default mb-4">{errorMessage}</p> }
+
       <Button htmlType="button" type="primary" size="medium" extraClass="mb-20" onClick={login}>
         Войти
       </Button>

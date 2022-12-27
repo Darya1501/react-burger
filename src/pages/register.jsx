@@ -1,11 +1,12 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { registerUser } from '../services/actions/user'
 import style from './forms.module.css'
 
 export const Register = () => {
+  const { errorMessage } = useSelector(store => store.user)
   const dispatch = useDispatch();
   const passwordRef = React.useRef(null);
 
@@ -32,8 +33,6 @@ export const Register = () => {
         name={'name'}
         value={form.name}
         onChange={onChange}
-        error={false}
-        errorText={'Ошибка'}
         size={'default'}
         extraClass="mb-6"
       />
@@ -43,8 +42,6 @@ export const Register = () => {
         name={'email'}
         value={form.email}
         onChange={onChange}
-        error={false}
-        errorText={'Ошибка'}
         size={'default'}
         extraClass="mb-6"
       />
@@ -57,11 +54,12 @@ export const Register = () => {
         ref={passwordRef}
         icon={'ShowIcon'}
         onIconClick={onIconClick}
-        error={false}
-        errorText={'Ошибка'}
         size={'default'}
         extraClass="mb-6"
       />
+
+      { errorMessage && <p className="text text_type_main-default mb-4">{errorMessage}</p> }
+
       <Button htmlType="button" type="primary" size="medium" extraClass="mb-20" onClick={register}>
         Зарегистрироваться
       </Button>

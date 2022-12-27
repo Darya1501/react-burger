@@ -1,3 +1,5 @@
+import { getCookie, setCookie } from "./cookies";
+
 const API = 'https://norma.nomoreparties.space/api';
 
 const checkReponse = res => {
@@ -6,6 +8,16 @@ const checkReponse = res => {
 
 const checkSuccessField = data => {
   return data.success ? data : Promise.reject("Success field is not equal true");
+}
+
+const saveTokens = (refreshToken, accessToken) => {
+  localStorage.setItem('refreshToken', refreshToken);
+  setCookie('accessToken', accessToken.split('Bearer ')[1], {expires: 20 * 60 });
+}
+
+const deleteTokens = () => {
+  localStorage.removeItem('refreshToken');
+  setCookie('accessToken', '', {expires: 0 });
 }
 
 export const getIngredients = async () => {
@@ -46,10 +58,11 @@ export const createNewUser = async (user) => {
   })
   .then(checkReponse)
   .then(checkSuccessField)
-  .then(data => ({ user: data.user, accessToken: data.accessToken, refreshToken: data.refreshToken }))
-  .catch(error => {
-    throw new Error(error.message)
+  .then(data => {
+    saveTokens(data.refreshToken, data.accessToken)
+    return data.user
   })
+  .catch(error => { throw new Error(error.message) })
   return newUser
 }
 
@@ -63,10 +76,11 @@ export const authorizeUser = async (user) => {
   })
   .then(checkReponse)
   .then(checkSuccessField)
-  .then(data => ({ user: data.user, accessToken: data.accessToken, refreshToken: data.refreshToken }))
-  .catch(error => {
-    throw new Error(error.message)
+  .then(data => {
+    saveTokens(data.refreshToken, data.accessToken)
+    return data.user
   })
+  .catch(error => { throw new Error(error.message) })
   return newUser
 }
 
@@ -76,14 +90,12 @@ export const sendResetPasswordEmail = async (email) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({email: email})
+    body: JSON.stringify({ email: email })
   })
   .then(checkReponse)
   .then(checkSuccessField)
   .then(data => data.message)
-  .catch(error => {
-    throw new Error(error.message)
-  })
+  .catch(error => { throw new Error(error.message) })
   return message
 }
 
@@ -98,14 +110,13 @@ export const resetUserPassword = async (password, token) => {
   .then(checkReponse)
   .then(checkSuccessField)
   .then(data => data.message)
-  .catch(error => {
-    throw new Error(error.message)
-  })
+  .catch(error => { throw new Error(error.message) })
   return message
 }
 
-export const updateToken = async (refreshToken) => {
-  const newToken = await fetch(`${API}/auth/token`, {
+export const updateToken = async () => {
+  const refreshToken =  localStorage.getItem('refreshToken');
+  const newTokens = await fetch(`${API}/auth/token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -114,14 +125,13 @@ export const updateToken = async (refreshToken) => {
   })
   .then(checkReponse)
   .then(checkSuccessField)
-  .then(data => ({ accessToken: data.accessToken, refreshToken: data.refreshToken }))
-  .catch(error => {
-    throw new Error(error.message)
-  })
-  return newToken
+  .then(data => saveTokens(data.refreshToken, data.accessToken))
+  .catch(error => { throw new Error(error.message) })
+  return newTokens
 }
 
-export const logout = async (refreshToken) => {
+export const logout = async () => {
+  const refreshToken =  localStorage.getItem('refreshToken');
   const message = await fetch(`${API}/auth/logout`, {
     method: 'POST',
     headers: {
@@ -131,9 +141,47 @@ export const logout = async (refreshToken) => {
   })
   .then(checkReponse)
   .then(checkSuccessField)
-  .then(data => data.message)
-  .catch(error => {
-    throw new Error(error.message)
-  })
+  .then(deleteTokens)
+  .catch(error => { throw new Error(error.message) })
   return message
+}
+
+export const getUser = async () => {
+  const accessToken = getCookie('accessToken');
+  if (accessToken) {
+    const user = await fetch(`${API}/auth/user`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + accessToken
+      }
+    })
+    .then(checkReponse)
+    .then(checkSuccessField)
+    .then(data => data.user)
+    .catch(error => { throw new Error(error) })
+    return user
+  } else {
+    await updateToken();
+    getUser();
+  }
+}
+
+export const changeUserInfo = async (data) => {
+  const accessToken = getCookie('accessToken');
+  const userData = await fetch(`${API}/auth/user`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accessToken
+    },
+    body: JSON.stringify({ ...data }),
+  })
+  .then(checkReponse)
+  .then(checkSuccessField)
+  .then(data => data.user)
+  .catch(error => {
+    throw new Error(error)
+  })
+  return userData
 }

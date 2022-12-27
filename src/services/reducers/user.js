@@ -10,11 +10,13 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED,
+
   AUTH_REQUEST,
   AUTH_SUCCESS,
   AUTH_FAILED,
-  UPDATE_USER_TOKEN,
+
   LOGOUT_USER,
+  SET_USER_DATA,
 } from "../actions/user";
 
 const initialOrderState = {
@@ -35,12 +37,14 @@ const initialOrderState = {
   authRequest: false,
   authFaild: false,
   authSuccess: false,
+  isUserAuth: false,
 
   errorMessage: '',
 
-  user: null,
-  accessToken: '',
-  refreshToken: ''
+  user: {
+    name: '',
+    email: ''
+  }
 }
 
 export const userReducer = (state = initialOrderState, action) => {
@@ -57,7 +61,8 @@ export const userReducer = (state = initialOrderState, action) => {
         registerRequest: false,
         registerFaild: false,
         registerSuccess: true,
-        ...action.data
+        isUserAuth: true,
+        ...action.user,
       };
     }
     case REGISTER_FAILED: {
@@ -81,7 +86,8 @@ export const userReducer = (state = initialOrderState, action) => {
         authRequest: false,
         authFaild: false,
         authSuccess: true,
-        ...action.data
+        isUserAuth: true,
+        ...action.user,
       };
     }
     case AUTH_FAILED: {
@@ -141,19 +147,20 @@ export const userReducer = (state = initialOrderState, action) => {
         sendEmailMessage: action.message
       };
     }
-    case UPDATE_USER_TOKEN: {
-      return {
-        ...state, 
-        accessToken: action.accessToken,
-        refreshToken: action.refreshToken
-      }
-    }
     case LOGOUT_USER: {
       return {
         ...state, 
-        user: null,
-        refreshToken: '',
-        accessToken: ''
+        user: {
+          name: '',
+          email: ''
+        },
+        isUserAuth: false
+      }
+    }
+    case SET_USER_DATA: {
+      return {
+        ...state,
+        user: action.user
       }
     }
     default: {

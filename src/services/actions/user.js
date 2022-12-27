@@ -1,5 +1,4 @@
-import { authorizeUser, createNewUser, logout, resetUserPassword, sendResetPasswordEmail, updateToken } from "../../utils/burger-api";
-import { setCookie } from "../../utils/cookies";
+import { authorizeUser, changeUserInfo, createNewUser, getUser, logout, resetUserPassword, sendResetPasswordEmail } from "../../utils/burger-api";
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
@@ -17,26 +16,34 @@ export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
 
-export const UPDATE_USER_TOKEN = 'UPDATE_USER_TOKEN';
-
 export const LOGOUT_USER = 'LOGOUT_USER';
+export const SET_USER_DATA = 'SET_USER_DATA';
 
-const saveTokens = (refreshToken, accessToken) => {
-  const CurrentTime = new Date();
-  setCookie('refreshToken', refreshToken)
-  setCookie('accessToken', accessToken.split('Bearer ')[1], {expires: CurrentTime.setMinutes(CurrentTime.getMinutes() + 20) })
+export function getUserData() {
+  return function(dispatch) {
+    getUser().then(user => {
+      if (user) {
+        dispatch({
+          type: SET_USER_DATA,
+          user: user
+        })
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    })
+  }
 }
 
 export function registerUser(user) {
   return function(dispatch) {
     dispatch({ type: REGISTER_REQUEST });
-    createNewUser(user).then(data => {
-      if(data) {
+    createNewUser(user).then(newUser => {
+      if(newUser) {
         dispatch({
           type: REGISTER_SUCCESS,
-          data: data,
+          user: newUser,
         })
-        saveTokens(data.refreshToken, data.accessToken)
       } else {
         dispatch({ type: REGISTER_FAILED });
       }
@@ -51,13 +58,12 @@ export function registerUser(user) {
 export function loginUser(user) {
   return function(dispatch) {
     dispatch({ type: AUTH_REQUEST });
-    authorizeUser(user).then(data => {
-      if(data) {
+    authorizeUser(user).then(user => {
+      if(user) {
         dispatch({
           type: AUTH_SUCCESS,
-          data: data,
+          user: user,
         })
-        saveTokens(data.refreshToken, data.accessToken)
       } else {
         dispatch({ type: AUTH_FAILED }); 
       }
@@ -109,30 +115,22 @@ export function cangeUserPassword(password, token) {
   }
 }
 
-export function changeAccessToken() {
+export function logoutUser() {
   return function(dispatch) {
-    updateToken().then(data => {
-      dispatch({
-        type: UPDATE_USER_TOKEN,
-        ...data
-      })
-      saveTokens(data.refreshToken, data.accessToken)
-    })
-    .catch(error => {
-      console.error(error);
-    });
+    logout().then(() => { dispatch({ type: LOGOUT_USER }) })
+    .catch(error => console.error(error));
   }
 }
 
-export function logoutUser() {
+export function cangeUserData(data) {
   return function(dispatch) {
-    logout().then(data => {
-      dispatch({
-        type: LOGOUT_USER,
-        ...data
-      })
-      document.deleteCookie('refreshToken');
-      document.deleteCookie('accessToken');
+    changeUserInfo(data).then(user => {
+      if(user) {
+        dispatch({
+          type: SET_USER_DATA,
+          user: user
+        })
+      }
     })
     .catch(error => {
       console.error(error);

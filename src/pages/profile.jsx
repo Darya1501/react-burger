@@ -1,22 +1,55 @@
-import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useState } from 'react'
-import { NavLink, useLocation } from 'react-router-dom';
+import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, Redirect, useLocation } from 'react-router-dom';
+import { cangeUserData, getUserData, logoutUser } from '../services/actions/user';
 import styles from './profile.module.css'
 
 export const Profile = () => {
   const location = useLocation();
   const defineClass = path => `${styles.link} text text_type_main-medium ${path === location.pathname ? '' : 'text_color_inactive'}`;
+  
+  const dispatch = useDispatch();
+  const { isUserAuth, user } = useSelector(store => store.user);
 
-  const [name, setName] = useState('');
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
+  useEffect(() => {
+    if (!isUserAuth) return
+    if (!user.name) { dispatch(getUserData()) }
+    setValue({ password: '', ...user })
+  }, [dispatch, user, isUserAuth])
+
+  const [ isDataChanged, setIsDataChanged ] = useState(false);
+  const [form, setValue] = useState({ ...user, password: '' })
+
+  const onChange = e => {
+    setValue({ ...form, [e.target.name]: e.target.value });
+    setIsDataChanged(true)
+  };
+
+  const onCancel = () => {
+    setValue({ password: '', ...user })
+    setIsDataChanged(false)
+  }
+
+  const onSave = () => {
+    dispatch(cangeUserData(form))
+    setIsDataChanged(false)
+  }
+
+  const onLogout = () => {
+    dispatch(logoutUser());
+  }
+
+  if (!isUserAuth) {
+    return ( <Redirect to={{ pathname: '/login' }} /> );
+  }
 
   return (
     <>
       <nav className={`${styles.nav} mr-15`}>
         <NavLink to='/profile' className={defineClass('/profile')}>Профиль</NavLink>
         <NavLink to='/profile/orders' className={defineClass('/profile/orders')}>История заказов</NavLink>
-        <NavLink to='/profile/out' className={`${defineClass('/profile/out')} mb-28`}>Выход</NavLink>
+        <p className={`${styles.logout} text text_type_main-medium text_color_inactive`} onClick={onLogout}>Выход</p>
 
         <p className="text text_type_main-default text_color_inactive">
           В этом разделе вы можете изменить свои персональные данные
@@ -28,11 +61,9 @@ export const Profile = () => {
           type={'text'}
           placeholder={'Имя'}
           name={'name'}
-          value={name}
-          onChange={e => setName(e.target.value)}
+          value={form.name}
+          onChange={onChange}
           icon={'EditIcon'}
-          error={false}
-          errorText={'Ошибка'}
           size={'default'}
           extraClass="mb-6"
         />
@@ -40,11 +71,9 @@ export const Profile = () => {
           type={'email'}
           placeholder={'Логин'}
           name={'login'}
-          value={login}
-          onChange={e => setLogin(e.target.value)}
+          value={form.email}
+          onChange={onChange}
           icon={'EditIcon'}
-          error={false}
-          errorText={'Ошибка'}
           size={'default'}
           extraClass="mb-6"
         />
@@ -52,14 +81,20 @@ export const Profile = () => {
           type={'password'}
           placeholder={'Пароль'}
           name={'password'}
-          value={password}
-          onChange={e => setPassword(e.target.value)}
+          value={form.password}
+          onChange={onChange}
           icon={'EditIcon'}
-          error={false}
-          errorText={'Ошибка'}
           size={'default'}
           extraClass="mb-6"
+          disabled
         />
+
+        { isDataChanged &&
+          <>
+            <Button htmlType="button" type="primary" size="medium" extraClass="mb-4" onClick={onSave}>Сохранить</Button>
+            <p className={`${styles.cansel} text text_type_main-default text_color_inactive`} onClick={onCancel}>Отмена</p>
+          </>
+        }
       </div>
     </>
   )
