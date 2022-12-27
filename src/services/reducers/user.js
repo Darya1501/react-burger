@@ -1,5 +1,4 @@
 import { 
-  REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
 
@@ -11,7 +10,6 @@ import {
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED,
 
-  AUTH_REQUEST,
   AUTH_SUCCESS,
   AUTH_FAILED,
 
@@ -30,11 +28,9 @@ const initialOrderState = {
   resetPasswordSuccess: false,
   resetPasswordMessage: '',
 
-  registerRequest: false,
   registerFaild: false,
   registerSuccess: false,
 
-  authRequest: false,
   authFaild: false,
   authSuccess: false,
   isUserAuth: false,
@@ -49,16 +45,9 @@ const initialOrderState = {
 
 export const userReducer = (state = initialOrderState, action) => {
   switch (action.type) {
-    case REGISTER_REQUEST: {
-      return {
-        ...state,
-        registerRequest: true
-      };
-    }
     case REGISTER_SUCCESS: {
       return {
         ...state,
-        registerRequest: false,
         registerFaild: false,
         registerSuccess: true,
         isUserAuth: true,
@@ -68,22 +57,14 @@ export const userReducer = (state = initialOrderState, action) => {
     case REGISTER_FAILED: {
       return {
         ...state,
-        registerRequest: false,
         registerFaild: true,
         registerSuccess: false,
         errorMessage: action.message
       };
     }
-    case AUTH_REQUEST: {
-      return {
-        ...state,
-        authRequest: true
-      };
-    }
     case AUTH_SUCCESS: {
       return {
         ...state,
-        authRequest: false,
         authFaild: false,
         authSuccess: true,
         isUserAuth: true,
@@ -93,7 +74,6 @@ export const userReducer = (state = initialOrderState, action) => {
     case AUTH_FAILED: {
       return {
         ...state,
-        authRequest: false,
         authFaild: true,
         authSuccess: false,
         errorMessage: action.message
@@ -102,7 +82,7 @@ export const userReducer = (state = initialOrderState, action) => {
     case SEND_EMAIL_REQUEST: {
       return {
         ...state,
-        sendEmailRequest: true
+        sendEmailRequest: true,
       };
     }
     case SEND_EMAIL_SUCCESS: {
@@ -126,25 +106,25 @@ export const userReducer = (state = initialOrderState, action) => {
     case RESET_PASSWORD_REQUEST: {
       return {
         ...state,
-        sendEmailRequest: true
+        resetPasswordRequest: true,
       };
     }
     case RESET_PASSWORD_SUCCESS: {
       return {
         ...state,
-        sendEmailRequest: false,
-        sendEmailFaild: false,
-        sendEmailSuccess: true,
-        sendEmailMessage: action.message
+        resetPasswordRequest: false,
+        resetPasswordFaild: false,
+        resetPasswordSuccess: true,
+        resetPasswordMessage: action.message
       };
     }
     case RESET_PASSWORD_FAILED: {
       return {
         ...state,
-        sendEmailRequest: false,
-        sendEmailFaild: true,
-        sendEmailSuccess: false,
-        sendEmailMessage: action.message
+        resetPasswordRequest: false,
+        resetPasswordFaild: true,
+        resetPasswordSuccess: false,
+        resetPasswordMessage: action.message
       };
     }
     case LOGOUT_USER: {
@@ -160,7 +140,8 @@ export const userReducer = (state = initialOrderState, action) => {
     case SET_USER_DATA: {
       return {
         ...state,
-        user: action.user
+        user: action.user,
+        isUserAuth: true
       }
     }
     default: {

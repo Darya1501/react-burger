@@ -1,10 +1,8 @@
 import { authorizeUser, changeUserInfo, createNewUser, getUser, logout, resetUserPassword, sendResetPasswordEmail } from "../../utils/burger-api";
 
-export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILED = 'REGISTER_FAILED';
 
-export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAILED = 'AUTH_FAILED';
 
@@ -37,7 +35,6 @@ export function getUserData() {
 
 export function registerUser(user) {
   return function(dispatch) {
-    dispatch({ type: REGISTER_REQUEST });
     createNewUser(user).then(newUser => {
       if(newUser) {
         dispatch({
@@ -57,7 +54,6 @@ export function registerUser(user) {
 
 export function loginUser(user) {
   return function(dispatch) {
-    dispatch({ type: AUTH_REQUEST });
     authorizeUser(user).then(user => {
       if(user) {
         dispatch({
@@ -77,7 +73,7 @@ export function loginUser(user) {
 
 export function sendResetCode(email) {
   return function(dispatch) {
-    dispatch({ type: SEND_EMAIL_REQUEST });
+    dispatch({ type: SEND_EMAIL_REQUEST })
     sendResetPasswordEmail(email).then(message => {
       if(message) {
         dispatch({
@@ -97,20 +93,20 @@ export function sendResetCode(email) {
 
 export function cangeUserPassword(password, token) {
   return function(dispatch) {
-    dispatch({ type: SEND_EMAIL_REQUEST });
+    dispatch({ type: RESET_PASSWORD_REQUEST })
     resetUserPassword(password, token).then(message => {
       if(message) {
         dispatch({
-          type: SEND_EMAIL_SUCCESS,
+          type: RESET_PASSWORD_SUCCESS,
           message: message
         })
       } else {
-        dispatch({ type: SEND_EMAIL_FAILED });
+        dispatch({ type: RESET_PASSWORD_FAILED });
       }
     })
     .catch(error => {
       console.error(error);
-      dispatch({ type: SEND_EMAIL_FAILED });
+      dispatch({ type: RESET_PASSWORD_FAILED, message: error.message });
     });
   }
 }

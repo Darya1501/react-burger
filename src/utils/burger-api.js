@@ -116,18 +116,23 @@ export const resetUserPassword = async (password, token) => {
 
 export const updateToken = async () => {
   const refreshToken =  localStorage.getItem('refreshToken');
-  const newTokens = await fetch(`${API}/auth/token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ token: refreshToken })
-  })
-  .then(checkReponse)
-  .then(checkSuccessField)
-  .then(data => saveTokens(data.refreshToken, data.accessToken))
-  .catch(error => { throw new Error(error.message) })
-  return newTokens
+  if (refreshToken) {
+    const newToken = await fetch(`${API}/auth/token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ token: refreshToken })
+    })
+    .then(checkReponse)
+    .then(checkSuccessField)
+    .then(data => {
+      saveTokens(data.refreshToken, data.accessToken)
+      return data.accessToken
+    })
+    .catch(error => { throw new Error(error.message) })
+    return newToken
+  }
 }
 
 export const logout = async () => {
@@ -148,6 +153,7 @@ export const logout = async () => {
 
 export const getUser = async () => {
   const accessToken = getCookie('accessToken');
+  const refreshToken =  localStorage.getItem('refreshToken');
   if (accessToken) {
     const user = await fetch(`${API}/auth/user`, {
       method: 'GET',
@@ -161,7 +167,7 @@ export const getUser = async () => {
     .then(data => data.user)
     .catch(error => { throw new Error(error) })
     return user
-  } else {
+  } else if (refreshToken) {
     await updateToken();
     getUser();
   }

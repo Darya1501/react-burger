@@ -1,8 +1,8 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, Redirect, useLocation } from 'react-router-dom';
-import { cangeUserData, getUserData, logoutUser } from '../services/actions/user';
+import { NavLink, useLocation } from 'react-router-dom';
+import { cangeUserData, logoutUser } from '../services/actions/user';
 import styles from './profile.module.css'
 
 export const Profile = () => {
@@ -10,13 +10,11 @@ export const Profile = () => {
   const defineClass = path => `${styles.link} text text_type_main-medium ${path === location.pathname ? '' : 'text_color_inactive'}`;
   
   const dispatch = useDispatch();
-  const { isUserAuth, user } = useSelector(store => store.user);
+  const { user } = useSelector(store => store.user);
 
   useEffect(() => {
-    if (!isUserAuth) return
-    if (!user.name) { dispatch(getUserData()) }
     setValue({ password: '', ...user })
-  }, [dispatch, user, isUserAuth])
+  }, [user])
 
   const [ isDataChanged, setIsDataChanged ] = useState(false);
   const [form, setValue] = useState({ ...user, password: '' })
@@ -38,10 +36,6 @@ export const Profile = () => {
 
   const onLogout = () => {
     dispatch(logoutUser());
-  }
-
-  if (!isUserAuth) {
-    return ( <Redirect to={{ pathname: '/login' }} /> );
   }
 
   return (

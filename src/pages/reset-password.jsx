@@ -1,13 +1,15 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import { cangeUserPassword } from '../services/actions/user'
 import style from './forms.module.css'
 
 export const ResetPassword = () => {
-  const { resetPasswordMessage } = useSelector(state => state.user);
+  const { resetPasswordSuccess, resetPasswordMessage, resetPasswordRequest } = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
 
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
@@ -15,11 +17,23 @@ export const ResetPassword = () => {
   const passwordRef = React.useRef(null);
   const tokenRef = React.useRef(null);
 
+  React.useEffect(() => {
+    if (location.state?.from.pathname !== '/forgot-password') {
+      history.replace({ pathname: '/forgot-password' });
+    }
+    if(resetPasswordSuccess) {
+      history.replace({ pathname: '/login' });
+    }
+}, [resetPasswordSuccess, history, location])
+
   const onClick = async () => {
     if (passwordRef.current.value && tokenRef.current.value) {
       await dispatch(cangeUserPassword(passwordRef.current.value, tokenRef.current.value))
-      console.log(resetPasswordMessage);
     }
+  }
+
+  const onIconClick = () => {
+    passwordRef.current.type = passwordRef.current.type === 'password' ? 'text' : 'password';
   }
 
   return (
@@ -37,6 +51,7 @@ export const ResetPassword = () => {
         errorText={'Ошибка'}
         size={'default'}
         extraClass="mb-6"
+        onIconClick={onIconClick}
       />
       <Input
         type={'text'}
@@ -50,8 +65,11 @@ export const ResetPassword = () => {
         size={'default'}
         extraClass="mb-6"
       />
+
+      { resetPasswordMessage && <p className="text text_type_main-default mb-4">{resetPasswordMessage}</p> }
+
       <Button htmlType="button" type="primary" size="medium" extraClass="mb-20" onClick={onClick}>
-        Сохранить
+        {resetPasswordRequest ? 'Загрузка...' : 'Сохранить'}
       </Button>
       <p className="text text_type_main-default text_color_inactive">
         Вспомнили пароль? <Link className={style.link} to="/login">Войти</Link>

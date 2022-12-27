@@ -13,8 +13,11 @@ import { NotFound404 } from '../../pages/not-found';
 import { AppHeader } from '../app-header/app-header';
 import { BurgerIngredients } from '../burger-ingredients/burger-ingredients';
 import { BurgerConstructor } from '../burger-constructor/burger-constructor';
+import { RouteWithAuth } from '../protected-routes/route-with-auth';
+import { RouteWithoutAuth } from '../protected-routes/route-without-auth';
 
 function App() {
+  
   return (
     <>
       <Router>
@@ -27,21 +30,21 @@ function App() {
                 <BurgerConstructor />
               </DndProvider>
             </Route>
-            <Route path='/login' exact={true}>
+            <RouteWithoutAuth path='/login' exact={true}>
               <Login />
-            </Route>
-            <Route path='/register' exact={true}>
+            </RouteWithoutAuth>
+            <RouteWithoutAuth path='/register' exact={true}>
               <Register />
-            </Route>
-            <Route path='/forgot-password' exact={true}>
+            </RouteWithoutAuth>
+            <RouteWithoutAuth path='/forgot-password' exact={true}>
               <ForgotPassword />
-            </Route>
-            <Route path='/reset-password' exact={true}>
+            </RouteWithoutAuth>
+            <RouteWithoutAuth path='/reset-password' exact={true}>
               <ResetPassword />
-            </Route>
-            <Route path='/profile' exact={true}>
+            </RouteWithoutAuth>
+            <RouteWithAuth path="/profile">
               <Profile />
-            </Route>
+            </RouteWithAuth>
             <Route path='/ingredients/:id' exact={true}>
               <Ingredient />
             </Route>

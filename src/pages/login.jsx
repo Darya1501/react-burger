@@ -1,12 +1,12 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { loginUser } from '../services/actions/user'
 import style from './forms.module.css'
 
 export const Login = () => {
-  const { isUserAuth, errorMessage } = useSelector(store => store.user)
+  const { errorMessage } = useSelector(store => store.user)
   const dispatch = useDispatch();
   const passwordRef = React.useRef(null);
 
@@ -22,16 +22,6 @@ export const Login = () => {
 
   const onIconClick = () => {
     passwordRef.current.type = passwordRef.current.type === 'password' ? 'text' : 'password';
-  }
-
-  if (isUserAuth) {
-    return (
-      <Redirect
-        to={{
-          pathname: '/'
-        }}
-      />
-    );
   }
 
   return (
