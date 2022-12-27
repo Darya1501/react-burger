@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, useLocation } from 'react-router-dom';
 import { getUserData } from '../../services/actions/user';
+import PropTypes from 'prop-types';
 
 export const RouteWithoutAuth = ({ children, ...rest }) => {
   const { isUserAuth } = useSelector(store => store.user);
@@ -26,3 +27,8 @@ export const RouteWithoutAuth = ({ children, ...rest }) => {
     />
   )
 }
+
+RouteWithoutAuth.propTypes = {
+  children: PropTypes.element.isRequired,
+}; 
+

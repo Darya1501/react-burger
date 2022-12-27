@@ -9,12 +9,16 @@ import { Modal } from '../modals/modal';
 import { getOrderNumber, TOGGLE_ORDER_DATA } from '../../services/actions/order';
 import { addConstructorIngredient, CHANGE_CONSTRUCTOR_BUN } from '../../services/actions/constructor';
 import { CHANGE_BUNS_COUNT, INCREMENT_IGREDIENT_COUNT } from '../../services/actions/ingredients';
+import { useHistory, useLocation } from 'react-router-dom';
 
 export const BurgerConstructor = () => {
   const { ingredientsRequest, ingredientsFailed } = useSelector(state => state.ingredients);
   const { constructorBun, constructorIngredients } = useSelector(state => state.constructors);
+  const { isUserAuth } = useSelector(store => store.user);
   const { isOrderModalVisible } = useSelector(state => state.order);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation()
 
   const [ totalPrice, setTotalPrice ] = useState(0);
 
@@ -24,6 +28,7 @@ export const BurgerConstructor = () => {
   }, [constructorBun, constructorIngredients])
 
   const createOrder = () => {
+    if (!isUserAuth) history.push({ pathname: '/login', state: { from: location } });
     if (!constructorBun || !constructorIngredients.length) return;
     const ingredients = [constructorBun._id];
     constructorIngredients.map(component => ingredients.push(component._id));

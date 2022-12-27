@@ -2,6 +2,6 @@ import React from 'react'
 
 export const NotFound404 = () => {
   return (
-    <div>NotFound404</div>
+    <p className="text text_type_main-medium">Упс! Такой страницы не существует (ошибка 404)</p>
   )
 }

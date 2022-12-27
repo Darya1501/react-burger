@@ -32,10 +32,12 @@ export const getIngredients = async () => {
 }
 
 export const postOrder = async (order) => {
+  const accessToken = getCookie('accessToken');
   const orderID = await fetch(`${API}/orders`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accessToken
     },
     body: JSON.stringify({ingredients: order})
   })
