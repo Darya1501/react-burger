@@ -1,17 +1,13 @@
 import React from 'react'
 import { Counter, CurrencyIcon  } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
-import { IngredientDetails } from '../modals/ingredient-details';
 import { ingredientTypes } from '../../utils/prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { HIDE_INGREDIENT_DATA, SHOW_INGREDIENT_DATA } from '../../services/actions/modal';
 import { useDrag } from 'react-dnd';
-import { Modal } from '../modals/modal';
+import { Link, useLocation } from 'react-router-dom';
 
 
 export const Ingredient = ({ item }) => {
-  const { isIngredientModalVisible } = useSelector(state => state.modal);
-  const dispatch = useDispatch();
+  const location = useLocation();
 
   const [{ opacity }, ref] = useDrag({
     type: item.type === 'bun' ? 'bun' : 'ingredients',
@@ -25,9 +21,12 @@ export const Ingredient = ({ item }) => {
     <>
       {
         item && 
-        <div 
+        <Link 
+          to={{
+            pathname: `/ingredients/${item._id}`,
+            state: { background: location }
+          }}
           className={styles.ingredient} 
-          onClick={() => dispatch({ type: SHOW_INGREDIENT_DATA, item })}
           ref={ref}
           style={{ opacity }}
         >
@@ -38,13 +37,8 @@ export const Ingredient = ({ item }) => {
             <CurrencyIcon />
           </p>
           <p className="text text_type_main-default">{item.name}</p>
-        </div>
+        </Link>
       }
-      {isIngredientModalVisible && (
-        <Modal onClose={() => dispatch({ type: HIDE_INGREDIENT_DATA })} header='Детали ингредиента'>
-          <IngredientDetails />
-        </Modal>
-        )}
     </>
   )
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './components/app/app';
+import App from './components/app/app.jsx';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux'
 import { rootReducer } from './services/srore';
 import { configureStore } from '@reduxjs/toolkit';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,9 +19,11 @@ const store = configureStore({
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Router>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Router>
   </React.StrictMode>
 );
 
