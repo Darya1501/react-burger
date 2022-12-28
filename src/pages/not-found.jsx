@@ -1,7 +1,10 @@
 import React from 'react'
+import styles from './ingredient.module.css'
 
 export const NotFound404 = () => {
   return (
-    <p className="text text_type_main-medium">Упс! Такой страницы не существует (ошибка 404)</p>
+    <div className={styles.container}>
+      <p className="text text_type_main-medium">Упс! Такой страницы не существует (ошибка 404)</p>
+    </div>
   )
 }

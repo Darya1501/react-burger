@@ -1,22 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
 import { IngredientsCategory } from './ingredients-category';
-import { useDispatch, useSelector } from 'react-redux';
-import { getIngredientsRequest } from '../../services/actions/ingredients';
+import { useSelector } from 'react-redux';
 import { getSortedData } from '../../utils/get-sorted-data';
 import { tabs } from '../../utils/constants';
 
 export const BurgerIngredients = () => {
-  const dispatch = useDispatch();
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(state => state.ingredients);
-
-  useEffect(
-    () => {
-      dispatch(getIngredientsRequest());
-    },
-    [dispatch]
-  );
 
   const [current, setCurrent] = React.useState(tabs.BUN);
 

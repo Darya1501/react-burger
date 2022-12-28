@@ -1,26 +1,14 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getIngredientsRequest } from '../services/actions/ingredients';
 import styles from './ingredient.module.css'
 
 export const Ingredient = () => {
   const { ingredients, ingredientsRequest } = useSelector(state => state.ingredients);
-  console.log('ingredientsRequest: ', ingredientsRequest);
-  const dispatch = useDispatch();
-
-  let { id } = useParams();
+  const { id } = useParams();
   const currentIngredient = ingredients.find(item => item._id === id)
 
-  useEffect(
-    () => {
-      dispatch(getIngredientsRequest());
-    },
-    [dispatch]
-  );
-
   return (
-    <>
+    <div className={styles.container}>
     {
       ingredientsRequest ? 
         (<p className="text text_type_main-medium">Загрузка...</p>) :
@@ -47,6 +35,6 @@ export const Ingredient = () => {
           </div>
         </div>)
     }
-  </>
+  </div>
   )
 }

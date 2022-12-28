@@ -2,7 +2,7 @@ import React from 'react';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './app-header.module.css';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 export const AppHeader = () => {
   const linksClasses = `${styles.link} text text_type_main-default p-5`;
@@ -24,9 +24,9 @@ export const AppHeader = () => {
             </NavLink>
           </nav>
 
-        <div className={styles.logo}>
+        <Link to="" className={styles.logo}>
           <Logo />
-        </div>
+        </Link>
 
         <NavLink to="/profile" className={linksClasses} activeClassName={styles.active}>
           <ProfileIcon type={defineType('/profile')} />

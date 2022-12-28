@@ -33,7 +33,7 @@ const initialOrderState = {
 
   authFaild: false,
   authSuccess: false,
-  isUserAuth: false,
+  isUserAuthorized: false,
 
   errorMessage: '',
 
@@ -50,7 +50,7 @@ export const userReducer = (state = initialOrderState, action) => {
         ...state,
         registerFaild: false,
         registerSuccess: true,
-        isUserAuth: true,
+        isUserAuthorized: true,
         ...action.user,
       };
     }
@@ -67,7 +67,7 @@ export const userReducer = (state = initialOrderState, action) => {
         ...state,
         authFaild: false,
         authSuccess: true,
-        isUserAuth: true,
+        isUserAuthorized: true,
         ...action.user,
       };
     }
@@ -134,14 +134,14 @@ export const userReducer = (state = initialOrderState, action) => {
           name: '',
           email: ''
         },
-        isUserAuth: false
+        isUserAuthorized: false
       }
     }
     case SET_USER_DATA: {
       return {
         ...state,
         user: action.user,
-        isUserAuth: true
+        isUserAuthorized: true
       }
     }
     default: {

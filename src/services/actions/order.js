@@ -1,4 +1,5 @@
 import { postOrder } from "../../utils/burger-api";
+import { CLEAR_CONSTRUCTOR } from "./constructor";
 
 // Получение номера заказа в модальном окне
 export const POST_ORDER_REQUEST = 'POST_ORDER_REQUEST';
@@ -20,6 +21,7 @@ export function getOrderNumber(components) {
             ...components
           }
         })
+        dispatch({ type: CLEAR_CONSTRUCTOR })
       } else {
         dispatch({
           type: POST_ORDER_FAILED

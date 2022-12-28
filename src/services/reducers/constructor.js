@@ -1,6 +1,7 @@
 import {
   ADD_CONSTRUCTOR_INGREDIENT,
   CHANGE_CONSTRUCTOR_BUN,
+  CLEAR_CONSTRUCTOR,
   MOVE_CONSTRUCTOR_INGREDIENT,
   REMOVE_CONSTRUCTOR_INGREDIENT
 } from '../actions/constructor';
@@ -43,6 +44,9 @@ export const constructorReducer = (state = initialConstructorState, action) => {
         ...state,
         constructorBun: action.bun,
       }
+    }
+    case CLEAR_CONSTRUCTOR: {
+      return initialConstructorState
     }
     default: {
       return state;

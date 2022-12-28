@@ -1,7 +1,8 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { useForm } from '../hooks/use-form'
 import { loginUser } from '../services/actions/user'
 import style from './forms.module.css'
 
@@ -10,14 +11,11 @@ export const Login = () => {
   const dispatch = useDispatch();
   const passwordRef = React.useRef(null);
 
-  const [form, setValue] = useState({ email: '', password: '' });
-  const onChange = e => {
-    setValue({ ...form, [e.target.name]: e.target.value });
-  };
+  const { values, handleChange } = useForm({ email: '', password: '' });
 
   const login = (e) => {
     e.preventDefault();
-    dispatch(loginUser(form));
+    dispatch(loginUser(values));
   }
 
   const onIconClick = () => {
@@ -25,41 +23,43 @@ export const Login = () => {
   }
 
   return (
-    <div className={style.form}>
-      <p className="text text_type_main-medium mb-6">Вход</p>
-      <Input
-        type={'email'}
-        placeholder={'E-mail'}
-        name={'email'}
-        value={form.email}
-        onChange={onChange}
-        size={'default'}
-        extraClass="mb-6"
-      />
-      <Input
-        type={'password'}
-        placeholder={'Пароль'}
-        name={'password'}
-        value={form.password}
-        onChange={onChange}
-        ref={passwordRef}
-        icon={'ShowIcon'}
-        onIconClick={onIconClick}
-        size={'default'}
-        extraClass="mb-6"
-      />
+    <div className={style.container}>
+      <form className={style.form} onSubmit={login}>
+        <p className="text text_type_main-medium mb-6">Вход</p>
+        <Input
+          type={'email'}
+          placeholder={'E-mail'}
+          name={'email'}
+          value={values.email}
+          onChange={handleChange}
+          size={'default'}
+          extraClass="mb-6"
+        />
+        <Input
+          type={'password'}
+          placeholder={'Пароль'}
+          name={'password'}
+          value={values.password}
+          onChange={handleChange}
+          ref={passwordRef}
+          icon={'ShowIcon'}
+          onIconClick={onIconClick}
+          size={'default'}
+          extraClass="mb-6"
+        />
 
-      { errorMessage && <p className="text text_type_main-default mb-4">{errorMessage}</p> }
+        { errorMessage && <p className="text text_type_main-default mb-4">{errorMessage}</p> }
 
-      <Button htmlType="button" type="primary" size="medium" extraClass="mb-20" onClick={login}>
-        Войти
-      </Button>
-      <p className="text text_type_main-default text_color_inactive">
-        Вы — новый пользователь? <Link className={style.link} to="/register">Зарегистрироваться</Link>
-      </p>
-      <p className="text text_type_main-default text_color_inactive">
-        Забыли пароль? <Link className={style.link} to="/forgot-password">Восстановить пароль</Link>
-      </p>
+        <Button htmlType="submit" type="primary" size="medium" extraClass="mb-20">
+          Войти
+        </Button>
+        <p className="text text_type_main-default text_color_inactive">
+          Вы — новый пользователь? <Link className={style.link} to="/register">Зарегистрироваться</Link>
+        </p>
+        <p className="text text_type_main-default text_color_inactive">
+          Забыли пароль? <Link className={style.link} to="/forgot-password">Восстановить пароль</Link>
+        </p>
+      </form>
     </div>
   )
 }

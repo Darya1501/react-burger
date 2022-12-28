@@ -2,6 +2,7 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useForm } from '../hooks/use-form';
 import { cangeUserData, logoutUser } from '../services/actions/user';
 import styles from './profile.module.css'
 
@@ -12,25 +13,27 @@ export const Profile = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(store => store.user);
 
+  const {values, handleChange, setValues} = useForm({ password: '', ...user });
+
   useEffect(() => {
-    setValue({ password: '', ...user })
-  }, [user])
+    setValues({ password: '', ...user })
+  }, [user, setValues])
 
   const [ isDataChanged, setIsDataChanged ] = useState(false);
-  const [form, setValue] = useState({ ...user, password: '' })
 
   const onChange = e => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    handleChange(e)
     setIsDataChanged(true)
   };
 
   const onCancel = () => {
-    setValue({ password: '', ...user })
+    setValues({ password: '', ...user })
     setIsDataChanged(false)
   }
 
-  const onSave = () => {
-    dispatch(cangeUserData(form))
+  const onSave = (e) => {
+    e.preventDefault();
+    dispatch(cangeUserData(values))
     setIsDataChanged(false)
   }
 
@@ -39,7 +42,7 @@ export const Profile = () => {
   }
 
   return (
-    <>
+    <div className={styles.container}>
       <nav className={`${styles.nav} mr-15`}>
         <NavLink to='/profile' className={defineClass('/profile')}>Профиль</NavLink>
         <NavLink to='/profile/orders' className={defineClass('/profile/orders')}>История заказов</NavLink>
@@ -50,12 +53,12 @@ export const Profile = () => {
         </p>
       </nav>
 
-      <div className={styles.content}>
+      <form className={styles.content} onSubmit={onSave}>
         <Input
           type={'text'}
           placeholder={'Имя'}
           name={'name'}
-          value={form.name}
+          value={values.name}
           onChange={onChange}
           icon={'EditIcon'}
           size={'default'}
@@ -65,7 +68,7 @@ export const Profile = () => {
           type={'email'}
           placeholder={'Логин'}
           name={'login'}
-          value={form.email}
+          value={values.email}
           onChange={onChange}
           icon={'EditIcon'}
           size={'default'}
@@ -75,7 +78,7 @@ export const Profile = () => {
           type={'password'}
           placeholder={'Пароль'}
           name={'password'}
-          value={form.password}
+          value={values.password}
           onChange={onChange}
           icon={'EditIcon'}
           size={'default'}
@@ -85,11 +88,11 @@ export const Profile = () => {
 
         { isDataChanged &&
           <>
-            <Button htmlType="button" type="primary" size="medium" extraClass="mb-4" onClick={onSave}>Сохранить</Button>
+            <Button htmlType="submit" type="primary" size="medium" extraClass="mb-4">Сохранить</Button>
             <p className={`${styles.cansel} text text_type_main-default text_color_inactive`} onClick={onCancel}>Отмена</p>
           </>
         }
-      </div>
-    </>
+      </form>
+    </div>
   )
 }
