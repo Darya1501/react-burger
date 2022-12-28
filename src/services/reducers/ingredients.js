@@ -25,7 +25,7 @@ export const ingredientsReducer = (state = initialIngredientState, action) => {
       return { 
         ...state,
         ingredientsFailed: false,
-        ingredients: action.items.map((item, index) =>({...item, count: index === 0 ? 2 : 0})),
+        ingredients: action.items.map(item => ({ ...item, count: 0})),
         ingredientsRequest: false,
       };
     }

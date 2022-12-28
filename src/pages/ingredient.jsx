@@ -1,17 +1,16 @@
-import React from 'react'
-import styles from './modal.module.css'
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import styles from './ingredient.module.css'
 
-export const IngredientDetails = () => {
+export const Ingredient = () => {
   const { ingredients, ingredientsRequest } = useSelector(state => state.ingredients);
-  let { id } = useParams();
+  const { id } = useParams();
   const currentIngredient = ingredients.find(item => item._id === id)
 
   return (
-    <>
-      {
-        ingredientsRequest ? 
+    <div className={styles.container}>
+    {
+      ingredientsRequest ? 
         (<p className="text text_type_main-medium">Загрузка...</p>) :
         (<div className={styles.ingredient}>
           <img src={currentIngredient.image_large} alt={currentIngredient.name} />
@@ -35,7 +34,7 @@ export const IngredientDetails = () => {
             </div>
           </div>
         </div>)
-      }
-    </>
+    }
+  </div>
   )
 }
