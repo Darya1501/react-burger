@@ -1,16 +1,19 @@
+import React from 'react'
+import styles from './modal.module.css'
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import styles from './ingredient.module.css'
+import { TIngredient } from '../../utils/types';
 
-export const Ingredient = () => {
+export const IngredientDetails = () => {
+  //@ts-ignore
   const { ingredients, ingredientsRequest } = useSelector(state => state.ingredients);
-  const { id } = useParams();
-  const currentIngredient = ingredients.find(item => item._id === id)
+  let { id } = useParams<{id?: string}>();
+  const currentIngredient = ingredients.find((item: TIngredient) => item._id === id)
 
   return (
-    <div className={styles.container}>
-    {
-      ingredientsRequest ? 
+    <>
+      {
+        ingredientsRequest ? 
         (<p className="text text_type_main-medium">Загрузка...</p>) :
         (<div className={styles.ingredient}>
           <img src={currentIngredient.image_large} alt={currentIngredient.name} />
@@ -34,7 +37,7 @@ export const Ingredient = () => {
             </div>
           </div>
         </div>)
-    }
-  </div>
+      }
+    </>
   )
 }

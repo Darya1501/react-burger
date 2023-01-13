@@ -1,22 +1,26 @@
-import React from 'react'
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './burger-ingredients.module.css'
-import { IngredientsCategory } from './ingredients-category';
+import React, { RefObject } from 'react'
 import { useSelector } from 'react-redux';
+
 import { getSortedData } from '../../utils/get-sorted-data';
 import { tabs } from '../../utils/constants';
 
+import styles from './burger-ingredients.module.css'
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { IngredientsCategory } from './ingredients-category';
+
 export const BurgerIngredients = () => {
+  //@ts-ignore
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(state => state.ingredients);
 
   const [current, setCurrent] = React.useState(tabs.BUN);
 
-  const bunRef = React.useRef(null)
-  const sauceRef = React.useRef(null)
-  const mainRef = React.useRef(null)
-  const containerRef = React.useRef(null)
+  const bunRef = React.useRef<HTMLDivElement>(null)
+  const sauceRef = React.useRef<HTMLDivElement>(null)
+  const mainRef = React.useRef<HTMLDivElement>(null)
+  const containerRef = React.useRef<HTMLDivElement>(null)
 
   const handleScroll = () => {
+    if (!containerRef.current || !bunRef.current || !sauceRef.current || !mainRef.current) return;
     const containerPosition = containerRef.current.offsetTop;
     const bunPosition = bunRef.current.getBoundingClientRect().top;
     const saucePosition = sauceRef.current.getBoundingClientRect().top;
@@ -31,7 +35,8 @@ export const BurgerIngredients = () => {
     }
   }
 
-  const switchTab = (ref, tab) => {
+  const switchTab = (ref: RefObject<HTMLDivElement>, tab: string) => {
+    if (!ref.current) return;
     ref.current.scrollIntoView({ behavior: 'smooth' });
     setCurrent(tab)
   }

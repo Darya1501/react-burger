@@ -20,16 +20,23 @@ import { getIngredientsRequest } from '../../services/actions/ingredients';
 import { getUserData } from '../../services/actions/user';
 
 import styles from './app.module.css';
+import { ILocation } from '../../utils/types';
+
+interface IWithStateLocation extends ILocation {
+  state: { background : IWithStateLocation };
+}
 
 function App() {
-  const location = useLocation();
+  const location: IWithStateLocation = useLocation();
   const background = location.state && location.state.background;
   const dispatch = useDispatch()
   const history = useHistory();
 
   useEffect(
     () => {
+      //@ts-ignore
       dispatch(getIngredientsRequest());
+      //@ts-ignore
       dispatch(getUserData());
     },
     [dispatch]

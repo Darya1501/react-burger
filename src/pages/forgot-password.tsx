@@ -7,6 +7,7 @@ import { sendResetCode } from '../services/actions/user'
 import style from './forms.module.css'
 
 export const ForgotPassword = () => {
+  //@ts-ignore
   const { sendEmailSuccess, sendEmailMessage, sendEmailRequest } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -14,7 +15,7 @@ export const ForgotPassword = () => {
 
   const { values, handleChange } = useForm({ email: '' });
 
-  const emailRef = React.useRef(null);
+  const emailRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if(sendEmailSuccess) {
@@ -22,9 +23,11 @@ export const ForgotPassword = () => {
     }
 }, [sendEmailSuccess, history, location])
 
-  const sendEmail = async (e) => {
-    e.preventDefault();
+  const sendEmail: React.FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
+    if (!emailRef.current) return;
     if (emailRef.current.value) {
+      //@ts-ignore
       dispatch(sendResetCode(emailRef.current.value))
     }
   }
