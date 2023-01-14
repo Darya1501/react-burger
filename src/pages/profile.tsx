@@ -8,9 +8,10 @@ import styles from './profile.module.css'
 
 export const Profile = () => {
   const location = useLocation();
-  const defineClass = path => `${styles.link} text text_type_main-medium ${path === location.pathname ? '' : 'text_color_inactive'}`;
+  const defineClass = (path: string) => `${styles.link} text text_type_main-medium ${path === location.pathname ? '' : 'text_color_inactive'}`;
   
   const dispatch = useDispatch();
+  //@ts-ignore
   const { user } = useSelector(store => store.user);
 
   const {values, handleChange, setValues} = useForm({ password: '', ...user });
@@ -21,8 +22,8 @@ export const Profile = () => {
 
   const [ isDataChanged, setIsDataChanged ] = useState(false);
 
-  const onChange = e => {
-    handleChange(e)
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    handleChange(event)
     setIsDataChanged(true)
   };
 
@@ -31,13 +32,15 @@ export const Profile = () => {
     setIsDataChanged(false)
   }
 
-  const onSave = (e) => {
-    e.preventDefault();
+  const onSave: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    //@ts-ignore
     dispatch(cangeUserData(values))
     setIsDataChanged(false)
   }
 
   const onLogout = () => {
+    //@ts-ignore
     dispatch(logoutUser());
   }
 

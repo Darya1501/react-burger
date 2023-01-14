@@ -1,12 +1,17 @@
 import React from 'react'
+import { Link, useLocation } from 'react-router-dom';
+import { useDrag } from 'react-dnd';
+
+import { TIngredient } from '../../utils/types';
+
 import { Counter, CurrencyIcon  } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
-import { ingredientTypes } from '../../utils/prop-types';
-import { useDrag } from 'react-dnd';
-import { Link, useLocation } from 'react-router-dom';
 
+type TIngredientProps = {
+  item: TIngredient,
+}
 
-export const Ingredient = ({ item }) => {
+export const Ingredient = ({ item }: TIngredientProps) => {
   const location = useLocation();
 
   const [{ opacity }, ref] = useDrag({
@@ -34,7 +39,7 @@ export const Ingredient = ({ item }) => {
           <img src={item.image} alt={item.name} />
           <p className={`${styles.price} text text_type_digits-default`}>
             {item.price}
-            <CurrencyIcon />
+            <CurrencyIcon type="primary" />
           </p>
           <p className="text text_type_main-default">{item.name}</p>
         </Link>
@@ -42,7 +47,3 @@ export const Ingredient = ({ item }) => {
     </>
   )
 }
-
-Ingredient.propTypes = {
-  item: ingredientTypes
-}; 

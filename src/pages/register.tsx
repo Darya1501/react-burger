@@ -7,18 +7,21 @@ import { registerUser } from '../services/actions/user'
 import style from './forms.module.css'
 
 export const Register = () => {
+  //@ts-ignore
   const { errorMessage } = useSelector(store => store.user)
   const dispatch = useDispatch();
-  const passwordRef = React.useRef(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
 
   const { values, handleChange } = useForm({ name: '', email: '', password: '' });
 
-  const register = (e) => {
-    e.preventDefault();
+  const register: React.FormEventHandler<HTMLFormElement> = (event): void => {
+    event.preventDefault();
+    //@ts-ignore
     dispatch(registerUser(values));
   }
 
   const onIconClick = () => {
+    if (!passwordRef.current) return;
     passwordRef.current.type = passwordRef.current.type === 'password' ? 'text' : 'password';
   }
 

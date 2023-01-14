@@ -1,22 +1,49 @@
 import { getCookie, setCookie } from "./cookies";
+import { TIngredient } from "./types";
 
 const API = 'https://norma.nomoreparties.space/api';
 
-const checkReponse = res => {
+type TOrderResponse ={
+  number: number
+}
+
+type TUser = { 
+  name: string,
+  email: string,
+  password: string
+}
+type TResponse = {
+  success: string,
+  data?: Array<TIngredient>,
+  order?: TOrderResponse,
+  refreshToken?: string,
+  accessToken?: string,
+  user?: TUser,
+  message?: string
+}
+
+type TRequestOptions = {
+  method?: string,
+  headers?: { [key: string]: string },
+  body?: string
+}
+
+
+const checkReponse = (res: Response) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-const checkSuccessField = data => {
+const checkSuccessField = (data: TResponse) => {
   return data.success ? data : Promise.reject("Success field is not equal true");
 }
 
-async function request(url, options) {
+async function request(url: string, options?: TRequestOptions) {
   return await fetch(url, options)
   .then(checkReponse)
   .then(checkSuccessField)
 }
 
-const saveTokens = (refreshToken, accessToken) => {
+const saveTokens = (refreshToken: string, accessToken: string) => {
   localStorage.setItem('refreshToken', refreshToken);
   setCookie('accessToken', accessToken.split('Bearer ')[1], {expires: 20 * 60 });
 }
@@ -32,7 +59,7 @@ export const getIngredients = async () => {
     .then(data => data.data)
 }
 
-export const postOrder = async (order) => {
+export const postOrder = async (order: Array<string>) => {
   const accessToken = getCookie('accessToken');
 
   return request(`${API}/orders`, {
@@ -41,12 +68,12 @@ export const postOrder = async (order) => {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + accessToken
     },
-    body: JSON.stringify({ingredients: order})
+    body: JSON.stringify({ ingredients: order })
   })
-  .then(data => data.order.number)
+  .then(data => data.order?.number)
 }
 
-export const createNewUser = async (user) => {
+export const createNewUser = async (user: TUser) => {
   return request(`${API}/auth/register`, {
     method: 'POST',
     headers: {
@@ -55,12 +82,12 @@ export const createNewUser = async (user) => {
     body: JSON.stringify({ ...user })
   })
   .then(data => {
-    saveTokens(data.refreshToken, data.accessToken)
+    saveTokens(data.refreshToken!, data.accessToken!)
     return data.user
   })
 }
 
-export const authorizeUser = async (user) => {
+export const authorizeUser = async (user: TUser) => {
   return request(`${API}/auth/login`, {
     method: 'POST',
     headers: {
@@ -69,12 +96,12 @@ export const authorizeUser = async (user) => {
     body: JSON.stringify({ ...user })
   })
   .then(data => {
-    saveTokens(data.refreshToken, data.accessToken)
+    saveTokens(data.refreshToken!, data.accessToken!)
     return data.user
   })
 }
 
-export const sendResetPasswordEmail = async (email) => {
+export const sendResetPasswordEmail = async (email: string) => {
   return request(`${API}/password-reset`, {
     method: 'POST',
     headers: {
@@ -85,7 +112,7 @@ export const sendResetPasswordEmail = async (email) => {
   .then(data => data.message)
 }
 
-export const resetUserPassword = async (password, token) => {
+export const resetUserPassword = async (password: string, token: string) => {
   return request(`${API}/password-reset/reset`, {
     method: 'POST',
     headers: {
@@ -107,7 +134,7 @@ export const updateToken = async () => {
       body: JSON.stringify({ token: refreshToken })
     })
     .then(data => {
-      saveTokens(data.refreshToken, data.accessToken)
+      saveTokens(data.refreshToken!, data.accessToken!)
       return data.accessToken
     })
   }
@@ -143,7 +170,7 @@ export const getUser = async () => {
   }
 }
 
-export const changeUserInfo = async (data) => {
+export const changeUserInfo = async (data: TUser) => {
   const accessToken = getCookie('accessToken');
   return request(`${API}/auth/user`, {
     method: 'PATCH',

@@ -1,16 +1,21 @@
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import ReactDOM from 'react-dom';
+import { ESC_KEYCODE } from '../../utils/constants';
+
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { ModalOverlay } from './modal-overlay'
 import styles from './modal.module.css'
-import PropTypes from 'prop-types';
 
-const ESC_KEYCODE = 27
+type TModalProps = {
+  header?: string,
+  children: ReactElement,
+  onClose: () => void
+}
 
-export const Modal = ({ header, children, onClose }) => {
+export const Modal = ({ header, children, onClose }: TModalProps) => {
   useEffect(() => {
-    const close = (e) => {
-      if(e.keyCode === ESC_KEYCODE){
+    const close = (event: KeyboardEvent) => {
+      if(event.keyCode === ESC_KEYCODE){
         onClose()
       }
     }
@@ -22,16 +27,10 @@ export const Modal = ({ header, children, onClose }) => {
     <>
       <ModalOverlay onClose={onClose} />
       <div className={styles.modal}>
-        <button className={styles.close} onClick={onClose}><CloseIcon/></button>
+        <button className={styles.close} onClick={onClose}><CloseIcon type='primary'/></button>
         {header && (<p className='text text_type_main-medium'>{header}</p>)}
         <div className={`${styles.content} custom-scroll`}>{children}</div>
       </div>
-    </>, document.getElementById('react-modals')
+    </>, document.getElementById('react-modals')!
   )
 }
-
-Modal.propTypes = {
-  header: PropTypes.string,
-  onClose: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired
-}; 

@@ -6,15 +6,23 @@ import { useForm } from '../hooks/use-form'
 import { cangeUserPassword } from '../services/actions/user'
 import style from './forms.module.css'
 
+interface Location {
+  pathname: string;
+  search: string;
+  hash: string;
+  state: { from : Location };
+}
+
 export const ResetPassword = () => {
+  //@ts-ignore
   const { resetPasswordSuccess, resetPasswordMessage, resetPasswordRequest } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
+  const location: Location = useLocation();
 
   const { values, handleChange } = useForm({ password: '', token: '' });
 
-  const passwordRef = React.useRef(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if (location.state?.from.pathname !== '/forgot-password') {
@@ -25,15 +33,16 @@ export const ResetPassword = () => {
     }
 }, [resetPasswordSuccess, history, location])
 
-  const resetPassword = async (e) => {
-    e.preventDefault();
+  const resetPassword: React.FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
     if (values.password && values.token) {
+      //@ts-ignore
       await dispatch(cangeUserPassword(values.password, values.token))
     }
   }
 
   const onIconClick = () => {
-    passwordRef.current.type = passwordRef.current.type === 'password' ? 'text' : 'password';
+    passwordRef.current!.type = passwordRef.current!.type === 'password' ? 'text' : 'password';
   }
 
   return (

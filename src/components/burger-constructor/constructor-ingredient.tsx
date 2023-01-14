@@ -1,18 +1,33 @@
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import React, { useRef } from 'react'
-import { useDrag, useDrop } from 'react-dnd';
+import React, { useRef } from 'react';
+import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import { MOVE_CONSTRUCTOR_INGREDIENT, REMOVE_CONSTRUCTOR_INGREDIENT } from '../../services/actions/constructor';
-import { DECREMENT_IGREDIENT_COUNT } from '../../services/actions/ingredients';
-import styles from './burger-constructor.module.css'
 
-export const ConstructorIngredient = ({ ingredient, index }) => {
+import { MOVE_CONSTRUCTOR_INGREDIENT, REMOVE_CONSTRUCTOR_INGREDIENT } from '../../services/actions/constructor';
+
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import styles from './burger-constructor.module.css';
+
+import { DECREMENT_IGREDIENT_COUNT } from '../../services/actions/ingredients.js';
+import { TIngredient } from '../../utils/types';
+
+type TConstructorIngredientProps = {
+  ingredient: TIngredient,
+  index: number
+}
+
+interface DragItem {
+  index: number
+  id: string
+  type: string
+}
+
+export const ConstructorIngredient = ({ ingredient, index }: TConstructorIngredientProps) => {
   const dragID = ingredient.constructorID;
   const dispatch = useDispatch();
 
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null)
 
-  const [{ handlerId }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: string | symbol | null }>({
     accept: 'constructor-ingredients',
     collect(monitor) {
       return {
@@ -32,7 +47,7 @@ export const ConstructorIngredient = ({ ingredient, index }) => {
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       const clientOffset = monitor.getClientOffset()
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return
       }
@@ -61,14 +76,14 @@ export const ConstructorIngredient = ({ ingredient, index }) => {
 
   drag(drop(ref))
 
-  const onDelete = (id, constructorID) => {
+  const onDelete = (id: string, constructorID: string): void => {
     dispatch({ type: REMOVE_CONSTRUCTOR_INGREDIENT, constructorID })
     dispatch({ type: DECREMENT_IGREDIENT_COUNT, id })
   }
 
   return (
     <div className={styles.choice} ref={ref} style={{ opacity }} data-handler-id={handlerId}> 
-      <DragIcon className='mr-2' />
+      <DragIcon type="primary" />
       <ConstructorElement
         text={ingredient.name}
         price={ingredient.price}

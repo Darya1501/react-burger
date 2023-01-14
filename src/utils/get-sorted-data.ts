@@ -1,7 +1,7 @@
-import { data } from "./data"
+import { TIngredient } from "./types"
 
-export const getSortedData = (array = data) => {
-  const menu = {
+export const getSortedData = (array: Array<TIngredient>) => {
+  const menu: {buns: Array<TIngredient>, sauces: Array<TIngredient>, mains: Array<TIngredient>} = {
     buns: [],
     sauces: [],
     mains: []

@@ -8,7 +8,7 @@ export const AppHeader = () => {
   const linksClasses = `${styles.link} text text_type_main-default p-5`;
   
   const location = useLocation()
-  const defineType = path => path === location.pathname ? 'primary' : 'secondary';
+  const defineType = (path: string) : 'secondary' | 'primary' => path === location.pathname ? 'primary' : 'secondary';
 
   return (
     <header className={`${styles.header} pt-4 pb-4`}>

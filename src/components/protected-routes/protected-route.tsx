@@ -1,15 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, Route, useLocation } from 'react-router-dom';
 import { getUserData } from '../../services/actions/user';
-import PropTypes from 'prop-types';
+import { ILocation } from '../../utils/types';
 
-export const ProtectedRoute = ({ onlyForAuth, children, ...rest }) => {
+interface IWithStateLocation extends ILocation {
+  state: { from: IWithStateLocation };
+}
+
+type TProtectedRouteProps = {
+  onlyForAuth: boolean,
+  children: ReactElement,
+  path?: string,
+  exact?: boolean
+}
+
+export const ProtectedRoute = ({ onlyForAuth, children, ...rest }: TProtectedRouteProps) => {
+  //@ts-ignore
   const { isUserAuthorized } = useSelector(store => store.user);
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location: IWithStateLocation = useLocation();
   
   useEffect(() => {
+  //@ts-ignore
     dispatch(getUserData());
   }, [dispatch]);
   
@@ -32,8 +45,3 @@ export const ProtectedRoute = ({ onlyForAuth, children, ...rest }) => {
 
   return <Route {...rest}>{children}</Route>;
 }
-
-ProtectedRoute.propTypes = {
-  onlyForAuth: PropTypes.bool.isRequired,
-  children: PropTypes.element.isRequired,
-}; 
