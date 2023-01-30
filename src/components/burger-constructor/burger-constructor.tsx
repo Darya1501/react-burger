@@ -1,11 +1,13 @@
 import React, { useState, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../utils/hooks'; 
 
-import { getOrderNumber, TOGGLE_ORDER_DATA } from '../../services/actions/order';
-import { addConstructorIngredient, CHANGE_CONSTRUCTOR_BUN } from '../../services/actions/constructor';
-import { CHANGE_BUNS_COUNT, INCREMENT_IGREDIENT_COUNT } from '../../services/actions/ingredients.js';
+import { getOrderNumber } from '../../services/actions/order';
+import { addConstructorIngredient } from '../../services/actions/constructor';
+import { TOGGLE_ORDER_DATA } from '../../services/constants/order';
+import { CHANGE_CONSTRUCTOR_BUN } from '../../services/constants/constructor';
+import { CHANGE_BUNS_COUNT, INCREMENT_IGREDIENT_COUNT } from '../../services/constants/ingredients';
 
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './burger-constructor.module.css'
@@ -16,13 +18,9 @@ import { Modal } from '../modals/modal';
 import { TIngredient } from '../../utils/types';
 
 export const BurgerConstructor = () => {
-  //@ts-ignore
   const { ingredientsFailed } = useSelector(state => state.ingredients);
-  //@ts-ignore
   const { constructorBun, constructorIngredients } = useSelector(state => state.constructors);
-  //@ts-ignore
   const { isUserAuthorized } = useSelector(store => store.user);
-  //@ts-ignore
   const { isOrderModalVisible } = useSelector(state => state.order);
   const dispatch = useDispatch();
   const history = useHistory();

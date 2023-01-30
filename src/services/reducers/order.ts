@@ -1,18 +1,27 @@
+import { TOrder } from '../../utils/types';
+import { TOrderActions } from '../actions/order';
 import {
   POST_ORDER_FAILED,
   POST_ORDER_REQUEST,
   POST_ORDER_SUCCESS,
   TOGGLE_ORDER_DATA
-} from '../actions/order';
+} from '../constants/order';
 
-const initialOrderState = {
+type TOrderState = {
+  orderRequest: boolean,
+  orderFailed: boolean,
+  order: TOrder | null,
+  isOrderModalVisible: boolean,
+}
+
+const initialOrderState: TOrderState = {
   orderRequest: true,
   orderFailed: false,
   order: null,
   isOrderModalVisible: false,
 }
 
-export const orderReducer = (state = initialOrderState, action) => {
+export const orderReducer = (state = initialOrderState, action: TOrderActions): TOrderState => {
   switch (action.type) {
     case POST_ORDER_REQUEST: {
       return {
@@ -35,7 +44,7 @@ export const orderReducer = (state = initialOrderState, action) => {
       return {
         ...state,
         isOrderModalVisible: !state.isOrderModalVisible,
-      }
+      };
     }
     default: {
       return state;

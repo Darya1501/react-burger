@@ -1,3 +1,5 @@
+import { TUser } from "../../utils/types";
+import { TUserActions } from "../actions/user";
 import { 
   REGISTER_SUCCESS,
   REGISTER_FAILED,
@@ -15,9 +17,32 @@ import {
 
   LOGOUT_USER,
   SET_USER_DATA,
-} from "../actions/user";
+} from "../constants/user";
 
-const initialOrderState = {
+type TUserState = {
+  sendEmailRequest: boolean,
+  sendEmailFaild: boolean,
+  sendEmailSuccess: boolean,
+  sendEmailMessage: string,
+
+  resetPasswordRequest: boolean,
+  resetPasswordFaild: boolean,
+  resetPasswordSuccess: boolean,
+  resetPasswordMessage: string,
+
+  registerFaild: boolean,
+  registerSuccess: boolean,
+
+  authFaild: boolean,
+  authSuccess: boolean,
+  isUserAuthorized: boolean,
+
+  errorMessage: string,
+
+  user: TUser
+}
+
+const initialOrderState: TUserState = {
   sendEmailRequest: false,
   sendEmailFaild: false,
   sendEmailSuccess: false,
@@ -43,7 +68,7 @@ const initialOrderState = {
   }
 }
 
-export const userReducer = (state = initialOrderState, action) => {
+export const userReducer = (state = initialOrderState, action: TUserActions): TUserState => {
   switch (action.type) {
     case REGISTER_SUCCESS: {
       return {
