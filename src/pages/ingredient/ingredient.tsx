@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styles from './ingredient.module.css'
-import { TIngredient } from '../utils/types';
+import { TIngredient } from '../../utils/types';
 
 export const Ingredient = () => {
   //@ts-ignore

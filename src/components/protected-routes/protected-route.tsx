@@ -9,13 +9,14 @@ interface IWithStateLocation extends ILocation {
 }
 
 type TProtectedRouteProps = {
-  onlyForAuth: boolean,
+  onlyForAuth?: boolean,
+  onlyForUnauth?: boolean,
   children: ReactElement,
   path?: string,
   exact?: boolean
 }
 
-export const ProtectedRoute = ({ onlyForAuth, children, ...rest }: TProtectedRouteProps) => {
+export const ProtectedRoute = ({ onlyForAuth, onlyForUnauth, children, ...rest }: TProtectedRouteProps) => {
   const { isUserAuthorized } = useSelector(store => store.user);
   const dispatch = useDispatch();
   const location: IWithStateLocation = useLocation();
@@ -24,7 +25,7 @@ export const ProtectedRoute = ({ onlyForAuth, children, ...rest }: TProtectedRou
     dispatch(getUserData());
   }, [dispatch]);
   
-  if (!onlyForAuth && isUserAuthorized) {
+  if (onlyForUnauth && isUserAuthorized) {
     const { from } = location.state || { from: { pathname: "/" } };
     return (
       <Route {...rest}>

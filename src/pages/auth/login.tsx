@@ -2,8 +2,8 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useForm } from '../hooks/use-form'
-import { loginUser } from '../services/actions/user'
+import { useForm } from '../../hooks/use-form'
+import { loginUser } from '../../services/actions/user'
 import style from './forms.module.css'
 
 export const Login = () => {

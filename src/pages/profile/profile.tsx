@@ -2,8 +2,8 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useForm } from '../hooks/use-form';
-import { cangeUserData, logoutUser } from '../services/actions/user';
+import { useForm } from '../../hooks/use-form';
+import { cangeUserData, logoutUser } from '../../services/actions/user';
 import styles from './profile.module.css'
 
 export const Profile = () => {
