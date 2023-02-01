@@ -68,6 +68,9 @@ function App() {
           <ProtectedRoute onlyForUnauth path='/reset-password' exact={true}>
             <ResetPassword />
           </ProtectedRoute>
+          <ProtectedRoute onlyForAuth path='/profile/orders/:id' exact={true}>
+            <FeedOrderDetails />
+          </ProtectedRoute>
           <ProtectedRoute onlyForAuth path="/profile">
             <Profile />
           </ProtectedRoute>
@@ -84,6 +87,24 @@ function App() {
             children={
               <Modal onClose={history.goBack} header='Детали ингредиента'>
                 <IngredientDetails />
+              </Modal>}
+          />
+        }
+
+        { background && 
+          <Route path="/feed/:id" 
+            children={
+              <Modal onClose={history.goBack}>
+                <FeedOrderDetails />
+              </Modal>}
+          />
+        }
+
+        { background && 
+          <Route path="/profile/orders/:id" 
+            children={
+              <Modal onClose={history.goBack}>
+                <FeedOrderDetails />
               </Modal>}
           />
         }

@@ -1,9 +1,11 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styles from './orders.module.css'
 
 export const OrderCard = () => {
+  const location = useLocation();
+
   const totalPrice = 480;
   const count = 15;
   const id = 1;
@@ -11,7 +13,8 @@ export const OrderCard = () => {
   return (
     <Link 
       to={{
-        pathname: `/feed/${id}`,
+        pathname: `${location.pathname}/${id}`,
+        state: { background: location }
       }}
       className={`${styles.card} p-6`}
     >
