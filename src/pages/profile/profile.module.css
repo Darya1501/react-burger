@@ -13,13 +13,6 @@
   max-width: 320px;
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: auto;
-}
-
 .link {
   height: 64px;
 }
@@ -31,4 +24,9 @@
 
 .cansel {
   cursor: pointer;
+}
+
+.empty {
+  width: 100%;
+  text-align: center;
 }

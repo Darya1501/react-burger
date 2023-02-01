@@ -5,6 +5,7 @@
 .list {
   max-height: calc(100vh - 228px);
   min-height: 240px;
+  width: 100%;
   overflow-y: scroll;
   scrollbar-color: var(--text-inactive-color) var(--background-element);
   scrollbar-width: thin;

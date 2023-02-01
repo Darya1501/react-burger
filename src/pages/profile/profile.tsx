@@ -1,9 +1,10 @@
-import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
-import { useForm } from '../../hooks/use-form';
-import { cangeUserData, logoutUser } from '../../services/actions/user';
+import React from 'react'
+import { NavLink, Route, Switch, useLocation } from 'react-router-dom';
+import { ProfileOrders } from '../../components/orders/profile-orders';
+import { ProfileForm } from '../../components/profile-form/profile-form';
+import { logoutUser } from '../../services/actions/user';
+import { useDispatch } from '../../utils/hooks';
+import { NotFound404 } from '../not-found/not-found';
 import styles from './profile.module.css'
 
 export const Profile = () => {
@@ -11,36 +12,8 @@ export const Profile = () => {
   const defineClass = (path: string) => `${styles.link} text text_type_main-medium ${path === location.pathname ? '' : 'text_color_inactive'}`;
   
   const dispatch = useDispatch();
-  //@ts-ignore
-  const { user } = useSelector(store => store.user);
-
-  const {values, handleChange, setValues} = useForm({ password: '', ...user });
-
-  useEffect(() => {
-    setValues({ password: '', ...user })
-  }, [user, setValues])
-
-  const [ isDataChanged, setIsDataChanged ] = useState(false);
-
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    handleChange(event)
-    setIsDataChanged(true)
-  };
-
-  const onCancel = () => {
-    setValues({ password: '', ...user })
-    setIsDataChanged(false)
-  }
-
-  const onSave: React.FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-    //@ts-ignore
-    dispatch(cangeUserData(values))
-    setIsDataChanged(false)
-  }
 
   const onLogout = () => {
-    //@ts-ignore
     dispatch(logoutUser());
   }
 
@@ -56,46 +29,19 @@ export const Profile = () => {
         </p>
       </nav>
 
-      <form className={styles.content} onSubmit={onSave}>
-        <Input
-          type={'text'}
-          placeholder={'Имя'}
-          name={'name'}
-          value={values.name}
-          onChange={onChange}
-          icon={'EditIcon'}
-          size={'default'}
-          extraClass="mb-6"
-        />
-        <Input
-          type={'email'}
-          placeholder={'Логин'}
-          name={'login'}
-          value={values.email}
-          onChange={onChange}
-          icon={'EditIcon'}
-          size={'default'}
-          extraClass="mb-6"
-        />
-        <Input
-          type={'password'}
-          placeholder={'Пароль'}
-          name={'password'}
-          value={values.password}
-          onChange={onChange}
-          icon={'EditIcon'}
-          size={'default'}
-          extraClass="mb-6"
-          disabled
-        />
+      <Switch>
+        <Route path={`/profile/`} exact={true}>
+          <ProfileForm />
+        </Route>
+        <Route path={`/profile/orders`} exact={true}>
+          <ProfileOrders />
+        </Route>
+        <Route>
+          <span className={`${styles.empty} text text_type_main-default text_color_inactive`}>Выберите нужный пункт подменю слева</span>
+        </Route>
+      </Switch>
 
-        { isDataChanged &&
-          <>
-            <Button htmlType="submit" type="primary" size="medium" extraClass="mb-4">Сохранить</Button>
-            <p className={`${styles.cansel} text text_type_main-default text_color_inactive`} onClick={onCancel}>Отмена</p>
-          </>
-        }
-      </form>
+      
     </div>
   )
 }

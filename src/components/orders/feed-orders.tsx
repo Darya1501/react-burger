@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './feed-orders.module.css'
+import styles from './orders.module.css'
 import { OrderCard } from './order-card'
 
 export const FeedOrders = () => {

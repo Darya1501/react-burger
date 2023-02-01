@@ -1,6 +1,6 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react'
-import styles from './feed-orders.module.css'
+import styles from './orders.module.css'
 
 export const OrderCard = () => {
   const totalPrice = 480;
