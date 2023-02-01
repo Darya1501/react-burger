@@ -1,6 +1,6 @@
 import React from 'react'
 import doneImage from '../../images/graphics.svg'
-import styles from './modal.module.css'
+import styles from './details.module.css'
 import { useSelector } from '../../utils/hooks'; 
 
 export const OrderDetails = () => {

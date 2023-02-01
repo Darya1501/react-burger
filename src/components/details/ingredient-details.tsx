@@ -1,18 +1,19 @@
 import React from 'react'
-import styles from './modal.module.css'
+import styles from './details.module.css'
 import { useSelector } from '../../utils/hooks'; 
 import { useParams } from 'react-router-dom';
 import { TIngredient } from '../../utils/types';
 
 export const IngredientDetails = () => {
   const { ingredients, ingredientsRequest } = useSelector(state => state.ingredients);
+  console.log('ingredientsRequest: ', ingredientsRequest);
   let { id } = useParams<{id?: string}>();
   const currentIngredient = ingredients.find((item: TIngredient) => item._id === id)
 
   return (
     <>
       {
-        ingredientsRequest !== undefined ? 
+        ingredientsRequest ? 
         (<p className="text text_type_main-medium">Загрузка...</p>) :
         (<div className={styles.ingredient}>
           <img src={currentIngredient?.image_large} alt={currentIngredient?.name} />

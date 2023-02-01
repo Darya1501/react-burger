@@ -30,19 +30,3 @@
   background-color: transparent;
   border: none
 }
-
-.order {
-  padding: 60px 0;
-  text-align: center;
-}
-
-.ingredient {
-  text-align: center;
-}
-
-.info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}

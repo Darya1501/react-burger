@@ -13,7 +13,7 @@ import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-de
 import styles from './burger-constructor.module.css'
 
 import { ConstructorIngredient } from './constructor-ingredient';
-import { OrderDetails } from '../modals/order-details';
+import { OrderDetails } from '../details/order-details';
 import { Modal } from '../modals/modal';
 import { TIngredient } from '../../utils/types';
 

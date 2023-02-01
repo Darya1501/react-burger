@@ -1,13 +1,21 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react'
+import { Link } from 'react-router-dom';
 import styles from './orders.module.css'
 
 export const OrderCard = () => {
   const totalPrice = 480;
   const count = 15;
+  const id = 1;
 
   return (
-    <div className={`${styles.card} p-6`}>
+    <Link 
+      to={{
+        pathname: `/feed/${id}`,
+      }}
+      className={`${styles.card} p-6`}
+    >
+
       <div className={styles.id}>
         <span className="text text_type_digits-default">#034535</span>
         <span className='text text_type_main-default text_color_inactive'>Сегодня, 16:20</span>
@@ -39,6 +47,7 @@ export const OrderCard = () => {
           <CurrencyIcon type="primary" />
         </p>
       </div>
-    </div>
+
+    </Link>
   )
 }

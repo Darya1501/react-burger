@@ -14,7 +14,7 @@ import { AppHeader } from '../app-header/app-header';
 
 import { ProtectedRoute } from '../protected-routes/protected-route';
 import { Modal } from '../modals/modal';
-import { IngredientDetails } from '../modals/ingredient-details';
+import { IngredientDetails } from '../details/ingredient-details';
 
 import { getIngredientsRequest } from '../../services/actions/ingredients';
 import { getUserData } from '../../services/actions/user';
@@ -22,6 +22,7 @@ import { getUserData } from '../../services/actions/user';
 import styles from './app.module.css';
 import { ILocation } from '../../utils/types';
 import { Feed } from '../../pages/feed/feed';
+import { FeedOrderDetails } from '../details/feed-order-details';
 
 interface IWithStateLocation extends ILocation {
   state: { background : IWithStateLocation };
@@ -51,6 +52,9 @@ function App() {
           </Route>
           <ProtectedRoute path='/feed' exact={true}>
             <Feed />
+          </ProtectedRoute>
+          <ProtectedRoute path='/feed/:id' exact={true}>
+            <FeedOrderDetails />
           </ProtectedRoute>
           <ProtectedRoute onlyForUnauth path='/login' exact={true}>
             <Login />

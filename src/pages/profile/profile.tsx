@@ -4,7 +4,6 @@ import { ProfileOrders } from '../../components/orders/profile-orders';
 import { ProfileForm } from '../../components/profile-form/profile-form';
 import { logoutUser } from '../../services/actions/user';
 import { useDispatch } from '../../utils/hooks';
-import { NotFound404 } from '../not-found/not-found';
 import styles from './profile.module.css'
 
 export const Profile = () => {
@@ -40,8 +39,6 @@ export const Profile = () => {
           <span className={`${styles.empty} text text_type_main-default text_color_inactive`}>Выберите нужный пункт подменю слева</span>
         </Route>
       </Switch>
-
-      
     </div>
   )
 }
