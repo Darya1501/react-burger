@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { useDrop } from 'react-dnd';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from '../../utils/hooks'; 
+import { useDispatch, useSelector } from '../../hooks/store-hooks'; 
 
 import { getOrderNumber } from '../../services/actions/order';
 import { addConstructorIngredient } from '../../services/actions/constructor';
@@ -39,7 +39,6 @@ export const BurgerConstructor = () => {
     const ingredients = [constructorBun._id];
     constructorIngredients.map((component: TIngredient) => ingredients.push(component._id));
     ingredients.push(constructorBun._id);
-    //@ts-ignore
     dispatch(getOrderNumber(ingredients))
   }
 

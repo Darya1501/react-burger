@@ -1,5 +1,5 @@
 import React, { RefObject } from 'react'
-import { useSelector } from '../../utils/hooks'; 
+import { useSelector } from '../../hooks/store-hooks'; 
 
 import { getSortedData } from '../../utils/get-sorted-data';
 import { tabs } from '../../utils/constants';

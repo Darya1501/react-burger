@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
-import { useDispatch } from '../../utils/hooks'; 
+import { useDispatch } from '../../hooks/store-hooks'; 
 
 import { MOVE_CONSTRUCTOR_INGREDIENT, REMOVE_CONSTRUCTOR_INGREDIENT } from '../../services/constants/constructor';
 

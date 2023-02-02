@@ -76,7 +76,7 @@ export type TUserActions =
   ILogoutUser |
   ISetUserData;
 
-export const getUserData: AppThunk = () => (dispatch: AppDispatch) => {
+export const getUserData = (): AppThunk => (dispatch: AppDispatch) => {
   getUser().then(user => {
     if (user) {
       dispatch({
@@ -90,7 +90,7 @@ export const getUserData: AppThunk = () => (dispatch: AppDispatch) => {
   })
 }
 
-export const registerUser: AppThunk = (user: TUser) => (dispatch: AppDispatch) => {
+export const registerUser = (user: TUser): AppThunk => (dispatch: AppDispatch) => {
   createNewUser(user).then(newUser => {
     if(newUser) {
       dispatch({
@@ -107,7 +107,7 @@ export const registerUser: AppThunk = (user: TUser) => (dispatch: AppDispatch) =
   });
 }
 
-export const loginUser: AppThunk = (user: TUser) => (dispatch: AppDispatch) => {
+export const loginUser = (user: TUser): AppThunk => (dispatch: AppDispatch) => {
   authorizeUser(user).then(user => {
     if(user) {
       dispatch({
@@ -124,7 +124,7 @@ export const loginUser: AppThunk = (user: TUser) => (dispatch: AppDispatch) => {
   });
 }
 
-export const sendResetCode: AppThunk = (email: string) => (dispatch: AppDispatch) => {
+export const sendResetCode = (email: string): AppThunk => (dispatch: AppDispatch) => {
   dispatch({ type: SEND_EMAIL_REQUEST })
   sendResetPasswordEmail(email).then(message => {
     if(message) {
@@ -142,7 +142,7 @@ export const sendResetCode: AppThunk = (email: string) => (dispatch: AppDispatch
   });
 }
 
-export const cangeUserPassword: AppThunk = (password: string, token: string) => (dispatch: AppDispatch) => {
+export const cangeUserPassword = (password: string, token: string): AppThunk => (dispatch: AppDispatch) => {
   dispatch({ type: RESET_PASSWORD_REQUEST })
   resetUserPassword(password, token).then(message => {
     if(message) {
@@ -160,12 +160,12 @@ export const cangeUserPassword: AppThunk = (password: string, token: string) => 
   });
 }
 
-export const logoutUser: AppThunk = () => (dispatch: AppDispatch) => {
+export const logoutUser = (): AppThunk => (dispatch: AppDispatch) => {
   logout().then(() => { dispatch({ type: LOGOUT_USER }) })
   .catch(error => console.error(error));
 }
 
-export const cangeUserData: AppThunk = (data: TUser) => (dispatch: AppDispatch) => {
+export const cangeUserData = (data: TUser): AppThunk => (dispatch: AppDispatch) => {
   changeUserInfo(data).then(user => {
     if(user) {
       dispatch({

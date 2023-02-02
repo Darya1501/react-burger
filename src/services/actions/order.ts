@@ -28,7 +28,7 @@ export type TOrderActions =
   IPostOrderFailed |
   IToggleOrderData;
 
-export const getOrderNumber: AppThunk = (components: Array<string>) => (dispatch: AppDispatch) => {
+export const getOrderNumber = (components: Array<string>): AppThunk => (dispatch: AppDispatch) => {
   dispatch({ type: POST_ORDER_REQUEST });
   dispatch({ type: TOGGLE_ORDER_DATA });
 

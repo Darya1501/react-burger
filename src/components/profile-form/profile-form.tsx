@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from '../../utils/hooks';
+import { useDispatch, useSelector } from '../../hooks/store-hooks';
 import { useForm } from '../../hooks/use-form';
 import { cangeUserData } from '../../services/actions/user';
 import styles from './profile-form.module.css'
+import { TUser } from '../../utils/types';
 
 export const ProfileForm = () => {
   const { user } = useSelector(store => store.user);
@@ -28,7 +29,7 @@ export const ProfileForm = () => {
 
   const onSave: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    dispatch(cangeUserData(values))
+    dispatch(cangeUserData(values as TUser))
     setIsDataChanged(false)
   }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './details.module.css'
-import { useSelector } from '../../utils/hooks'; 
+import { useSelector } from '../../hooks/store-hooks'; 
 import { useParams } from 'react-router-dom';
 import { TIngredient } from '../../utils/types';
 

@@ -41,7 +41,7 @@ export type TIngredientsActions =
   IDecrementIngredientCount |
   IChangeBunCount;
 
-export const getIngredientsRequest: AppThunk = () => (dispatch: AppDispatch) => {
+export const getIngredientsRequest = (): AppThunk => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_INGREDIENTS_REQUEST
   });

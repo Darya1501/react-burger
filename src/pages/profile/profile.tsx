@@ -2,8 +2,8 @@ import React from 'react'
 import { NavLink, Route, Switch, useLocation } from 'react-router-dom';
 import { ProfileOrders } from '../../components/orders/profile-orders';
 import { ProfileForm } from '../../components/profile-form/profile-form';
+import { useDispatch } from '../../hooks/store-hooks';
 import { logoutUser } from '../../services/actions/user';
-import { useDispatch } from '../../utils/hooks';
 import styles from './profile.module.css'
 
 export const Profile = () => {

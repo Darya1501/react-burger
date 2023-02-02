@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
-import { useDispatch } from '../../utils/hooks';
+import { useDispatch } from '../../hooks/store-hooks';
 
 import { Home } from '../../pages/home/home';
 import { Login } from '../../pages/auth/login';

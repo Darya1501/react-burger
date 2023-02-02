@@ -1,7 +1,7 @@
 import React from 'react'
 import doneImage from '../../images/graphics.svg'
 import styles from './details.module.css'
-import { useSelector } from '../../utils/hooks'; 
+import { useSelector } from '../../hooks/store-hooks'; 
 
 export const OrderDetails = () => {
   const { orderRequest, orderFailed, order } = useSelector(store => store.order);

@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react'
-import { useDispatch, useSelector } from '../../utils/hooks'; 
+import { useDispatch, useSelector } from '../../hooks/store-hooks'; 
 import { Redirect, Route, useLocation } from 'react-router-dom';
 import { getUserData } from '../../services/actions/user';
 import { ILocation } from '../../utils/types';

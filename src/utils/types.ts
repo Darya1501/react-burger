@@ -3,9 +3,8 @@ import { TIngredientsActions } from '../services/actions/ingredients';
 import { TOrderActions } from '../services/actions/order';
 import { TUserActions } from '../services/actions/user';
 import { store } from '../services/srore';
-import { ThunkAction } from 'redux-thunk';
-import { Action, ActionCreator } from 'redux';
-import { Dispatch } from 'react';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { TWsActions } from '../services/actions/websocket';
 
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -13,11 +12,15 @@ export type TApplicationActions =
   TConstructorActions |
   TIngredientsActions |
   TOrderActions |
-  TUserActions;
+  TUserActions |
+  TWsActions;
 
-export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TApplicationActions>>;
+export type AppThunk<TReturn = void> = ThunkAction<TReturn, RootState, never, TApplicationActions>;
+export type AppDispatch = ThunkDispatch<RootState, never, TApplicationActions>;
 
-export type AppDispatch = Dispatch<TApplicationActions>;
+export interface IMessage {
+  
+}
 
 export type TIngredient = {
   _id: string;
