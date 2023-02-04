@@ -24,7 +24,6 @@ export const socketMiddleware = (wsUrl: string): Middleware => {
         socket = new WebSocket(`${wsUrl}/all`);
       } else if (type === WS_USER_ORDERS_CONNECT) {
         const token = getCookie('accessToken');
-          console.log('token: ', token);
           if (token) {
             socket = new WebSocket(`${wsUrl}?token=${token}`);
           } else {

@@ -1,3 +1,6 @@
+import { TFeedOrder } from './../reducers/feed';
+import { getOrderById } from '../../utils/burger-api';
+import { AppDispatch, AppThunk } from '../../utils/types';
 import {
   WS_FEED_ORDERS_CONNECT,
   WS_USER_ORDERS_CONNECT,
@@ -5,8 +8,8 @@ import {
   WS_FEED_ORDERS_ERROR,
   WS_FEED_ORDERS_DISCONNECT,
   WS_USER_ORDERS_DISCONNECT,
+  GET_ORDER
 } from '../constants/feed';
-import { TFeedOrder } from "../reducers/feed";
 
 export interface IWsAction {
   readonly type: string;
@@ -34,6 +37,10 @@ export interface IWsFeedOrdersDisconnect extends IWsAction {
 export interface IWsUserOrdersDisconnect extends IWsAction {
   readonly type: typeof WS_USER_ORDERS_DISCONNECT;
 }
+export interface IGetOrder {
+  readonly type: typeof GET_ORDER;
+  order: TFeedOrder
+}
 
 export type TFeedActions = 
   IWsFeedOrdersConnect | 
@@ -41,4 +48,16 @@ export type TFeedActions =
   IWsFeedReceivedMessage |
   IWsFeedOrdersError |
   IWsFeedOrdersDisconnect |
-  IWsUserOrdersDisconnect;
+  IWsUserOrdersDisconnect |
+  IGetOrder;
+
+export const getOrderRequest = (id: string): AppThunk => (dispatch: AppDispatch) => {
+  getOrderById(id).then(res => {
+    if (res) {
+      dispatch({ type: GET_ORDER, order: res[0] });
+    }
+  })
+  .catch(error => {
+    console.error(error);
+  });
+};

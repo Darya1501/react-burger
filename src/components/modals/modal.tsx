@@ -29,7 +29,7 @@ export const Modal = ({ header, children, onClose }: TModalProps) => {
       <div className={styles.modal}>
         <button className={styles.close} onClick={onClose}><CloseIcon type='primary'/></button>
         {header && (<p className='text text_type_main-medium'>{header}</p>)}
-        <div className={`${styles.content} custom-scroll`}>{children}</div>
+        <div className={`${styles.content}`}>{children}</div>
       </div>
     </>, document.getElementById('react-modals')!
   )

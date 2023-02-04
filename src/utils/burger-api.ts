@@ -1,3 +1,4 @@
+import { TFeedOrder } from "../services/reducers/feed";
 import { getCookie, setCookie } from "./cookies";
 import { TIngredient,TUser } from "./types";
 
@@ -14,7 +15,8 @@ type TResponse = {
   refreshToken?: string,
   accessToken?: string,
   user?: TUser,
-  message?: string
+  message?: string,
+  orders?: Array<TFeedOrder>
 }
 
 type TRequestOptions = {
@@ -176,4 +178,11 @@ export const changeUserInfo = async (data: TUser) => {
     body: JSON.stringify({ ...data }),
   })
   .then(data => data.user)
+}
+
+export const getOrderById = (id: string) => {
+  return request(`${API}/orders/${id}`)
+    .then(data => {
+      return data.orders
+    })
 }

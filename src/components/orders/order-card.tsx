@@ -50,11 +50,14 @@ export const OrderCard = ({ order, status }: TOrderCardProps) => {
       <p className="text text_type_main-medium mt-6 mb-6">
         {order.name}
         { status &&
-          <p className="text text_type_main-default mt-2">
-            {
-              status === 'created' ? 'Создан' : status === 'pending' ? 'Готовится' : 'Выполнен'
-            }
-          </p>
+          (<>
+            <br />
+            <span className="text text_type_main-default mt-2">
+              {
+                status === 'created' ? 'Создан' : status === 'pending' ? 'Готовится' : 'Выполнен'
+              }
+            </span>
+          </>)
           }
       </p>
 

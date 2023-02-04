@@ -1,5 +1,5 @@
 import { TFeedActions } from "../actions/feed"
-import { WS_FEED_ORDERS_CONNECT, WS_FEED_ORDERS_DISCONNECT, WS_FEED_ORDERS_ERROR, WS_FEED_RECEIVED_MESSAGE, WS_USER_ORDERS_CONNECT, WS_USER_ORDERS_DISCONNECT } from "../constants/feed"
+import { GET_ORDER, WS_FEED_ORDERS_CONNECT, WS_FEED_ORDERS_DISCONNECT, WS_FEED_ORDERS_ERROR, WS_FEED_RECEIVED_MESSAGE, WS_USER_ORDERS_CONNECT, WS_USER_ORDERS_DISCONNECT } from "../constants/feed"
 
 export type TFeedOrder = {
   ingredients: Array<string>,
@@ -15,14 +15,15 @@ type TInitialState = {
   wsConnected: boolean,
   orders: Array<TFeedOrder>,
   total: number,
-  totalToday: number
+  totalToday: number,
+  order?: TFeedOrder
 }
 
 const initialState: TInitialState = {
   wsConnected: false,
   orders: [],
   total: 0,
-  totalToday: 0
+  totalToday: 0,
 }
 
 export const feedReducer = (state = initialState, action: TFeedActions) => {
@@ -45,7 +46,10 @@ export const feedReducer = (state = initialState, action: TFeedActions) => {
     case WS_USER_ORDERS_DISCONNECT:
       return { ...initialState };
 
+    case GET_ORDER:
+      return { ...state, order: action.order };
+
     default:
       return state;
-}
+  }
 }
