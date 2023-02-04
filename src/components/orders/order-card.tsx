@@ -54,7 +54,7 @@ export const OrderCard = ({ order }: TOrderCardProps) => {
             orderIngredients.slice(0, 6).map((ingredient, index) => {
               if (index < 5) {
                 return (
-                  <div className={styles.image} style={{ zIndex: 5-index }} key={ingredient.id}>
+                  <div className={styles.image} style={{ zIndex: 6-index }} key={ingredient.id}>
                     <img src={ingredient.image} alt={ingredient.id} />
                   </div>
                 )
