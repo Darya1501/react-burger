@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink, Route, Switch, useLocation } from 'react-router-dom';
 import { ProfileOrders } from '../../components/orders/profile-orders';
 import { ProfileForm } from '../../components/profile-form/profile-form';
 import { useDispatch } from '../../hooks/store-hooks';
 import { logoutUser } from '../../services/actions/user';
+import { WS_USER_ORDERS_CONNECT, WS_USER_ORDERS_DISCONNECT } from '../../services/constants/feed';
 import styles from './profile.module.css'
 
 export const Profile = () => {
@@ -11,6 +12,16 @@ export const Profile = () => {
   const defineClass = (path: string) => `${styles.link} text text_type_main-medium ${path === location.pathname ? '' : 'text_color_inactive'}`;
   
   const dispatch = useDispatch();
+
+  useEffect(
+    () => {
+      dispatch({ type: WS_USER_ORDERS_CONNECT });
+      return () => {
+        dispatch({ type: WS_USER_ORDERS_DISCONNECT })
+      }
+    },
+    [dispatch]
+  );
 
   const onLogout = () => {
     dispatch(logoutUser());

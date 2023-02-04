@@ -8,6 +8,7 @@ import styles from './orders.module.css'
 
 type TOrderCardProps = {
   order: TFeedOrder,
+  status?: string
 }
 
 type TCardIngredient = {
@@ -25,7 +26,7 @@ const getAllIngredient = (ingredients: Array<TIngredient>, ids: Array<string>) =
   }))
 }
 
-export const OrderCard = ({ order }: TOrderCardProps) => {
+export const OrderCard = ({ order, status }: TOrderCardProps) => {
   const location = useLocation();
   
   const { ingredients } = useSelector(state => state.ingredients);
@@ -46,7 +47,16 @@ export const OrderCard = ({ order }: TOrderCardProps) => {
         <span className="text text_type_digits-default">#{order._id}</span>
         <FormattedDate className='text text_type_main-default text_color_inactive' date={new Date(order.createdAt)} />
       </div>
-      <p className="text text_type_main-medium mt-6 mb-6">{order.name}</p>
+      <p className="text text_type_main-medium mt-6 mb-6">
+        {order.name}
+        { status &&
+          <p className="text text_type_main-default mt-2">
+            {
+              status === 'created' ? 'Создан' : status === 'pending' ? 'Готовится' : 'Выполнен'
+            }
+          </p>
+          }
+      </p>
 
       <div className={styles.components}>
         <div className={styles.ingredients}>

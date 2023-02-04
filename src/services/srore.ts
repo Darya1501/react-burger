@@ -17,6 +17,6 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({ 
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware('wss://norma.nomoreparties.space/orders/all')),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware('wss://norma.nomoreparties.space/orders')),
   devTools: process.env.NODE_ENV !== 'production'
 })

@@ -114,6 +114,10 @@ export const loginUser = (user: TUser): AppThunk => (dispatch: AppDispatch) => {
         type: AUTH_SUCCESS,
         user: user,
       })
+      dispatch({
+        type: SET_USER_DATA,
+        user: user,
+      })
     } else {
       dispatch({ type: AUTH_FAILED, message: 'Пользователь не был авторизован' }); 
     }
