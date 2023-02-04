@@ -1,7 +1,7 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from '../../hooks/store-hooks'
 import { useForm } from '../../hooks/use-form'
 import { cangeUserPassword } from '../../services/actions/user'
 import style from './forms.module.css'
@@ -14,7 +14,6 @@ interface Location {
 }
 
 export const ResetPassword = () => {
-  //@ts-ignore
   const { resetPasswordSuccess, resetPasswordMessage, resetPasswordRequest } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -36,7 +35,6 @@ export const ResetPassword = () => {
   const resetPassword: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     if (values.password && values.token) {
-      //@ts-ignore
       await dispatch(cangeUserPassword(values.password, values.token))
     }
   }

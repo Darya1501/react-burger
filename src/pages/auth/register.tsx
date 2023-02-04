@@ -1,13 +1,13 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from '../../hooks/store-hooks'
 import { useForm } from '../../hooks/use-form'
 import { registerUser } from '../../services/actions/user'
+import { TUser } from '../../utils/types'
 import style from './forms.module.css'
 
 export const Register = () => {
-  //@ts-ignore
   const { errorMessage } = useSelector(store => store.user)
   const dispatch = useDispatch();
   const passwordRef = React.useRef<HTMLInputElement>(null);
@@ -16,8 +16,7 @@ export const Register = () => {
 
   const register: React.FormEventHandler<HTMLFormElement> = (event): void => {
     event.preventDefault();
-    //@ts-ignore
-    dispatch(registerUser(values));
+    dispatch(registerUser(values as TUser));
   }
 
   const onIconClick = () => {

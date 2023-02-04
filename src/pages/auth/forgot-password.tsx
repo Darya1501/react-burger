@@ -1,13 +1,12 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from '../../hooks/store-hooks'
 import { useForm } from '../../hooks/use-form'
 import { sendResetCode } from '../../services/actions/user'
 import style from './forms.module.css'
 
 export const ForgotPassword = () => {
-  //@ts-ignore
   const { sendEmailSuccess, sendEmailMessage, sendEmailRequest } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -27,7 +26,6 @@ export const ForgotPassword = () => {
     event.preventDefault();
     if (!emailRef.current) return;
     if (emailRef.current.value) {
-      //@ts-ignore
       dispatch(sendResetCode(emailRef.current.value))
     }
   }
