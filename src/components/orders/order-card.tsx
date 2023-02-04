@@ -1,48 +1,73 @@
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from '../../hooks/store-hooks';
+import { TFeedOrder } from '../../services/reducers/feed';
+import { TIngredient } from '../../utils/types';
 import styles from './orders.module.css'
 
-export const OrderCard = () => {
-  const location = useLocation();
+type TOrderCardProps = {
+  order: TFeedOrder,
+}
 
-  const totalPrice = 480;
-  const count = 15;
-  const id = 1;
+type TCardIngredient = {
+  id: string
+  image: string
+  price: number
+}
+
+const getAllIngredient = (ingredients: Array<TIngredient>, ids: Array<string>) => {
+  const orderIngredients = ingredients.filter((ingredient: TIngredient) => ids.indexOf(ingredient._id) !== -1)
+  return orderIngredients.map((ingredient: TIngredient) => ({
+    id: ingredient._id,
+    image: ingredient.image,
+    price: ingredient.type === 'bun' ? ingredient.price * 2 : ingredient.price
+  }))
+}
+
+export const OrderCard = ({ order }: TOrderCardProps) => {
+  const location = useLocation();
+  
+  const { ingredients } = useSelector(state => state.ingredients);
+  const orderIngredients = getAllIngredient(ingredients, order.ingredients)
+
+  const totalPrice = orderIngredients.reduce((accumulator: number, component: TCardIngredient) => accumulator + component.price, 0);
 
   return (
     <Link 
       to={{
-        pathname: `${location.pathname}/${id}`,
+        pathname: `${location.pathname}/${order._id}`,
         state: { background: location }
       }}
       className={`${styles.card} p-6`}
     >
 
       <div className={styles.id}>
-        <span className="text text_type_digits-default">#034535</span>
-        <span className='text text_type_main-default text_color_inactive'>Сегодня, 16:20</span>
+        <span className="text text_type_digits-default">#{order._id}</span>
+        <FormattedDate className='text text_type_main-default text_color_inactive' date={new Date(order.createdAt)} />
       </div>
-      <p className="text text_type_main-medium mt-6 mb-6">Death Star Starship Main бургер</p>
+      <p className="text text_type_main-medium mt-6 mb-6">{order.name}</p>
 
       <div className={styles.components}>
         <div className={styles.ingredients}>
-          <div className={styles.image} style={{ zIndex: 5 }}>
-            <img src="https://code.s3.yandex.net/react/code/bun-02.png" alt="bun" />
-          </div> 
-          <div className={styles.image} style={{ zIndex: 4 }}>
-            <img src="https://code.s3.yandex.net/react/code/bun-01.png" alt="bun" />
-          </div> 
-          <div className={styles.image} style={{ zIndex: 3 }}>
-            <img src="https://code.s3.yandex.net/react/code/bun-01.png" alt="bun" />
-          </div> 
-          <div className={styles.image} style={{ zIndex: 2 }}>
-            <img src="https://code.s3.yandex.net/react/code/bun-01.png" alt="bun" />
-          </div> 
-          <div className={styles.image} style={{ zIndex: 1 }}>
-            <img src="https://code.s3.yandex.net/react/code/bun-01.png" alt="bun" />
-            <p className="text text_type_digits-default">+{count - 5}</p>
-          </div> 
+          {
+            orderIngredients.slice(0, 6).map((ingredient, index) => {
+              if (index < 5) {
+                return (
+                  <div className={styles.image} style={{ zIndex: 5-index }} key={ingredient.id}>
+                    <img src={ingredient.image} alt={ingredient.id} />
+                  </div>
+                )
+              } else {
+                return (
+                  <div className={styles.image} style={{ zIndex: 1 }} key={ingredient.id}>
+                    <img src={ingredient.image} alt={ingredient.id} />
+                    <p className="text text_type_digits-default">+{order.ingredients.length - 5}</p>
+                  </div> 
+                )
+              }
+            })
+          }
         </div>
 
         <p className={`${styles.price} text text_type_digits-medium`}>

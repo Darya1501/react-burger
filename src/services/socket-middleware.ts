@@ -1,52 +1,54 @@
 import type { Middleware, MiddlewareAPI } from 'redux';
-
 import type { AppDispatch, RootState } from '../utils/types';
-import { TWsActions } from './actions/websocket';
+
+import { TFeedActions } from './actions/feed';
 import { 
-  WS_CONNECTION_CLOSED,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
-  WS_GET_MESSAGE
-} from './constants/websocket';
+  WS_FEED_ORDERS_CONNECT,
+  WS_FEED_ORDERS_DISCONNECT,
+  WS_FEED_ORDERS_ERROR,
+  WS_FEED_RECEIVED_MESSAGE
+} from './constants/feed';
 
 export const socketMiddleware = (wsUrl: string): Middleware => {
-    return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
-        let socket: WebSocket | null = null;
+  return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
+    let socket: WebSocket | null = null;
 
-    return next => (action: TWsActions) => {
+    return next => (action: TFeedActions) => {
       const { dispatch } = store;
-      const { type, payload } = action;
+      const { type } = action;
 
-      if (type === WS_CONNECTION_START) {
+      if (type === WS_FEED_ORDERS_CONNECT) {
         socket = new WebSocket(wsUrl);
       }
-
+      
       if (socket) {
         socket.onopen = event => {
-          dispatch({ type: WS_CONNECTION_SUCCESS, payload: event });
+          console.log('open');
         };
 
         socket.onerror = event => {
-          dispatch({ type: WS_CONNECTION_ERROR, payload: event });
+          console.log('error');
+          dispatch({ type: WS_FEED_ORDERS_ERROR });
         };
 
         socket.onmessage = event => {
+          console.log('message');
           const { data } = event;
-          dispatch({ type: WS_GET_MESSAGE, payload: data });
+          const { orders, total, totalToday } = JSON.parse(data)
+          dispatch({ type: WS_FEED_RECEIVED_MESSAGE, orders, total, totalToday });
         };
 
         socket.onclose = event => {
-          dispatch({ type: WS_CONNECTION_CLOSED, payload: event });
+          console.log('close');
+          dispatch({ type: WS_FEED_ORDERS_DISCONNECT });
         };
 
-        if (type === 'WS_SEND_MESSAGE') {
-          const message = payload;
-          socket.send(JSON.stringify(message));
+        if (type === WS_FEED_ORDERS_DISCONNECT) {
+          socket.close(1000);
         }
       }
 
       next(action);
     };
-    }) as Middleware;
+  }) as Middleware;
 };

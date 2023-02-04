@@ -4,7 +4,7 @@ import { TOrderActions } from '../services/actions/order';
 import { TUserActions } from '../services/actions/user';
 import { store } from '../services/srore';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { TWsActions } from '../services/actions/websocket';
+import { TFeedActions } from '../services/actions/feed';
 
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -13,7 +13,7 @@ export type TApplicationActions =
   TIngredientsActions |
   TOrderActions |
   TUserActions |
-  TWsActions;
+  TFeedActions;
 
 export type AppThunk<TReturn = void> = ThunkAction<TReturn, RootState, never, TApplicationActions>;
 export type AppDispatch = ThunkDispatch<RootState, never, TApplicationActions>;
