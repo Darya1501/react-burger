@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react'
+import React, { FC, RefObject } from 'react'
 import { TIngredient } from '../../utils/types';
 
 import { Ingredient } from './ingredient'
@@ -10,7 +10,7 @@ type TIngredientsCategoryProps = {
   ingredients: TIngredient[],
 }
 
-export const IngredientsCategory = ({ refLink, category, ingredients }: TIngredientsCategoryProps) => {
+export const IngredientsCategory: FC<TIngredientsCategoryProps> = ({ refLink, category, ingredients }) => {
   return(
     <div ref={refLink} >
       <p className="text text_type_main-medium">

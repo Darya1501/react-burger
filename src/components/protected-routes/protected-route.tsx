@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { FC, ReactElement, useEffect } from 'react'
 import { useDispatch, useSelector } from '../../hooks/store-hooks'; 
 import { Redirect, Route, useLocation } from 'react-router-dom';
 import { getUserData } from '../../services/actions/user';
@@ -16,7 +16,7 @@ type TProtectedRouteProps = {
   exact?: boolean
 }
 
-export const ProtectedRoute = ({ onlyForAuth, onlyForUnauth, children, ...rest }: TProtectedRouteProps) => {
+export const ProtectedRoute: FC<TProtectedRouteProps> = ({ onlyForAuth, onlyForUnauth, children, ...rest }) => {
   const { isUserAuthorized } = useSelector(store => store.user);
   const dispatch = useDispatch();
   const location: IWithStateLocation = useLocation();

@@ -48,7 +48,7 @@ export const FeedOrderDetails = () => {
       <div className={styles.allOrder}>
         {order && (
           <>
-          <p className={`${styles.number} text text_type_digits-default mb-10`}>#{order._id}</p>
+          <p className={`${styles.number} text text_type_digits-default mb-10`}>#{order.number}</p>
 
           <p className="text text_type_main-medium mb-3">{order.name}</p>
           <p className="text text_type_main-default mb-15">

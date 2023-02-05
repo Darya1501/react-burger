@@ -15,6 +15,11 @@
 
 .link {
   height: 64px;
+  color: var(--text-inactive-color);
+}
+
+.active {
+  color: var(--text-primary-color);
 }
 
 .logout {

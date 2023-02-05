@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { FC, ReactElement, useEffect } from 'react'
 import ReactDOM from 'react-dom';
 import { ESC_KEYCODE } from '../../utils/constants';
 
@@ -12,7 +12,7 @@ type TModalProps = {
   onClose: () => void
 }
 
-export const Modal = ({ header, children, onClose }: TModalProps) => {
+export const Modal: FC<TModalProps> = ({ header, children, onClose }) => {
   useEffect(() => {
     const close = (event: KeyboardEvent) => {
       if(event.keyCode === ESC_KEYCODE){

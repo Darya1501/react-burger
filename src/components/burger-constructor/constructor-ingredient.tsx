@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { useDispatch } from '../../hooks/store-hooks'; 
 
@@ -21,7 +21,7 @@ interface DragItem {
   type: string
 }
 
-export const ConstructorIngredient = ({ ingredient, index }: TConstructorIngredientProps) => {
+export const ConstructorIngredient: FC<TConstructorIngredientProps>= ({ ingredient, index }) => {
   const dragID = ingredient.constructorID;
   const dispatch = useDispatch();
 

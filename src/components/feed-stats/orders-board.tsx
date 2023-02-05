@@ -8,14 +8,14 @@ export type TOrdersBoardType = {
 }
 
 const sortOrders = (orders: Array<TFeedOrder>) => {
-  const done: Array<string> = [];
-  const inWork: Array<string> = [];
+  const done: Array<number> = [];
+  const inWork: Array<number> = [];
 
   orders.forEach(order => {
     if (order.status === 'done') {
-      done.push(order._id)
+      done.push(order.number)
     } else {
-      inWork.push(order._id)
+      inWork.push(order.number)
     }
   })
 
@@ -34,14 +34,14 @@ export const OrdersBoard = ({ variant } : TOrdersBoardType) => {
           <>
             <p className="text text_type_main-medium mb-6">Готовы</p>
             <div className={styles.done}>
-              { done.slice(0, 10).map(id => (<p key={id} className="text text_type_digits-default mb-2">{id}</p>)) }
+              { done.slice(0, 10).map(number => (<p key={number} className="text text_type_digits-default mb-2">{number}</p>)) }
             </div>
           </>
         ) : (
           <>
             <p className="text text_type_main-medium mb-6">В работе</p>
             <div>
-              { inWork.slice(0, 10).map(id => (<p key={id} className="text text_type_digits-default mb-2">{id}</p>)) }
+              { inWork.slice(0, 10).map(number => (<p key={number} className="text text_type_digits-default mb-2">{number}</p>)) }
             </div>
           </>
         )

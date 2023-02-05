@@ -1,5 +1,5 @@
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react'
+import React, { FC } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from '../../hooks/store-hooks';
 import { TFeedOrder } from '../../services/reducers/feed';
@@ -26,7 +26,7 @@ const getAllIngredient = (ingredients: Array<TIngredient>, ids: Array<string>) =
   }))
 }
 
-export const OrderCard = ({ order, status }: TOrderCardProps) => {
+export const OrderCard: FC<TOrderCardProps> = ({ order, status }) => {
   const location = useLocation();
   
   const { ingredients } = useSelector(state => state.ingredients);
@@ -44,7 +44,7 @@ export const OrderCard = ({ order, status }: TOrderCardProps) => {
     >
 
       <div className={styles.id}>
-        <span className="text text_type_digits-default">#{order._id}</span>
+        <span className="text text_type_digits-default">#{order.number}</span>
         <FormattedDate className='text text_type_main-default text_color_inactive' date={new Date(order.createdAt)} />
       </div>
       <p className="text text_type_main-medium mt-6 mb-6">
