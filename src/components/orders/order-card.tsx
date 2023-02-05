@@ -37,7 +37,7 @@ export const OrderCard: FC<TOrderCardProps> = ({ order, status }) => {
   return (
     <Link 
       to={{
-        pathname: `${location.}/${order.number}`,
+        pathname: `${location.pathname}/${order.number}`,
         state: { background: location }
       }}
       className={`${styles.card} p-6`}
