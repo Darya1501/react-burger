@@ -1,0 +1,91 @@
+.container {
+  width: 600px;
+}
+
+.list {
+  max-height: calc(100vh - 228px);
+  min-height: 240px;
+  width: 100%;
+  overflow-y: scroll;
+  scrollbar-color: var(--text-inactive-color) var(--background-element);
+  scrollbar-width: thin;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 8px;
+}
+
+.list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.list::-webkit-scrollbar-track {
+  background-color: var(--background-element);
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: var(--text-inactive-color);
+}
+
+.card {
+  width: 100%;
+  background-color: var(--background);
+  border-radius: 40px;
+}
+
+.id {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.components {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ingredients {
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+  background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.image:nth-child(n+2) {
+  margin-left: -16px;
+}
+
+.image img {
+  width: 60px;
+  height: 60px;
+  background: #131316;
+  border-radius: 100px;
+  object-fit: cover;
+}
+
+.image p {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

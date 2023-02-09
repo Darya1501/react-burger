@@ -5,6 +5,7 @@
   bottom: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.6);
+  z-index: 6;
 }
 
 .modal {
@@ -16,11 +17,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 720px;
+  z-index: 7;
 }
 
 .content {
   max-height: 90vh;
-  overflow: auto;
+  /* overflow: auto; */
 }
 
 .close {
@@ -29,20 +31,4 @@
   right: 40px;
   background-color: transparent;
   border: none
-}
-
-.order {
-  padding: 60px 0;
-  text-align: center;
-}
-
-.ingredient {
-  text-align: center;
-}
-
-.info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
 }

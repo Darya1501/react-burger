@@ -1,5 +1,5 @@
 import React, { RefObject } from 'react'
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/store-hooks'; 
 
 import { getSortedData } from '../../utils/get-sorted-data';
 import { tabs } from '../../utils/constants';
@@ -9,7 +9,6 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientsCategory } from './ingredients-category';
 
 export const BurgerIngredients = () => {
-  //@ts-ignore
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(state => state.ingredients);
 
   const [current, setCurrent] = React.useState(tabs.BUN);

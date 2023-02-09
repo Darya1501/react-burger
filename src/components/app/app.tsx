@@ -1,26 +1,28 @@
 import { useEffect } from 'react';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../hooks/store-hooks';
 
-import { Home } from '../../pages/home';
-import { Login } from '../../pages/login';
-import { Register } from '../../pages/register';
-import { ForgotPassword } from '../../pages/forgot-password';
-import { ResetPassword } from '../../pages/reset-password';
-import { Profile } from '../../pages/profile';
-import { Ingredient } from '../../pages/ingredient';
-import { NotFound404 } from '../../pages/not-found';
+import { Home } from '../../pages/home/home';
+import { Login } from '../../pages/auth/login';
+import { Register } from '../../pages/auth/register';
+import { ForgotPassword } from '../../pages/auth/forgot-password';
+import { ResetPassword } from '../../pages/auth/reset-password';
+import { Profile } from '../../pages/profile/profile';
+import { Ingredient } from '../../pages/ingredient/ingredient';
+import { NotFound404 } from '../../pages/not-found/not-found';
 import { AppHeader } from '../app-header/app-header';
 
 import { ProtectedRoute } from '../protected-routes/protected-route';
 import { Modal } from '../modals/modal';
-import { IngredientDetails } from '../modals/ingredient-details';
+import { IngredientDetails } from '../details/ingredient-details';
 
 import { getIngredientsRequest } from '../../services/actions/ingredients';
 import { getUserData } from '../../services/actions/user';
 
 import styles from './app.module.css';
 import { ILocation } from '../../utils/types';
+import { Feed } from '../../pages/feed/feed';
+import { FeedOrderDetails } from '../details/feed-order-details';
 
 interface IWithStateLocation extends ILocation {
   state: { background : IWithStateLocation };
@@ -34,9 +36,7 @@ function App() {
 
   useEffect(
     () => {
-      //@ts-ignore
       dispatch(getIngredientsRequest());
-      //@ts-ignore
       dispatch(getUserData());
     },
     [dispatch]
@@ -50,17 +50,26 @@ function App() {
           <Route path='/' exact={true}>
             <Home />
           </Route>
-          <ProtectedRoute onlyForAuth={false} path='/login' exact={true}>
+          <ProtectedRoute path='/feed' exact={true}>
+            <Feed />
+          </ProtectedRoute>
+          <ProtectedRoute path='/feed/:id' exact={true}>
+            <FeedOrderDetails />
+          </ProtectedRoute>
+          <ProtectedRoute onlyForUnauth path='/login' exact={true}>
             <Login />
           </ProtectedRoute>
-          <ProtectedRoute onlyForAuth={false} path='/register' exact={true}>
+          <ProtectedRoute onlyForUnauth path='/register' exact={true}>
             <Register />
           </ProtectedRoute>
-          <ProtectedRoute onlyForAuth={false} path='/forgot-password' exact={true}>
+          <ProtectedRoute onlyForUnauth path='/forgot-password' exact={true}>
             <ForgotPassword />
           </ProtectedRoute>
-          <ProtectedRoute onlyForAuth={false} path='/reset-password' exact={true}>
+          <ProtectedRoute onlyForUnauth path='/reset-password' exact={true}>
             <ResetPassword />
+          </ProtectedRoute>
+          <ProtectedRoute onlyForAuth path='/profile/orders/:id' exact={true}>
+            <FeedOrderDetails />
           </ProtectedRoute>
           <ProtectedRoute onlyForAuth path="/profile">
             <Profile />
@@ -78,6 +87,24 @@ function App() {
             children={
               <Modal onClose={history.goBack} header='Детали ингредиента'>
                 <IngredientDetails />
+              </Modal>}
+          />
+        }
+
+        { background && 
+          <Route path="/feed/:id" 
+            children={
+              <Modal onClose={history.goBack}>
+                <FeedOrderDetails />
+              </Modal>}
+          />
+        }
+
+        { background && 
+          <Route path="/profile/orders/:id" 
+            children={
+              <Modal onClose={history.goBack}>
+                <FeedOrderDetails />
               </Modal>}
           />
         }

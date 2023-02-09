@@ -1,13 +1,13 @@
-import React, { useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../hooks/store-hooks'; 
 
-import { MOVE_CONSTRUCTOR_INGREDIENT, REMOVE_CONSTRUCTOR_INGREDIENT } from '../../services/actions/constructor';
+import { MOVE_CONSTRUCTOR_INGREDIENT, REMOVE_CONSTRUCTOR_INGREDIENT } from '../../services/constants/constructor';
 
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 
-import { DECREMENT_IGREDIENT_COUNT } from '../../services/actions/ingredients.js';
+import { DECREMENT_IGREDIENT_COUNT } from '../../services/constants/ingredients';
 import { TIngredient } from '../../utils/types';
 
 type TConstructorIngredientProps = {
@@ -21,7 +21,7 @@ interface DragItem {
   type: string
 }
 
-export const ConstructorIngredient = ({ ingredient, index }: TConstructorIngredientProps) => {
+export const ConstructorIngredient: FC<TConstructorIngredientProps>= ({ ingredient, index }) => {
   const dragID = ingredient.constructorID;
   const dispatch = useDispatch();
 
@@ -76,7 +76,7 @@ export const ConstructorIngredient = ({ ingredient, index }: TConstructorIngredi
 
   drag(drop(ref))
 
-  const onDelete = (id: string, constructorID: string): void => {
+  const onDelete = (id: string, constructorID: number): void => {
     dispatch({ type: REMOVE_CONSTRUCTOR_INGREDIENT, constructorID })
     dispatch({ type: DECREMENT_IGREDIENT_COUNT, id })
   }

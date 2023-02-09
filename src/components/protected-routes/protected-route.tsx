@@ -1,5 +1,5 @@
-import React, { ReactElement, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { FC, ReactElement, useEffect } from 'react'
+import { useDispatch, useSelector } from '../../hooks/store-hooks'; 
 import { Redirect, Route, useLocation } from 'react-router-dom';
 import { getUserData } from '../../services/actions/user';
 import { ILocation } from '../../utils/types';
@@ -9,24 +9,23 @@ interface IWithStateLocation extends ILocation {
 }
 
 type TProtectedRouteProps = {
-  onlyForAuth: boolean,
+  onlyForAuth?: boolean,
+  onlyForUnauth?: boolean,
   children: ReactElement,
   path?: string,
   exact?: boolean
 }
 
-export const ProtectedRoute = ({ onlyForAuth, children, ...rest }: TProtectedRouteProps) => {
-  //@ts-ignore
+export const ProtectedRoute: FC<TProtectedRouteProps> = ({ onlyForAuth, onlyForUnauth, children, ...rest }) => {
   const { isUserAuthorized } = useSelector(store => store.user);
   const dispatch = useDispatch();
   const location: IWithStateLocation = useLocation();
   
   useEffect(() => {
-  //@ts-ignore
     dispatch(getUserData());
   }, [dispatch]);
   
-  if (!onlyForAuth && isUserAuthorized) {
+  if (onlyForUnauth && isUserAuthorized) {
     const { from } = location.state || { from: { pathname: "/" } };
     return (
       <Route {...rest}>

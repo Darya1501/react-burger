@@ -1,0 +1,37 @@
+.container {
+  width: 1240px;
+  height: 100%;
+  padding-top: 120px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+}
+
+.link {
+  height: 64px;
+  color: var(--text-inactive-color);
+}
+
+.active {
+  color: var(--text-primary-color);
+}
+
+.logout {
+  height: 64px;
+  cursor: pointer;
+}
+
+.cansel {
+  cursor: pointer;
+}
+
+.empty {
+  width: 100%;
+  text-align: center;
+}

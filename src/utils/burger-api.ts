@@ -1,5 +1,6 @@
+import { TFeedOrder } from "../services/reducers/feed";
 import { getCookie, setCookie } from "./cookies";
-import { TIngredient } from "./types";
+import { TIngredient,TUser } from "./types";
 
 const API = 'https://norma.nomoreparties.space/api';
 
@@ -7,11 +8,6 @@ type TOrderResponse ={
   number: number
 }
 
-type TUser = { 
-  name: string,
-  email: string,
-  password: string
-}
 type TResponse = {
   success: string,
   data?: Array<TIngredient>,
@@ -19,7 +15,8 @@ type TResponse = {
   refreshToken?: string,
   accessToken?: string,
   user?: TUser,
-  message?: string
+  message?: string,
+  orders?: Array<TFeedOrder>
 }
 
 type TRequestOptions = {
@@ -181,4 +178,11 @@ export const changeUserInfo = async (data: TUser) => {
     body: JSON.stringify({ ...data }),
   })
   .then(data => data.user)
+}
+
+export const getOrderById = (id: string) => {
+  return request(`${API}/orders/${id}`)
+    .then(data => {
+      return data.orders
+    })
 }

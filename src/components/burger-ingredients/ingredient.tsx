@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 
@@ -11,7 +11,7 @@ type TIngredientProps = {
   item: TIngredient,
 }
 
-export const Ingredient = ({ item }: TIngredientProps) => {
+export const Ingredient: FC<TIngredientProps> = ({ item }) => {
   const location = useLocation();
 
   const [{ opacity }, ref] = useDrag({
