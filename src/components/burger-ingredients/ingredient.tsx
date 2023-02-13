@@ -34,6 +34,7 @@ export const Ingredient: FC<TIngredientProps> = ({ item }) => {
           className={styles.ingredient} 
           ref={ref}
           style={{ opacity }}
+          data-cy="ingredient"
         >
           {item.count > 0 && (<Counter count={item.count} size="default" extraClass="m-1" />)}
           <img src={item.image} alt={item.name} />

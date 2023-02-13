@@ -7,7 +7,8 @@ import {
   GET_INGREDIENTS_FAILED,
   INCREMENT_IGREDIENT_COUNT,
   DECREMENT_IGREDIENT_COUNT,
-  CHANGE_BUNS_COUNT
+  CHANGE_BUNS_COUNT,
+  RESET_INGREDIENTS_COUNT
 } from '../constants/ingredients';
 
 export interface IGetIngredientRequest {
@@ -32,6 +33,9 @@ export interface IChangeBunCount {
   readonly type: typeof CHANGE_BUNS_COUNT;
   bun: TIngredient
 }
+export interface IResetIngredientsCount {
+  readonly type: typeof RESET_INGREDIENTS_COUNT
+}
 
 export type TIngredientsActions = 
   IGetIngredientRequest |
@@ -39,6 +43,7 @@ export type TIngredientsActions =
   IGetIngredientFailed |
   IIncrementIngredientCount |
   IDecrementIngredientCount |
+  IResetIngredientsCount |
   IChangeBunCount;
 
 export const getIngredientsRequest = (): AppThunk => (dispatch: AppDispatch) => {

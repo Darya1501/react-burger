@@ -34,7 +34,10 @@ export const BurgerConstructor = () => {
   }, [constructorBun, constructorIngredients])
 
   const createOrder = () => {
-    if (!isUserAuthorized) history.push({ pathname: '/login', state: { from: location } });
+    if (!isUserAuthorized) {
+      history.push({ pathname: '/login', state: { from: location } })
+      return;
+    };
     if (!constructorBun || !constructorIngredients.length) return;
     const ingredients = [constructorBun._id];
     constructorIngredients.map((component: TIngredient) => ingredients.push(component._id));
@@ -56,21 +59,24 @@ export const BurgerConstructor = () => {
   });
 
   return (
-    <div className={styles.container} ref={ingredientDropTarget} >
+    <div className={styles.container} ref={ingredientDropTarget} data-cy='drop-target'>
       {
         !ingredientsFailed ?
         (
           <>
-            {constructorBun && <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={`${constructorBun.name} (верх)`}
-              price={constructorBun.price}
-              thumbnail={constructorBun.image}
-              extraClass='mb-4 ml-8 mr-4'
-            />}
+            {constructorBun && 
+              <div className='mb-4 ml-8 mr-4' data-cy="top-bun">
+                <ConstructorElement
+                  type="top"
+                  isLocked={true}
+                  text={`${constructorBun.name} (верх)`}
+                  price={constructorBun.price}
+                  thumbnail={constructorBun.image}
+                />
+              </div>
+              }
 
-            <div className={styles.choices}>
+            <div className={styles.choices} data-cy="choices">
               { constructorIngredients.length ? 
                 ( constructorIngredients.map( (ingredient: TIngredient, index: number) => (
                   <ConstructorIngredient key={ingredient.constructorID} ingredient={ingredient} index={index} />
@@ -82,14 +88,17 @@ export const BurgerConstructor = () => {
               }
             </div>
 
-            {constructorBun && <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={`${constructorBun.name} (низ)`}
-              price={constructorBun.price}
-              thumbnail={constructorBun.image}
-              extraClass='mt-4 ml-8 mr-4'
-            />}
+            {constructorBun && 
+              <div className='mb-4 ml-8 mr-4' data-cy="bottom-bun">
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text={`${constructorBun.name} (низ)`}
+                  price={constructorBun.price}
+                  thumbnail={constructorBun.image}
+                />
+              </div>
+              }
           </>
         ) : ( <p className="text text_type_main-medium">Что-то пошло не так</p> )
       }

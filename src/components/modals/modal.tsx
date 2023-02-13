@@ -27,7 +27,7 @@ export const Modal: FC<TModalProps> = ({ header, children, onClose }) => {
     <>
       <ModalOverlay onClose={onClose} />
       <div className={styles.modal}>
-        <button className={styles.close} onClick={onClose}><CloseIcon type='primary'/></button>
+        <button className={styles.close} onClick={onClose} data-cy="modal-close-button"><CloseIcon type='primary'/></button>
         {header && (<p className='text text_type_main-medium'>{header}</p>)}
         <div className={`${styles.content}`}>{children}</div>
       </div>
