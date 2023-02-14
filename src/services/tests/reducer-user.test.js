@@ -16,33 +16,7 @@ import {
   LOGOUT_USER,
   SET_USER_DATA,
 } from "../constants/user";
-import { userReducer } from "../reducers/user";
-
-const initialState = {
-  sendEmailRequest: false,
-  sendEmailFaild: false,
-  sendEmailSuccess: false,
-  sendEmailMessage: '',
-
-  resetPasswordRequest: false,
-  resetPasswordFaild: false,
-  resetPasswordSuccess: false,
-  resetPasswordMessage: '',
-
-  registerFaild: false,
-  registerSuccess: false,
-
-  authFaild: false,
-  authSuccess: false,
-  isUserAuthorized: false,
-
-  errorMessage: '',
-
-  user: {
-    name: '',
-    email: ''
-  }
-}
+import { userReducer, initialUserState as initialState } from "../reducers/user";
 
 const user = {
   email: 'mail12345@mail.ru',

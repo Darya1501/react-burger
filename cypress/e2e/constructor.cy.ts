@@ -1,3 +1,5 @@
+export const baseUrl = 'http://localhost:3000'
+
 const dragAndDrop = (index) => {
   cy.get('[data-cy="ingredient"]').eq(index).trigger('dragstart');
   cy.get('[data-cy="drop-target"]').trigger('drop');
@@ -6,7 +8,7 @@ const dragAndDrop = (index) => {
 describe('template spec', () => {
   beforeEach(function () {
 		cy.viewport(1300, 800);
-		cy.visit('http://localhost:3000');
+		cy.visit(baseUrl);
 	})
 
   it('should open and close ingredient modals', function() {

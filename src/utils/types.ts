@@ -5,6 +5,7 @@ import { TUserActions } from '../services/actions/user';
 import { store } from '../services/srore';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { TFeedActions } from '../services/actions/feed';
+import { TProfileFeedActions } from '../services/actions/profile-feed';
 
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -13,13 +14,20 @@ export type TApplicationActions =
   TIngredientsActions |
   TOrderActions |
   TUserActions |
-  TFeedActions;
+  TFeedActions |
+  TProfileFeedActions;
 
 export type AppThunk<TReturn = void> = ThunkAction<TReturn, RootState, never, TApplicationActions>;
 export type AppDispatch = ThunkDispatch<RootState, never, TApplicationActions>;
 
-export interface IMessage {
-  
+export type TWSActions = {
+	wsInit: string,
+	wsClose: string,
+	wsSendMessage: string,
+	onOpen: string,
+	onClose: string,
+	onError: string,
+	onMessage: string
 }
 
 export type TIngredient = {
@@ -54,4 +62,14 @@ export type TUser = {
 export type TOrder = {
   id: number;
   components: Array<string>;
+}
+
+export type TFeedOrder = {
+  ingredients: Array<string>,
+  _id: string,
+  name: string,
+  status: string,
+  number: number,
+  createdAt: string,
+  updatedAt: string
 }

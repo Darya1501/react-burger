@@ -1,8 +1,6 @@
-import { TFeedOrder } from "../services/reducers/feed";
+import { API } from "./constants";
 import { getCookie, setCookie } from "./cookies";
-import { TIngredient,TUser } from "./types";
-
-const API = 'https://norma.nomoreparties.space/api';
+import { TFeedOrder, TIngredient,TUser } from "./types";
 
 type TOrderResponse ={
   number: number
@@ -47,7 +45,7 @@ const saveTokens = (refreshToken: string, accessToken: string) => {
 
 const deleteTokens = () => {
   localStorage.removeItem('refreshToken');
-  setCookie('accessToken', '', {expires: 0 });
+  setCookie('accessToken', '', {expires: -1 });
 }
 
 

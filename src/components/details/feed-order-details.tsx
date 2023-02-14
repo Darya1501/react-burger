@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './details.module.css'
 import { useDispatch, useSelector } from '../../hooks/store-hooks';
-import { getOrderRequest } from '../../services/actions/feed';
+import { getOrderRequest } from '../../services/actions/order';
 import { useParams } from 'react-router-dom';
 import { TIngredient } from '../../utils/types';
 
@@ -26,14 +26,14 @@ const getAllIngredient = (ingredients: Array<TIngredient>, ids: Array<string>) =
     id: ingredient._id,
     name: ingredient.name,
     image: ingredient.image,
-    price: ingredient.price
+    price: ingredient.type === 'bun' ? ingredient.price * 2 : ingredient.price
   }))
 }
 
 export const FeedOrderDetails = () => {
   const { ingredients } = useSelector(state => state.ingredients);
   const { id } = useParams<{id: string}>();
-  const { order } = useSelector(store => store.feed)
+  const { feedOrder } = useSelector(store => store.order)
 
   const dispatch = useDispatch()
   useEffect(
@@ -46,14 +46,14 @@ export const FeedOrderDetails = () => {
 
   return (
       <div className={styles.allOrder}>
-        {order && (
+        {feedOrder && (
           <>
-          <p className={`${styles.number} text text_type_digits-default mb-10`}>#{order.number}</p>
+          <p className={`${styles.number} text text_type_digits-default mb-10`}>#{feedOrder.number}</p>
 
-          <p className="text text_type_main-medium mb-3">{order.name}</p>
+          <p className="text text_type_main-medium mb-3">{feedOrder.name}</p>
           <p className="text text_type_main-default mb-15">
             {
-              order.status === 'created' ? 'Создан' : order.status === 'pending' ? 'Готовится' : 'Выполнен'
+              feedOrder.status === 'created' ? 'Создан' : feedOrder.status === 'pending' ? 'Готовится' : 'Выполнен'
             }
           </p>
 
@@ -61,14 +61,14 @@ export const FeedOrderDetails = () => {
 
           <div className={styles.list}>
             {
-              getAllIngredient(ingredients, order.ingredients).map(ingredient => (
+              getAllIngredient(ingredients, feedOrder.ingredients).map(ingredient => (
                 <div className={styles.item} key={ingredient.id}>
                   <div className={styles.image}>
                     <img src={ingredient.image} alt="bun" />
                   </div>
                   <p className="text text_type_main-default">{ingredient.name}</p>
                   <p className={`${styles.price} text text_type_digits-default`}>
-                    {getCountIngredientsInOrder(order.ingredients, ingredient.id)} x {ingredient.price}
+                    {getCountIngredientsInOrder(feedOrder.ingredients, ingredient.id)} x {ingredient.price}
                     <CurrencyIcon type="primary" />
                   </p>
                 </div>
@@ -78,9 +78,9 @@ export const FeedOrderDetails = () => {
           </div>
 
           <div className={styles.bottom}>
-            <p className="text text_type_main-default text_color_inactive">Вчера, 13:50</p>
+            <FormattedDate className='text text_type_main-default text_color_inactive' date={new Date(feedOrder.createdAt)} />
             <p className={`${styles.price} text text_type_digits-default`}>
-              {getIngredientsPrice(getAllIngredient(ingredients, order.ingredients))}
+              {getIngredientsPrice(getAllIngredient(ingredients, feedOrder.ingredients))}
                 <CurrencyIcon type="primary" />
               </p>
           </div>

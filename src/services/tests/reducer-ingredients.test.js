@@ -7,13 +7,7 @@ import {
   CHANGE_BUNS_COUNT,
   RESET_INGREDIENTS_COUNT
 } from '../constants/ingredients';
-import { ingredientsReducer } from '../reducers/ingredients';
-
-const initialState = {
-  ingredients: [],
-  ingredientsRequest: true,
-  ingredientsFailed: false,
-}
+import { ingredientsReducer, initialIngredientState as initialState } from '../reducers/ingredients';
 
 const ingredients = [
   { _id: '123', type: 'bun' },

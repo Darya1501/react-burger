@@ -2,8 +2,7 @@ import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burge
 import React, { FC } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from '../../hooks/store-hooks';
-import { TFeedOrder } from '../../services/reducers/feed';
-import { TIngredient } from '../../utils/types';
+import { TFeedOrder, TIngredient } from '../../utils/types';
 import styles from './orders.module.css'
 
 type TOrderCardProps = {

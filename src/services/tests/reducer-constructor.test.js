@@ -5,19 +5,14 @@ import {
   MOVE_CONSTRUCTOR_INGREDIENT,
   REMOVE_CONSTRUCTOR_INGREDIENT
 } from '../constants/constructor';
-import { constructorReducer } from '../reducers/constructor';
-
-export const initialState = {
-  constructorBun: null,
-  constructorIngredients: []
-}
+import { constructorReducer, initialConstructorState as initialState } from '../reducers/constructor';
 
 const ingredient = {
   id: '123'
 }
 const constructorID = '510294'
 
-describe('user reducer', () => {
+describe('constructor reducer', () => {
 
   test('should return the initial state', () => {
     expect(constructorReducer(undefined, {})).toEqual(initialState)

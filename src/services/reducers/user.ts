@@ -42,7 +42,7 @@ type TUserState = {
   user: TUser
 }
 
-const initialOrderState: TUserState = {
+export const initialUserState: TUserState = {
   sendEmailRequest: false,
   sendEmailFaild: false,
   sendEmailSuccess: false,
@@ -68,7 +68,7 @@ const initialOrderState: TUserState = {
   }
 }
 
-export const userReducer = (state = initialOrderState, action: TUserActions): TUserState => {
+export const userReducer = (state = initialUserState, action: TUserActions): TUserState => {
   switch (action.type) {
     case REGISTER_SUCCESS: {
       return {

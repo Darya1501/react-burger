@@ -4,20 +4,17 @@ import {
   POST_ORDER_SUCCESS,
   TOGGLE_ORDER_DATA
 } from '../constants/order';
-import { orderReducer } from '../reducers/order';
-
-const initialState = {
-  orderRequest: true,
-  orderFailed: false,
-  order: null,
-  isOrderModalVisible: false,
-}
+import { orderReducer, initialOrderState as initialState } from '../reducers/order';
 
 const order = {
   number: '123'
 }
 
-describe('user reducer', () => {
+describe('order reducer', () => {
+
+  test('are you working?', () => {
+    expect(true).toBe(true)
+  })
 
   test('should return the initial state', () => {
     expect(orderReducer(undefined, {})).toEqual(initialState)

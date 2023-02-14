@@ -1,12 +1,5 @@
 import { WS_FEED_ORDERS_CONNECT, WS_FEED_ORDERS_DISCONNECT, WS_FEED_ORDERS_ERROR, WS_FEED_RECEIVED_MESSAGE, WS_USER_ORDERS_CONNECT, WS_USER_ORDERS_DISCONNECT  } from "../constants/feed"
-import { feedReducer } from "../reducers/feed"
-
-const initialState = {
-  wsConnected: false,
-  orders: [],
-  total: 0,
-  totalToday: 0,
-}
+import { feedReducer, initialFeedState as initialState } from "../reducers/feed"
 
 describe('feed reducer', () => {
 

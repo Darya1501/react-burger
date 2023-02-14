@@ -5,3 +5,6 @@ export const tabs = {
   SAUSE: 'sauce',
   MAIN: 'main'
 }
+
+export const API = 'https://norma.nomoreparties.space/api';
+export const WS_FEED_API = 'wss://norma.nomoreparties.space/orders'

@@ -1,12 +1,11 @@
 import { TFeedOrder } from "../../utils/types"
-import { TFeedActions } from "../actions/feed"
+import { TProfileFeedActions } from "../actions/profile-feed"
 import { 
-  WS_FEED_CONNECTION_SUCCESS,
-  WS_FEED_CONNECTION_ERROR,
-  WS_FEED_GET_MESSAGE,
-  WS_FEED_CONNECTION_CLOSED
+  WS_PROFILE_FEED_CONNECTION_SUCCESS,
+  WS_PROFILE_FEED_CONNECTION_ERROR,
+  WS_PROFILE_FEED_GET_MESSAGE,
+  WS_PROFILE_FEED_CONNECTION_CLOSED
 } from "../constants/feed"
-
 
 type TInitialState = {
   wsConnected: boolean,
@@ -23,25 +22,25 @@ export const initialFeedState: TInitialState = {
   totalToday: 0,
 }
 
-export const feedReducer = (state = initialFeedState, action: TFeedActions) => {
+export const profileFeedReducer = (state = initialFeedState, action: TProfileFeedActions) => {
   switch (action.type) {
-    case WS_FEED_CONNECTION_SUCCESS:
+    case WS_PROFILE_FEED_CONNECTION_SUCCESS:
 			return {
 				...state,
 				wsConnected: true
 			};
-		case WS_FEED_CONNECTION_ERROR:
+		case WS_PROFILE_FEED_CONNECTION_ERROR:
 			return {
 				...state,
 				error: action.payload,
 				wsConnected: false
 			};
-		case WS_FEED_CONNECTION_CLOSED:
+		case WS_PROFILE_FEED_CONNECTION_CLOSED:
 			return {
 				...state,
 				wsConnected: false
 			};
-		case WS_FEED_GET_MESSAGE:
+		case WS_PROFILE_FEED_GET_MESSAGE:
 			return {
 				...state,
 				orders: action.orders,
