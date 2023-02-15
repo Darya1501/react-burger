@@ -2,7 +2,8 @@ import {
   POST_ORDER_FAILED,
   POST_ORDER_REQUEST,
   POST_ORDER_SUCCESS,
-  TOGGLE_ORDER_DATA
+  TOGGLE_ORDER_DATA,
+  GET_ORDER
 } from '../constants/order';
 import { orderReducer, initialOrderState as initialState } from '../reducers/order';
 
@@ -72,6 +73,18 @@ describe('order reducer', () => {
     const received = orderReducer(stateWithClosedModal, { type: TOGGLE_ORDER_DATA });
     expect(received).toEqual(expected)
   });
+
+  test('should handle GET_ORDER', () => {
+    const expected = { 
+      ...initialState,
+      feedOrder: { name: "Флюоресцентный бессмертный бургер" } 
+    }
+    const received = orderReducer(initialState, { 
+      type: GET_ORDER,
+      order: { name: "Флюоресцентный бессмертный бургер" }
+    })
+    expect(received).toEqual(expected)
+  })
 
 
 
