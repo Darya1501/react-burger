@@ -4,7 +4,8 @@ import { ProfileOrders } from '../../components/orders/profile-orders';
 import { ProfileForm } from '../../components/profile-form/profile-form';
 import { useDispatch } from '../../hooks/store-hooks';
 import { logoutUser } from '../../services/actions/user';
-import { WS_USER_ORDERS_CONNECT, WS_USER_ORDERS_DISCONNECT } from '../../services/constants/feed';
+import { WS_PROFILE_FEED_CONNECTION_START, WS_PROFILE_FEED_CONNECTION_CLOSE } from '../../services/constants/feed';
+import { WS_FEED_API } from '../../utils/constants';
 import styles from './profile.module.css'
 
 export const Profile = () => {
@@ -12,9 +13,9 @@ export const Profile = () => {
 
   useEffect(
     () => {
-      dispatch({ type: WS_USER_ORDERS_CONNECT });
+      dispatch({ type: WS_PROFILE_FEED_CONNECTION_START, payload: WS_FEED_API });
       return () => {
-        dispatch({ type: WS_USER_ORDERS_DISCONNECT })
+        dispatch({ type: WS_PROFILE_FEED_CONNECTION_CLOSE })
       }
     },
     [dispatch]

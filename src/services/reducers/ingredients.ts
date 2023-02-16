@@ -6,7 +6,8 @@ import {
   GET_INGREDIENTS_FAILED,
   INCREMENT_IGREDIENT_COUNT,
   DECREMENT_IGREDIENT_COUNT,
-  CHANGE_BUNS_COUNT
+  CHANGE_BUNS_COUNT,
+  RESET_INGREDIENTS_COUNT
 } from '../constants/ingredients';
 
 type TIngredientsState = {
@@ -61,6 +62,12 @@ export const ingredientsReducer = (state = initialIngredientState, action: TIngr
         ...state,
         ingredients: state.ingredients.map(item => item._id === action.bun._id ?
           ({ ...item, count: 2 }) : (item.type === 'bun' ? { ...item, count: 0 } : item))
+      };
+    }
+    case RESET_INGREDIENTS_COUNT: {
+      return {
+        ...state,
+        ingredients: state.ingredients.map(item => ({ ...item, count: 0 }))
       };
     }
     default: {

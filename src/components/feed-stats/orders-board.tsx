@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from '../../hooks/store-hooks';
-import { TFeedOrder } from '../../services/reducers/feed';
+import { TFeedOrder } from '../../utils/types';
 import styles from './feed-stats.module.css';
 
 export type TOrdersBoardType = {

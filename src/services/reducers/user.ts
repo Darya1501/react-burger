@@ -42,7 +42,7 @@ type TUserState = {
   user: TUser
 }
 
-const initialOrderState: TUserState = {
+export const initialUserState: TUserState = {
   sendEmailRequest: false,
   sendEmailFaild: false,
   sendEmailSuccess: false,
@@ -68,7 +68,7 @@ const initialOrderState: TUserState = {
   }
 }
 
-export const userReducer = (state = initialOrderState, action: TUserActions): TUserState => {
+export const userReducer = (state = initialUserState, action: TUserActions): TUserState => {
   switch (action.type) {
     case REGISTER_SUCCESS: {
       return {
@@ -76,7 +76,7 @@ export const userReducer = (state = initialOrderState, action: TUserActions): TU
         registerFaild: false,
         registerSuccess: true,
         isUserAuthorized: true,
-        ...action.user,
+        user: { ...state.user, ...action.user }
       };
     }
     case REGISTER_FAILED: {
@@ -93,7 +93,7 @@ export const userReducer = (state = initialOrderState, action: TUserActions): TU
         authFaild: false,
         authSuccess: true,
         isUserAuthorized: true,
-        ...action.user,
+        user: { ...state.user, ...action.user }
       };
     }
     case AUTH_FAILED: {

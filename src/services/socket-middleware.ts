@@ -1,73 +1,58 @@
-import type { Middleware, MiddlewareAPI } from 'redux';
-import { updateToken } from '../utils/burger-api';
+import type { AnyAction, Middleware } from 'redux';
+// import { updateToken } from '../utils/burger-api';
 import { getCookie } from '../utils/cookies';
-import type { AppDispatch, RootState } from '../utils/types';
+import type { TWSActions } from '../utils/types';
 
-import { TFeedActions } from './actions/feed';
-import { 
-  WS_FEED_ORDERS_CONNECT,
-  WS_FEED_ORDERS_DISCONNECT,
-  WS_FEED_ORDERS_ERROR,
-  WS_FEED_RECEIVED_MESSAGE,
-  WS_USER_ORDERS_CONNECT,
-  WS_USER_ORDERS_DISCONNECT
-} from './constants/feed';
-
-export const socketMiddleware = (wsUrl: string): Middleware => {
-  return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
+export const socketMiddleware = (wsActions: TWSActions, auth: boolean): Middleware => {
+  return ((store) => {
     let socket: WebSocket | null = null;
+    let connected = false;
+    let url: string;
 
-    return next => async (action: TFeedActions) => {
+    return next => async (action: AnyAction) => {
       const { dispatch } = store;
-      const { type } = action;
+      const { type, payload } = action;
+      const { wsInit, wsClose, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
+      const token = auth ? getCookie('accessToken') : null;
 
-      if (type === WS_FEED_ORDERS_CONNECT) {
-        socket = new WebSocket(`${wsUrl}/all`);
-      } else if (type === WS_USER_ORDERS_CONNECT) {
-        const token = getCookie('accessToken');
-          if (token) {
-            socket = new WebSocket(`${wsUrl}?token=${token}`);
-          } else {
-            await updateToken()
-            console.log('Нет доступа');
-          }
-      }
-      
-      if (socket) {
+      if (type === wsInit) {
+        connected = true;
+        url = action.payload
+        socket = new WebSocket(`${payload}${token ? '?token=' + token : ''}`);
+
         socket.onopen = event => {
           console.log('open');
+          dispatch({ type: onOpen })
         };
 
         socket.onerror = event => {
           console.log('error');
-          dispatch({ type: WS_FEED_ORDERS_ERROR });
+          dispatch({ type: onError });
         };
 
         socket.onmessage = event => {
           console.log('message');
           const { data } = event;
           const { orders, total, totalToday } = JSON.parse(data)
-          dispatch({ type: WS_FEED_RECEIVED_MESSAGE, orders, total, totalToday });
+          dispatch({ type: onMessage, orders, total, totalToday });
         };
 
         socket.onclose = event => {
-          console.log('event: ', event);
-          if (event.wasClean){
-            dispatch({ type: WS_FEED_ORDERS_DISCONNECT });
-            console.log('Соединение закрыто корректно');
-            console.log(`Код закрытия - ${event.code}`);
-            console.log(`Причина закрытия - ${event.reason}`)
-          } else {
-            console.log(`Соединение закрыто с кодом -  ${event.code}`);
+          dispatch({ type: onClose });
+          console.log('socket closed with code: ', event.code);
+          if (!connected) {
+            setTimeout(() => { dispatch({ type: wsInit, url }) }, 1000)
           }
         };
 
-        if (type === WS_FEED_ORDERS_DISCONNECT) {
-          socket.close(1000);
+        if (wsClose && type === wsClose && socket) {
+          socket.close(1000, 'socket closed');
+          connected = false;
         }
 
-        if (type === WS_USER_ORDERS_DISCONNECT) {
-          socket.close(1000);
+        if (wsSendMessage && type === wsSendMessage && socket) {
+          const message = token ? { ...payload, token } : { ...payload };
+          socket.send(JSON.stringify(message));
         }
       }
 

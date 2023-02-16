@@ -1,63 +1,65 @@
-import { TFeedOrder } from './../reducers/feed';
-import { getOrderById } from '../../utils/burger-api';
-import { AppDispatch, AppThunk } from '../../utils/types';
-import {
-  WS_FEED_ORDERS_CONNECT,
-  WS_USER_ORDERS_CONNECT,
-  WS_FEED_RECEIVED_MESSAGE,
-  WS_FEED_ORDERS_ERROR,
-  WS_FEED_ORDERS_DISCONNECT,
-  WS_USER_ORDERS_DISCONNECT,
-  GET_ORDER
+import { PayloadAction } from '@reduxjs/toolkit';
+import { TFeedOrder } from '../../utils/types';
+
+import { 
+  WS_FEED_CONNECTION_START,
+  WS_FEED_CONNECTION_SUCCESS,
+  WS_FEED_CONNECTION_ERROR,
+  WS_FEED_GET_MESSAGE,
+  WS_FEED_SEND_MESSAGE,
+  WS_FEED_CONNECTION_CLOSE,
+  WS_FEED_CONNECTION_CLOSED
 } from '../constants/feed';
+
+export const wsFeedActions = {
+  wsInit: WS_FEED_CONNECTION_START,
+  onOpen: WS_FEED_CONNECTION_SUCCESS,
+  onError: WS_FEED_CONNECTION_ERROR,
+  onMessage: WS_FEED_GET_MESSAGE,
+  wsSendMessage: WS_FEED_SEND_MESSAGE,
+  wsClose: WS_FEED_CONNECTION_CLOSE,
+  onClose: WS_FEED_CONNECTION_CLOSED,
+};
 
 export interface IWsAction {
   readonly type: string;
   payload?: any;
 }
 
-export interface IWsFeedOrdersConnect extends IWsAction {
-  readonly type: typeof WS_FEED_ORDERS_CONNECT;
+export interface IWsFeedConnectionStart extends IWsAction {
+  readonly type: typeof WS_FEED_CONNECTION_START
 }
-export interface IWsUserOrdersConnect extends IWsAction {
-  readonly type: typeof WS_USER_ORDERS_CONNECT;
+export interface IWsFeedConnectionSuccess extends IWsAction {
+  readonly type: typeof WS_FEED_CONNECTION_SUCCESS,
+  payload: PayloadAction
 }
-export interface IWsFeedReceivedMessage extends IWsAction {
-  readonly type: typeof WS_FEED_RECEIVED_MESSAGE;
-  orders: Array<TFeedOrder>;
-  total: number;
-  totalToday: number;
+export interface IWsFeedConnectionError extends IWsAction {
+  readonly type: typeof WS_FEED_CONNECTION_ERROR,
+  payload: PayloadAction
 }
-export interface IWsFeedOrdersError extends IWsAction {
-  readonly type: typeof WS_FEED_ORDERS_ERROR;
+export interface IWsFeedGetMessage extends IWsAction {
+  readonly type: typeof WS_FEED_GET_MESSAGE,
+  orders: Array<TFeedOrder>,
+  total: number,
+  totalToday: number
 }
-export interface IWsFeedOrdersDisconnect extends IWsAction {
-  readonly type: typeof WS_FEED_ORDERS_DISCONNECT;
+export interface IWsFeedSendMessage extends IWsAction {
+  readonly type: typeof WS_FEED_SEND_MESSAGE
 }
-export interface IWsUserOrdersDisconnect extends IWsAction {
-  readonly type: typeof WS_USER_ORDERS_DISCONNECT;
+export interface IWsFeedConnectionClose extends IWsAction {
+  readonly type: typeof WS_FEED_CONNECTION_CLOSE
 }
-export interface IGetOrder {
-  readonly type: typeof GET_ORDER;
-  order: TFeedOrder
+export interface IWsFeedConnectionClosed extends IWsAction {
+  readonly type: typeof WS_FEED_CONNECTION_CLOSED,
+  payload: PayloadAction
 }
 
 export type TFeedActions = 
-  IWsFeedOrdersConnect | 
-  IWsUserOrdersConnect |
-  IWsFeedReceivedMessage |
-  IWsFeedOrdersError |
-  IWsFeedOrdersDisconnect |
-  IWsUserOrdersDisconnect |
-  IGetOrder;
+IWsFeedConnectionStart |
+IWsFeedConnectionSuccess |
+IWsFeedConnectionError |
+IWsFeedGetMessage |
+IWsFeedSendMessage |
+IWsFeedConnectionClose |
+IWsFeedConnectionClosed;
 
-export const getOrderRequest = (id: string): AppThunk => (dispatch: AppDispatch) => {
-  getOrderById(id).then(res => {
-    if (res) {
-      dispatch({ type: GET_ORDER, order: res[0] });
-    }
-  })
-  .catch(error => {
-    console.error(error);
-  });
-};
